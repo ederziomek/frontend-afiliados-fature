@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import Sidebar from './sidebar';
 import NotificationPanel from './notifications/notification_panel'; // Import NotificationPanel
 
@@ -18,11 +19,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
              {/* Mobile menu button is handled inside Sidebar now */}
           </div>
           <div className="flex items-center space-x-4">
-            {/* Saldo */}
-            <div className="text-sm">
+            {/* Saldo - Agora com link para a página Carteira */}
+            <Link href="/carteira" className="text-sm cursor-pointer hover:opacity-80 transition-opacity">
               <span className="text-white">Saldo:</span>{" "}
               <span className="text-[rgb(18,201,185)] font-semibold">R$ 50,30</span>
-            </div>
+            </Link>
             {/* Notification Panel */}
             <NotificationPanel />
           </div>

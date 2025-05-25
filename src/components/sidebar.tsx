@@ -1,12 +1,28 @@
 "use client"; // Needed for useState
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Home, BarChart2, Users, CreditCard, Star, Award, HelpCircle, Menu, X, Gift, CalendarDays, Megaphone } from 'lucide-react'; // Added Gift, CalendarDays, Megaphone
 import Image from 'next/image';
 
 const Sidebar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showLogo, setShowLogo] = useState(false);
+
+  // Controle de exibição do logo para evitar flash durante transições
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      // Quando o menu abre, garantimos que o logo não seja exibido
+      setShowLogo(false);
+    } else {
+      // Quando o menu fecha, só exibimos o logo após a transição completa
+      const timer = setTimeout(() => {
+        setShowLogo(true);
+      }, 300); // Tempo da transição CSS
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isMobileMenuOpen]);
 
   const navItems = [
     { href: '/', icon: Home, label: 'Início' }, // Renamed from Painel
@@ -32,7 +48,7 @@ const Sidebar = () => {
           {/* Keep the hamburger icon here, the X will be inside the menu */}
           <Menu size={24} className="text-[rgb(18,201,185)]" />
         </button>
-        <span className="ml-2 text-white font-bold">Fature</span>
+        <Link href="/" className="ml-2 text-white font-bold">Fature</Link>
       </div>
 
       {/* Sidebar (visible on medium screens and up, or when mobile menu is open) */}
@@ -51,13 +67,15 @@ const Sidebar = () => {
         )}
 
         {/* Logo Placeholder - Adjust as needed */}
-        <div className="mb-8 flex justify-center items-center pt-8 md:pt-0">
-          {/* Replace with your actual logo component or image */}
-          <span className="text-xl font-bold">Fature100x</span>
+        <div className={`${isMobileMenuOpen ? 'h-0 mb-0 overflow-hidden' : 'mb-8'} flex justify-center items-center pt-0 md:pt-0 md:mb-8`}>
+          {/* Texto removido do menu hambúrguer quando aberto em mobile */}
+          {!isMobileMenuOpen && showLogo && (
+            <span className="text-xl font-bold">Fature100x</span>
+          )}
         </div>
 
         {/* Navigation */}
-        <nav className="flex-grow">
+        <nav className={`flex-grow ${isMobileMenuOpen ? 'pt-12' : ''}`}>
           <ul className="space-y-2">
             {navItems.map((item) => (
               <li key={item.href}>
