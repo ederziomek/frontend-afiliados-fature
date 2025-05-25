@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Copy, QrCode, Info, ArrowRight, Award, ExternalLink, LucideIcon, Star, ArrowUp, Printer, Share2, X, TrendingUp, UserCheck, DollarSign, HelpCircle, Users } from 'lucide-react'; // Added more icons
 import { toast } from "@/hooks/use-toast";
 import Link from 'next/link';
@@ -149,9 +149,113 @@ const affiliateData = {
 const progressPercentage = 60;
 const indicationsNeeded = affiliateData.nextLevelRequirement - affiliateData.currentIndications;
 
+// Tooltip component with X button and click outside to close
+const Tooltip = ({ id, isOpen, onClose, children }: { id: string, isOpen: boolean, onClose: () => void, children: React.ReactNode }) => {
+  const tooltipRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div 
+      id={id} 
+      ref={tooltipRef}
+      className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
+      style={{ zIndex: 9999 }}
+    >
+      <div className="bg-[#1A1F2B] rounded-lg shadow-xl max-w-md w-full border border-primary/30 overflow-hidden">
+        <div className="p-4 border-b border-gray-700 flex justify-between items-center">
+          <h3 className="text-lg font-semibold text-white flex items-center">
+            <Info className="mr-2 text-primary" size={20} />
+            {id === 'validationInfoModal' ? 'O que é uma Indicação Validada?' : 'Informação'}
+          </h3>
+          <button 
+            onClick={onClose}
+            className="text-gray-400 hover:text-white transition-colors"
+          >
+            <X size={20} />
+          </button>
+        </div>
+        <div className="p-6">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Small tooltip component
+const SmallTooltip = ({ id, isOpen, onClose, children }: { id: string, isOpen: boolean, onClose: () => void, children: React.ReactNode }) => {
+  const tooltipRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div 
+      id={id} 
+      ref={tooltipRef}
+      className="fixed z-[9999] bg-[#1A1F2B] text-white text-xs p-3 rounded shadow-lg border border-primary/30"
+      style={{ 
+        top: '50%', 
+        left: '50%', 
+        transform: 'translate(-50%, -50%)',
+        width: '80%',
+        maxWidth: '300px'
+      }}
+    >
+      <div className="flex justify-between items-start">
+        <div className="flex-1 text-center">{children}</div>
+        <button 
+          onClick={onClose}
+          className="text-gray-400 hover:text-white transition-colors ml-2"
+        >
+          <X size={12} />
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const DashboardPage = () => {
   const [showQRModal, setShowQRModal] = useState(false);
   const [showValidationInfoModal, setShowValidationInfoModal] = useState(false);
+  const [showTooltips, setShowTooltips] = useState({
+    indicationsTotal: false,
+    indicationsValidated: false,
+    totalDeposited: false,
+    totalCommissions: false,
+  });
   const currentCategoryStyle = categoriesStyleData[affiliateData.category]?.style || categoriesStyleData['Jogador'].style;
 
   // Define a luxurious gradient based on the category's main gradient
@@ -218,12 +322,27 @@ const DashboardPage = () => {
     }
   };
 
+  // Função para alternar a exibição dos tooltips
+  const toggleTooltip = (tooltipName: keyof typeof showTooltips) => {
+    setShowTooltips(prev => {
+      // Fechar todos os outros tooltips
+      const newState = Object.keys(prev).reduce((acc, key) => {
+        acc[key as keyof typeof showTooltips] = false;
+        return acc;
+      }, {} as typeof showTooltips);
+      
+      // Alternar o tooltip atual
+      newState[tooltipName] = !prev[tooltipName];
+      return newState;
+    });
+  };
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Modal de QR Code */}
       {showQRModal && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-800 rounded-lg shadow-xl max-w-md w-full border border-primary/30 overflow-hidden">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4" style={{ zIndex: 9999 }}>
+          <div className="bg-[#1A1F2B] rounded-lg shadow-xl max-w-md w-full border border-primary/30 overflow-hidden">
             {/* Cabeçalho do modal */}
             <div className="p-4 border-b border-gray-700 flex justify-between items-center">
               <h3 className="text-lg font-semibold text-white flex items-center">
@@ -280,67 +399,52 @@ const DashboardPage = () => {
       )}
 
       {/* Modal de Informação sobre Indicações Validadas */}
-      {showValidationInfoModal && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-800 rounded-lg shadow-xl max-w-md w-full border border-primary/30 overflow-hidden">
-            {/* Cabeçalho do modal */}
-            <div className="p-4 border-b border-gray-700 flex justify-between items-center">
-              <h3 className="text-lg font-semibold text-white flex items-center">
-                <Info className="mr-2 text-primary" size={20} />
-                O que é uma Indicação Validada?
-              </h3>
-              <button 
-                onClick={() => setShowValidationInfoModal(false)}
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <X size={20} />
-              </button>
+      <Tooltip 
+        id="validationInfoModal" 
+        isOpen={showValidationInfoModal} 
+        onClose={() => setShowValidationInfoModal(false)}
+      >
+        <div>
+          <p className="text-white mb-4">
+            Uma indicação é válida quando a pessoa que você indicou atende a <span className="text-primary">pelo menos uma</span> destas condições:
+          </p>
+          
+          <div className="space-y-4 mb-6">
+            <div className="flex items-start">
+              <div className="bg-primary/20 p-2 rounded-full mr-3 mt-0.5 flex items-center justify-center w-8 h-8">
+                <span className="text-primary font-bold text-lg">1</span>
+              </div>
+              <p className="text-gray-300 flex-1">
+                Registra-se pelo seu link, faz depósito de R$30 e realiza 10 apostas
+              </p>
             </div>
             
-            {/* Corpo do modal */}
-            <div className="p-6">
-              <p className="text-white mb-4">
-                Uma indicação é considerada válida quando a pessoa que você indicou:
-              </p>
-              
-              <div className="space-y-3 mb-6">
-                <div className="flex items-start">
-                  <div className="bg-primary/20 p-2 rounded-full mr-3 mt-0.5">
-                    <span className="text-primary font-bold text-sm">1</span>
-                  </div>
-                  <p className="text-gray-300">
-                    Se registra pelo seu link, faz um depósito mínimo de R$30 e realiza pelo menos 10 apostas.
-                  </p>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="bg-primary/20 p-2 rounded-full mr-3 mt-0.5">
-                    <span className="text-primary font-bold text-sm">2</span>
-                  </div>
-                  <p className="text-gray-300">
-                    Se registra pelo seu link e gera pelo menos R$20 de comissão para a plataforma.
-                  </p>
-                </div>
+            <div className="flex items-start">
+              <div className="bg-primary/20 p-2 rounded-full mr-3 mt-0.5 flex items-center justify-center w-8 h-8">
+                <span className="text-primary font-bold text-lg">2</span>
               </div>
-              
-              <p className="text-sm text-gray-400 italic">
-                Apenas indicações validadas geram comissões para você.
+              <p className="text-gray-300 flex-1">
+                Registra-se pelo seu link e gera R$20 de comissão para a plataforma
               </p>
-              
-              <button 
-                onClick={() => setShowValidationInfoModal(false)}
-                className="mt-6 w-full flex items-center justify-center bg-primary hover:bg-primary/80 text-white py-2 px-4 rounded-md transition-colors"
-              >
-                Entendi
-              </button>
             </div>
           </div>
+          
+          <p className="text-sm text-gray-400 italic mb-6">
+            Apenas indicações validadas geram comissões para você.
+          </p>
+          
+          <button 
+            onClick={() => setShowValidationInfoModal(false)}
+            className="w-full flex items-center justify-center bg-primary hover:bg-primary/80 text-white py-3 px-4 rounded-md transition-colors text-lg"
+          >
+            Entendi
+          </button>
         </div>
-      )}
+      </Tooltip>
 
       {/* --- Affiliate Info Frame --- */}
       <div className={cn(
-          "bg-card p-4 rounded-lg shadow mb-6 overflow-hidden relative pb-6",
+          "bg-card p-4 rounded-lg shadow mb-4 overflow-hidden relative pb-6",
       )}>
         {/* Top Gradient Bar with Stars - Full Width, Rounded */}
         <div
@@ -355,7 +459,7 @@ const DashboardPage = () => {
         {/* Main Content - Added padding-top */}
         <div className="pt-6">
             {/* Name and Category/Level Section with Gradient */}
-            <div className="p-3 rounded mb-3">
+            <div className="p-3 rounded mb-2">
               <div className="flex items-start justify-between">
                 <h2 className={cn(
                     "text-2xl font-heading font-black italic leading-tight",
@@ -381,7 +485,7 @@ const DashboardPage = () => {
             </div>
 
             {/* Text above progress bar */}
-            <div className="flex justify-between items-center mt-3 mb-1 px-1">
+            <div className="flex justify-between items-center mt-2 mb-1 px-1">
               <span className="text-sm text-white flex items-center">
                 <ArrowUp className="h-4 w-4 text-green-500 mr-1" /> 
                 Próximo Level: +2 Indicações
@@ -390,7 +494,7 @@ const DashboardPage = () => {
             </div>
 
             {/* Progress Bar Section - Adjusted */}
-            <div className="mt-4 relative h-5">
+            <div className="mt-3 relative h-5">
                 <Progress
                     value={progressPercentage}
                     className="w-full h-full bg-border"
@@ -413,16 +517,16 @@ const DashboardPage = () => {
       {/* --- End of Affiliate Info Frame --- */}
 
       {/* Link de Indicação - Sem o efeito esfumaçado */}
-      <div className="grid grid-cols-1 gap-6">
-        <div className="bg-card p-5 rounded-lg shadow-lg w-full border-2 border-primary/30 relative overflow-hidden">
-          <h3 className="text-xl font-semibold mb-3 text-white flex items-center">
+      <div className="grid grid-cols-1 gap-4">
+        <div className="bg-card p-4 rounded-lg shadow-lg w-full border-2 border-primary/30 relative overflow-hidden">
+          <h3 className="text-lg font-semibold mb-2 text-white flex items-center">
             <span className="mr-2 text-primary">
-              <ArrowRight size={20} className="inline" />
+              <ArrowRight size={18} className="inline" />
             </span>
             Seu Link de Indicação
           </h3>
           
-          <div className="flex items-center bg-border/80 p-3 rounded-md mb-3 border border-primary/30 backdrop-blur-sm">
+          <div className="flex items-center bg-border/80 p-2 rounded-md mb-2 border border-primary/30 backdrop-blur-sm">
             <input
               type="text"
               readOnly
@@ -441,115 +545,169 @@ const DashboardPage = () => {
                 });
               }}
             >
-              <Copy size={18} />
+              <Copy size={16} />
             </button>
             <button 
               className="ml-2 p-2 bg-primary/20 hover:bg-primary/40 rounded-md transition-all duration-200 text-primary hover:text-white" 
               title="Mostrar QR Code"
               onClick={() => setShowQRModal(true)}
             >
-              <QrCode size={18} />
+              <QrCode size={16} />
             </button>
           </div>
           
-          <p className="text-sm text-primary/80 flex items-center">
-            <Info size={14} className="mr-1" /> 
-            Copie e compartilhe seu link para ganhar comissões
-          </p>
+          <div className="flex items-center justify-center">
+            <p className="text-xs text-primary text-center">
+              Copie e compartilhe seu link para começar a faturar R$!
+            </p>
+          </div>
         </div>
       </div>
       
       {/* Novos Cards - Apenas 2 principais com ícones no canto superior direito */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Card de Indicações - Combinando Total e Validadas */}
-        <div className="bg-card p-5 rounded-lg shadow-lg border-2 border-primary/30 relative overflow-hidden">
-          <div className="flex justify-between items-start mb-4">
-            <h3 className="text-xl font-semibold text-white flex items-center">
+        <div className="bg-card p-4 rounded-lg shadow-lg border-2 border-primary/30 relative overflow-hidden">
+          <div className="flex justify-between items-start mb-3">
+            <h3 className="text-lg font-semibold text-white flex items-center">
               <span className="mr-2 text-primary">
-                <TrendingUp size={20} className="inline" />
+                <TrendingUp size={18} className="inline" />
               </span>
               Indicações
             </h3>
-            <Link href="/minha-rede" className="p-2 bg-primary/20 hover:bg-primary/40 rounded-md transition-all duration-200 text-primary hover:text-white">
-              <ExternalLink size={18} />
+            <Link href="/minha-rede" className="p-1.5 bg-primary/20 hover:bg-primary/40 rounded-md transition-all duration-200 text-primary hover:text-white">
+              <ExternalLink size={16} />
             </Link>
           </div>
           
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3">
             {/* Total de Indicações */}
-            <div className="bg-border/50 p-4 rounded-lg">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-sm text-gray-400">Total de Indicações</p>
-                  <p className="text-3xl font-bold text-white mt-1">{affiliateData.metrics.registrations}</p>
-                  <p className="text-xs text-gray-400 mt-1">Pessoas que usaram seu link</p>
+            <div className="bg-border/50 p-3 rounded-lg relative">
+              <div className="flex flex-col items-center justify-center">
+                <div className="flex items-center justify-center w-full">
+                  <p className="text-xs text-gray-400 text-center">Total de Indicações</p>
+                  <button 
+                    onClick={() => toggleTooltip('indicationsTotal')}
+                    className="ml-1 text-primary hover:text-primary/80 transition-colors"
+                  >
+                    <HelpCircle size={12} />
+                  </button>
                 </div>
+                <p className="text-2xl font-bold text-white mt-1 text-center">{affiliateData.metrics.registrations}</p>
               </div>
             </div>
             
             {/* Indicações Validadas */}
-            <div className="bg-border/50 p-4 rounded-lg">
-              <div className="flex justify-between items-start">
-                <div>
-                  <div className="flex items-center">
-                    <p className="text-sm text-gray-400">Indicações Validadas</p>
-                    <button 
-                      onClick={() => setShowValidationInfoModal(true)}
-                      className="ml-1 text-primary hover:text-primary/80 transition-colors"
-                    >
-                      <HelpCircle size={14} />
-                    </button>
-                  </div>
-                  <p className="text-3xl font-bold text-white mt-1">{affiliateData.metrics.validatedIndications}</p>
-                  <p className="text-xs text-gray-400 mt-1">Indicações que geram comissão</p>
+            <div className="bg-border/50 p-3 rounded-lg relative">
+              <div className="flex flex-col items-center justify-center">
+                <div className="flex items-center justify-center w-full">
+                  <p className="text-xs text-gray-400 text-center">Indicações Validadas</p>
+                  <button 
+                    onClick={() => setShowValidationInfoModal(true)}
+                    className="ml-1 text-primary hover:text-primary/80 transition-colors"
+                  >
+                    <HelpCircle size={12} />
+                  </button>
                 </div>
+                <p className="text-2xl font-bold text-white mt-1 text-center">{affiliateData.metrics.validatedIndications}</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Card de Sua Rede */}
-        <div className="bg-card p-5 rounded-lg shadow-lg border-2 border-primary/30 relative overflow-hidden">
-          <div className="flex justify-between items-start mb-4">
-            <h3 className="text-xl font-semibold text-white flex items-center">
+        {/* Card de Faturamento (anteriormente Sua Rede) */}
+        <div className="bg-card p-4 rounded-lg shadow-lg border-2 border-primary/30 relative overflow-hidden">
+          <div className="flex justify-between items-start mb-3">
+            <h3 className="text-lg font-semibold text-white flex items-center">
               <span className="mr-2 text-primary">
-                <Users size={20} className="inline" />
+                <DollarSign size={18} className="inline" />
               </span>
-              Sua Rede
+              Faturamento
             </h3>
-            <Link href="/relatorios" className="p-2 bg-primary/20 hover:bg-primary/40 rounded-md transition-all duration-200 text-primary hover:text-white">
-              <ExternalLink size={18} />
+            <Link href="/relatorios" className="p-1.5 bg-primary/20 hover:bg-primary/40 rounded-md transition-all duration-200 text-primary hover:text-white">
+              <ExternalLink size={16} />
             </Link>
           </div>
           
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3">
             {/* Valor Total Depositado */}
-            <div className="bg-border/50 p-4 rounded-lg">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-sm text-gray-400">Total Depositado</p>
-                  <p className="text-3xl font-bold text-white mt-1">R$ {affiliateData.metrics.totalDeposited.toFixed(2).replace('.', ',')}</p>
-                  <p className="text-xs text-gray-400 mt-1">Valor depositado pela sua rede</p>
+            <div className="bg-border/50 p-3 rounded-lg relative">
+              <div className="flex flex-col items-center justify-center">
+                <div className="flex items-center justify-center w-full">
+                  <p className="text-xs text-gray-400 text-center">Total Depositado</p>
+                  <button 
+                    onClick={() => toggleTooltip('totalDeposited')}
+                    className="ml-1 text-primary hover:text-primary/80 transition-colors"
+                  >
+                    <HelpCircle size={12} />
+                  </button>
                 </div>
+                <p className="text-2xl font-bold text-white mt-1 text-center">R$ {affiliateData.metrics.totalDeposited.toFixed(2).replace('.', ',')}</p>
               </div>
             </div>
             
             {/* Total de Comissões */}
-            <div className="bg-border/50 p-4 rounded-lg">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-sm text-gray-400">Total de Comissões</p>
-                  <p className="text-3xl font-bold text-primary mt-1">R$ {affiliateData.metrics.commissions.toFixed(2).replace('.', ',')}</p>
-                  <p className="text-xs text-gray-400 mt-1">Comissões geradas pela sua rede</p>
+            <div className="bg-border/50 p-3 rounded-lg relative">
+              <div className="flex flex-col items-center justify-center">
+                <div className="flex items-center justify-center w-full">
+                  <p className="text-xs text-gray-400 text-center">Total de Comissões</p>
+                  <button 
+                    onClick={() => toggleTooltip('totalCommissions')}
+                    className="ml-1 text-primary hover:text-primary/80 transition-colors"
+                  >
+                    <HelpCircle size={12} />
+                  </button>
                 </div>
+                <p className="text-2xl font-bold text-primary mt-1 text-center">R$ {affiliateData.metrics.commissions.toFixed(2).replace('.', ',')}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Tooltips */}
+      {showTooltips.indicationsTotal && (
+        <SmallTooltip 
+          id="indicationsTotalTooltip" 
+          isOpen={showTooltips.indicationsTotal} 
+          onClose={() => toggleTooltip('indicationsTotal')}
+        >
+          Pessoas que usaram seu link
+        </SmallTooltip>
+      )}
+      
+      {showTooltips.indicationsValidated && (
+        <SmallTooltip 
+          id="indicationsValidatedTooltip" 
+          isOpen={showTooltips.indicationsValidated} 
+          onClose={() => toggleTooltip('indicationsValidated')}
+        >
+          Indicações que geram comissão
+        </SmallTooltip>
+      )}
+      
+      {showTooltips.totalDeposited && (
+        <SmallTooltip 
+          id="totalDepositedTooltip" 
+          isOpen={showTooltips.totalDeposited} 
+          onClose={() => toggleTooltip('totalDeposited')}
+        >
+          Valor depositado pela sua rede
+        </SmallTooltip>
+      )}
+      
+      {showTooltips.totalCommissions && (
+        <SmallTooltip 
+          id="totalCommissionsTooltip" 
+          isOpen={showTooltips.totalCommissions} 
+          onClose={() => toggleTooltip('totalCommissions')}
+        >
+          Comissões geradas pela sua rede
+        </SmallTooltip>
+      )}
+
       {/* Second Row: Sequence, Chests, Vault */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <SequenceCard />
         <ChestsCard />
         <CommissionVaultCard weeklyRevShare={123.45} />
