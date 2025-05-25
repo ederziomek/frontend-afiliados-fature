@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Copy, QrCode, Info, ArrowRight, Award, ExternalLink, LucideIcon, Star, ArrowUp, Printer, Share2, X, TrendingUp, UserCheck, DollarSign } from 'lucide-react'; // Added more icons
+import { Copy, QrCode, Info, ArrowRight, Award, ExternalLink, LucideIcon, Star, ArrowUp, Printer, Share2, X, TrendingUp, UserCheck, DollarSign, HelpCircle, Users } from 'lucide-react'; // Added more icons
 import { toast } from "@/hooks/use-toast";
 import Link from 'next/link';
 import Image from 'next/image'; // Import Image component
@@ -17,7 +17,6 @@ interface CategoryStyle {
   bgClass: string;
   gradientStyle: React.CSSProperties;
   textColor: string;
-  // starColor and activeStarColor removed, handled by SVG
 }
 
 interface CategoryData {
@@ -36,7 +35,7 @@ interface CategoriesStyleData {
   Mestre: CategoryData;
 }
 
-// Updated styles for 7 categories - Removed star colors
+// Updated styles for 7 categories
 const categoriesStyleData: CategoriesStyleData = {
   Jogador: {
     icon: Award,
@@ -96,49 +95,37 @@ const categoriesStyleData: CategoriesStyleData = {
   },
 };
 
- // --- Function to render stars using Lucide Star (Updated to match Categoria page for Jogador) ---
+// --- Function to render stars using Lucide Star ---
 const renderStars = (categoryName: string) => {
-    // For "JOGADOR", we want 1 active star and 7 inactive stars (total 8)
-    // Active star: text-white, fill-current
-    // Inactive star: text-white opacity-30, fill-current (as per Categoria page for Jogador)
-
-    const categoryNames = Object.keys(categoriesStyleData); // Using home page's category data
+    const categoryNames = Object.keys(categoriesStyleData);
     const categoryIndex = categoryNames.indexOf(categoryName);
     
     let activeStars = 0;
-    // The request is to make the star bar like "JOGADOR" from Categoria.
-    // For "JOGADOR" category on Categoria page, it shows 1 active star.
     if (categoryName === 'Jogador') {
         activeStars = 1; 
     } else {
-        // Fallback for other categories if they are not 'Jogador'
-        // This part might need adjustment if other categories also need specific star counts
-        // For now, using the original logic for non-Jogador categories from page.tsx (index + 1)
-        // but with totalStars = 8 to be consistent with Categoria page's max.
         activeStars = categoryIndex + 1; 
     }
     
-    const totalStars = 8; // To match Categoria page's star count (Lenda has 8)
+    const totalStars = 8;
 
     return (
         <div className="flex items-center space-x-1">
             {[...Array(totalStars)].map((_, i) => (
                 <Star
                     key={i}
-                    size={12} // Consistent size
+                    size={12}
                     className={cn(
-                        'fill-current', // All stars are filled
-                        // If the category is Jogador, use specific styling, otherwise use a general approach
+                        'fill-current',
                         categoryName === 'Jogador' ? 
                             (i < activeStars ? 'text-white' : 'text-white opacity-30') :
-                            (i < activeStars ? 'text-white' : 'text-gray-500 opacity-50') // Example fallback for other categories
+                            (i < activeStars ? 'text-white' : 'text-gray-500 opacity-50')
                     )}
                 />
             ))}
         </div>
     );
 };
-// --- End Category Styles ---
 
 // --- Static Data ---
 const affiliateData = {
@@ -154,24 +141,23 @@ const affiliateData = {
     registrations: 2,
     validatedIndications: 1,
     commissions: 15.75,
+    totalDeposited: 150.00,
   },
   lastUpdate: '02/05/2025 22:40',
 };
 
-const progressPercentage = 60; // Hardcoded to 60%
+const progressPercentage = 60;
 const indicationsNeeded = affiliateData.nextLevelRequirement - affiliateData.currentIndications;
-// --- End of Data ---
 
 const DashboardPage = () => {
   const [showQRModal, setShowQRModal] = useState(false);
+  const [showValidationInfoModal, setShowValidationInfoModal] = useState(false);
   const currentCategoryStyle = categoriesStyleData[affiliateData.category]?.style || categoriesStyleData['Jogador'].style;
 
   // Define a luxurious gradient based on the category's main gradient
-  // This is a simplified example, you might want a more complex mapping
   const nameSectionGradientStyle = {
-    ...currentCategoryStyle.gradientStyle, // Start with the base gradient
-    backgroundImage: currentCategoryStyle.gradientStyle.backgroundImage?.replace('linear-gradient(to right,', 'linear-gradient(to bottom right,'), // Change direction
-    // Add more stops or adjust colors for a 'luxurious' feel if needed
+    ...currentCategoryStyle.gradientStyle,
+    backgroundImage: currentCategoryStyle.gradientStyle.backgroundImage?.replace('linear-gradient(to right,', 'linear-gradient(to bottom right,'),
   };
 
   // Função para imprimir o QR Code
@@ -223,7 +209,6 @@ const DashboardPage = () => {
         console.error('Erro ao compartilhar:', error);
       }
     } else {
-      // Fallback para navegadores que não suportam a API Web Share
       navigator.clipboard.writeText(affiliateData.referralLink);
       toast({
         variant: "success",
@@ -294,27 +279,83 @@ const DashboardPage = () => {
         </div>
       )}
 
-      {/* --- Affiliate Info Frame (Updated with SVG Stars, Gradient, Padding) --- */}
+      {/* Modal de Informação sobre Indicações Validadas */}
+      {showValidationInfoModal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-800 rounded-lg shadow-xl max-w-md w-full border border-primary/30 overflow-hidden">
+            {/* Cabeçalho do modal */}
+            <div className="p-4 border-b border-gray-700 flex justify-between items-center">
+              <h3 className="text-lg font-semibold text-white flex items-center">
+                <Info className="mr-2 text-primary" size={20} />
+                O que é uma Indicação Validada?
+              </h3>
+              <button 
+                onClick={() => setShowValidationInfoModal(false)}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            
+            {/* Corpo do modal */}
+            <div className="p-6">
+              <p className="text-white mb-4">
+                Uma indicação é considerada válida quando a pessoa que você indicou:
+              </p>
+              
+              <div className="space-y-3 mb-6">
+                <div className="flex items-start">
+                  <div className="bg-primary/20 p-2 rounded-full mr-3 mt-0.5">
+                    <span className="text-primary font-bold text-sm">1</span>
+                  </div>
+                  <p className="text-gray-300">
+                    Se registra pelo seu link, faz um depósito mínimo de R$30 e realiza pelo menos 10 apostas.
+                  </p>
+                </div>
+                
+                <div className="flex items-start">
+                  <div className="bg-primary/20 p-2 rounded-full mr-3 mt-0.5">
+                    <span className="text-primary font-bold text-sm">2</span>
+                  </div>
+                  <p className="text-gray-300">
+                    Se registra pelo seu link e gera pelo menos R$20 de comissão para a plataforma.
+                  </p>
+                </div>
+              </div>
+              
+              <p className="text-sm text-gray-400 italic">
+                Apenas indicações validadas geram comissões para você.
+              </p>
+              
+              <button 
+                onClick={() => setShowValidationInfoModal(false)}
+                className="mt-6 w-full flex items-center justify-center bg-primary hover:bg-primary/80 text-white py-2 px-4 rounded-md transition-colors"
+              >
+                Entendi
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* --- Affiliate Info Frame --- */}
       <div className={cn(
-          "bg-card p-4 rounded-lg shadow mb-6 overflow-hidden relative pb-6", // Increased bottom padding to pb-6
+          "bg-card p-4 rounded-lg shadow mb-6 overflow-hidden relative pb-6",
       )}>
         {/* Top Gradient Bar with Stars - Full Width, Rounded */}
         <div
-            className="h-5 w-full mb-2 rounded-t-lg absolute top-0 left-0 right-0" // Full width, rounded top corners
+            className="h-5 w-full mb-2 rounded-t-lg absolute top-0 left-0 right-0"
             style={currentCategoryStyle.gradientStyle}
         >
-            <div className="pl-2 pt-1"> {/* Position stars */}
+            <div className="pl-2 pt-1">
                 {renderStars(affiliateData.category)}
             </div>
         </div>
 
         {/* Main Content - Added padding-top */}
-        <div className="pt-6"> {/* Keep pt-6 for space below star bar */}
+        <div className="pt-6">
             {/* Name and Category/Level Section with Gradient */}
-            <div
-              className="p-3 rounded mb-3" // Add padding and rounding
-
-            >
+            <div className="p-3 rounded mb-3">
               <div className="flex items-start justify-between">
                 <h2 className={cn(
                     "text-2xl font-heading font-black italic leading-tight",
@@ -349,14 +390,13 @@ const DashboardPage = () => {
             </div>
 
             {/* Progress Bar Section - Adjusted */}
-            <div className="mt-4 relative h-5"> {/* Keep relative and h-5 */}
+            <div className="mt-4 relative h-5">
                 <Progress
                     value={progressPercentage}
                     className="w-full h-full bg-border"
-                    indicatorStyle={currentCategoryStyle.gradientStyle} // Use category gradient for progress bar
+                    indicatorStyle={currentCategoryStyle.gradientStyle}
                 />
-                <div className="absolute inset-0 flex items-center justify-between px-2 text-xs font-medium overflow-hidden"> {/* add overflow-hidden */}
-                    {/* White text layer with thin black border */}
+                <div className="absolute inset-0 flex items-center justify-between px-2 text-xs font-medium overflow-hidden">
                     <div className="absolute inset-0 flex items-center justify-between px-2 text-white z-10" style={{ textShadow: '1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000' }}>
                         <span className="flex-1 text-left truncate pr-1">{`${affiliateData.category} (Lv ${affiliateData.level})`}</span>
                         <span className="flex-shrink-0 px-1">{`${progressPercentage.toFixed(0)}%`}</span>
@@ -372,12 +412,9 @@ const DashboardPage = () => {
       </div>
       {/* --- End of Affiliate Info Frame --- */}
 
-      {/* Link de Indicação - Agora ocupa toda a largura com destaque visual */}
+      {/* Link de Indicação - Sem o efeito esfumaçado */}
       <div className="grid grid-cols-1 gap-6">
         <div className="bg-card p-5 rounded-lg shadow-lg w-full border-2 border-primary/30 relative overflow-hidden">
-          {/* Efeito de gradiente no canto superior direito */}
-          <div className="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-md"></div>
-          
           <h3 className="text-xl font-semibold mb-3 text-white flex items-center">
             <span className="mr-2 text-primary">
               <ArrowRight size={20} className="inline" />
@@ -397,7 +434,6 @@ const DashboardPage = () => {
               title="Copiar Link"
               onClick={() => {
                 navigator.clipboard.writeText(affiliateData.referralLink);
-                // Dispara a notificação de cópia
                 toast({
                   variant: "success",
                   title: "Link copiado com sucesso!",
@@ -423,70 +459,90 @@ const DashboardPage = () => {
         </div>
       </div>
       
-      {/* Métricas - Redesenhadas em cards modernos com ícones e gradientes */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Card de Indicações */}
-        <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl shadow-lg overflow-hidden border border-gray-700 hover:border-[rgb(18,201,185)]/50 transition-all duration-300 group">
-          <div className="p-5">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-gray-400 text-sm mb-1">Total de Indicações</p>
-                <h3 className="text-3xl font-bold text-white">{affiliateData.metrics.registrations}</h3>
-                <p className="text-xs text-gray-400 mt-1">Pessoas que usaram seu link</p>
-              </div>
-              <div className="bg-[rgb(18,201,185)]/10 p-3 rounded-lg group-hover:bg-[rgb(18,201,185)]/20 transition-all duration-300">
-                <TrendingUp size={24} className="text-[rgb(18,201,185)]" />
+      {/* Novos Cards - Apenas 2 principais com ícones no canto superior direito */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Card de Indicações - Combinando Total e Validadas */}
+        <div className="bg-card p-5 rounded-lg shadow-lg border-2 border-primary/30 relative overflow-hidden">
+          <div className="flex justify-between items-start mb-4">
+            <h3 className="text-xl font-semibold text-white flex items-center">
+              <span className="mr-2 text-primary">
+                <TrendingUp size={20} className="inline" />
+              </span>
+              Indicações
+            </h3>
+            <Link href="/minha-rede" className="p-2 bg-primary/20 hover:bg-primary/40 rounded-md transition-all duration-200 text-primary hover:text-white">
+              <ExternalLink size={18} />
+            </Link>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            {/* Total de Indicações */}
+            <div className="bg-border/50 p-4 rounded-lg">
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="text-sm text-gray-400">Total de Indicações</p>
+                  <p className="text-3xl font-bold text-white mt-1">{affiliateData.metrics.registrations}</p>
+                  <p className="text-xs text-gray-400 mt-1">Pessoas que usaram seu link</p>
+                </div>
               </div>
             </div>
-            <div className="mt-4 pt-4 border-t border-gray-700/50">
-              <Link href="/minha-rede" className="text-[rgb(18,201,185)] text-sm flex items-center hover:underline">
-                Ver detalhes
-                <ArrowRight size={14} className="ml-1" />
-              </Link>
+            
+            {/* Indicações Validadas */}
+            <div className="bg-border/50 p-4 rounded-lg">
+              <div className="flex justify-between items-start">
+                <div>
+                  <div className="flex items-center">
+                    <p className="text-sm text-gray-400">Indicações Validadas</p>
+                    <button 
+                      onClick={() => setShowValidationInfoModal(true)}
+                      className="ml-1 text-primary hover:text-primary/80 transition-colors"
+                    >
+                      <HelpCircle size={14} />
+                    </button>
+                  </div>
+                  <p className="text-3xl font-bold text-white mt-1">{affiliateData.metrics.validatedIndications}</p>
+                  <p className="text-xs text-gray-400 mt-1">Indicações que geram comissão</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Card de Indicações Validadas */}
-        <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl shadow-lg overflow-hidden border border-gray-700 hover:border-[rgb(18,201,185)]/50 transition-all duration-300 group">
-          <div className="p-5">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-gray-400 text-sm mb-1">Indicações Validadas</p>
-                <h3 className="text-3xl font-bold text-white">{affiliateData.metrics.validatedIndications}</h3>
-                <p className="text-xs text-gray-400 mt-1">Indicações que geraram comissão</p>
-              </div>
-              <div className="bg-[rgb(18,201,185)]/10 p-3 rounded-lg group-hover:bg-[rgb(18,201,185)]/20 transition-all duration-300">
-                <UserCheck size={24} className="text-[rgb(18,201,185)]" />
-              </div>
-            </div>
-            <div className="mt-4 pt-4 border-t border-gray-700/50">
-              <Link href="/minha-rede" className="text-[rgb(18,201,185)] text-sm flex items-center hover:underline">
-                Ver detalhes
-                <ArrowRight size={14} className="ml-1" />
-              </Link>
-            </div>
+        {/* Card de Sua Rede */}
+        <div className="bg-card p-5 rounded-lg shadow-lg border-2 border-primary/30 relative overflow-hidden">
+          <div className="flex justify-between items-start mb-4">
+            <h3 className="text-xl font-semibold text-white flex items-center">
+              <span className="mr-2 text-primary">
+                <Users size={20} className="inline" />
+              </span>
+              Sua Rede
+            </h3>
+            <Link href="/relatorios" className="p-2 bg-primary/20 hover:bg-primary/40 rounded-md transition-all duration-200 text-primary hover:text-white">
+              <ExternalLink size={18} />
+            </Link>
           </div>
-        </div>
-
-        {/* Card de Comissões */}
-        <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl shadow-lg overflow-hidden border border-gray-700 hover:border-[rgb(18,201,185)]/50 transition-all duration-300 group">
-          <div className="p-5">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-gray-400 text-sm mb-1">Total de Comissões</p>
-                <h3 className="text-3xl font-bold text-[rgb(18,201,185)]">R$ {affiliateData.metrics.commissions.toFixed(2).replace('.', ',')}</h3>
-                <p className="text-xs text-gray-400 mt-1">Valor acumulado de comissões</p>
-              </div>
-              <div className="bg-[rgb(18,201,185)]/10 p-3 rounded-lg group-hover:bg-[rgb(18,201,185)]/20 transition-all duration-300">
-                <DollarSign size={24} className="text-[rgb(18,201,185)]" />
+          
+          <div className="grid grid-cols-2 gap-4">
+            {/* Valor Total Depositado */}
+            <div className="bg-border/50 p-4 rounded-lg">
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="text-sm text-gray-400">Total Depositado</p>
+                  <p className="text-3xl font-bold text-white mt-1">R$ {affiliateData.metrics.totalDeposited.toFixed(2).replace('.', ',')}</p>
+                  <p className="text-xs text-gray-400 mt-1">Valor depositado pela sua rede</p>
+                </div>
               </div>
             </div>
-            <div className="mt-4 pt-4 border-t border-gray-700/50">
-              <Link href="/relatorios" className="text-[rgb(18,201,185)] text-sm flex items-center hover:underline">
-                Ver relatórios
-                <ArrowRight size={14} className="ml-1" />
-              </Link>
+            
+            {/* Total de Comissões */}
+            <div className="bg-border/50 p-4 rounded-lg">
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="text-sm text-gray-400">Total de Comissões</p>
+                  <p className="text-3xl font-bold text-primary mt-1">R$ {affiliateData.metrics.commissions.toFixed(2).replace('.', ',')}</p>
+                  <p className="text-xs text-gray-400 mt-1">Comissões geradas pela sua rede</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
