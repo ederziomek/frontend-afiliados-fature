@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Copy, QrCode, Info, ArrowRight, Award, ExternalLink, LucideIcon, Star, ArrowUp, Printer, Share2, X } from 'lucide-react'; // Added more icons
+import { Copy, QrCode, Info, ArrowRight, Award, ExternalLink, LucideIcon, Star, ArrowUp, Printer, Share2, X, TrendingUp, UserCheck, DollarSign } from 'lucide-react'; // Added more icons
 import { toast } from "@/hooks/use-toast";
 import Link from 'next/link';
 import Image from 'next/image'; // Import Image component
@@ -153,7 +153,6 @@ const affiliateData = {
   metrics: {
     registrations: 2,
     validatedIndications: 1,
-    currentBalance: 50.30,
     commissions: 15.75,
   },
   lastUpdate: '02/05/2025 22:40',
@@ -394,7 +393,7 @@ const DashboardPage = () => {
               className="bg-transparent text-sm text-white flex-grow focus:outline-none font-medium"
             />
             <button 
-              className="ml-3 p-2 bg-primary/20 hover:bg-primary/40 rounded-md transition-all duration-200 text-primary hover:text-white" 
+              className="p-2 bg-primary/20 hover:bg-primary/40 rounded-md transition-all duration-200 text-primary hover:text-white" 
               title="Copiar Link"
               onClick={() => {
                 navigator.clipboard.writeText(affiliateData.referralLink);
@@ -424,35 +423,72 @@ const DashboardPage = () => {
         </div>
       </div>
       
-      {/* Métricas - Agora em uma linha separada */}
-      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-        <div className="bg-card p-4 rounded-lg shadow text-center relative group">
-          <Link href="/minha-rede" className="absolute top-2 right-2 text-text-secondary opacity-0 group-hover:opacity-100 transition-opacity">
-            <ExternalLink size={16} />
-          </Link>
-          <p className="text-sm text-text-secondary mb-1">Indicações</p>
-          <p className="text-2xl font-bold text-white">{affiliateData.metrics.registrations}</p>
+      {/* Métricas - Redesenhadas em cards modernos com ícones e gradientes */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Card de Indicações */}
+        <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl shadow-lg overflow-hidden border border-gray-700 hover:border-[rgb(18,201,185)]/50 transition-all duration-300 group">
+          <div className="p-5">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-gray-400 text-sm mb-1">Total de Indicações</p>
+                <h3 className="text-3xl font-bold text-white">{affiliateData.metrics.registrations}</h3>
+                <p className="text-xs text-gray-400 mt-1">Pessoas que usaram seu link</p>
+              </div>
+              <div className="bg-[rgb(18,201,185)]/10 p-3 rounded-lg group-hover:bg-[rgb(18,201,185)]/20 transition-all duration-300">
+                <TrendingUp size={24} className="text-[rgb(18,201,185)]" />
+              </div>
+            </div>
+            <div className="mt-4 pt-4 border-t border-gray-700/50">
+              <Link href="/minha-rede" className="text-[rgb(18,201,185)] text-sm flex items-center hover:underline">
+                Ver detalhes
+                <ArrowRight size={14} className="ml-1" />
+              </Link>
+            </div>
+          </div>
         </div>
-        <div className="bg-card p-4 rounded-lg shadow text-center relative group">
-           <Link href="/minha-rede" className="absolute top-2 right-2 text-text-secondary opacity-0 group-hover:opacity-100 transition-opacity">
-            <ExternalLink size={16} />
-          </Link>
-          <p className="text-sm text-text-secondary mb-1">Indicações Validadas</p>
-          <p className="text-2xl font-bold text-white">{affiliateData.metrics.validatedIndications}</p>
+
+        {/* Card de Indicações Validadas */}
+        <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl shadow-lg overflow-hidden border border-gray-700 hover:border-[rgb(18,201,185)]/50 transition-all duration-300 group">
+          <div className="p-5">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-gray-400 text-sm mb-1">Indicações Validadas</p>
+                <h3 className="text-3xl font-bold text-white">{affiliateData.metrics.validatedIndications}</h3>
+                <p className="text-xs text-gray-400 mt-1">Indicações que geraram comissão</p>
+              </div>
+              <div className="bg-[rgb(18,201,185)]/10 p-3 rounded-lg group-hover:bg-[rgb(18,201,185)]/20 transition-all duration-300">
+                <UserCheck size={24} className="text-[rgb(18,201,185)]" />
+              </div>
+            </div>
+            <div className="mt-4 pt-4 border-t border-gray-700/50">
+              <Link href="/minha-rede" className="text-[rgb(18,201,185)] text-sm flex items-center hover:underline">
+                Ver detalhes
+                <ArrowRight size={14} className="ml-1" />
+              </Link>
+            </div>
+          </div>
         </div>
-        <div className="bg-card p-4 rounded-lg shadow text-center relative group">
-           <Link href="/carteira" className="absolute top-2 right-2 text-text-secondary opacity-0 group-hover:opacity-100 transition-opacity">
-            <ExternalLink size={16} />
-          </Link>
-          <p className="text-sm text-text-secondary mb-1">Saldo Atual</p>
-          <p className="text-2xl font-bold text-green-500">R$ {affiliateData.metrics.currentBalance.toFixed(2).replace('.', ',')}</p>
-        </div>
-        <div className="bg-card p-4 rounded-lg shadow text-center relative group">
-           <Link href="/relatorios" className="absolute top-2 right-2 text-text-secondary opacity-0 group-hover:opacity-100 transition-opacity">
-            <ExternalLink size={16} />
-          </Link>
-          <p className="text-sm text-text-secondary mb-1">Comissões</p>
-          <p className="text-2xl font-bold text-white">R$ {affiliateData.metrics.commissions.toFixed(2).replace('.', ',')}</p>
+
+        {/* Card de Comissões */}
+        <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl shadow-lg overflow-hidden border border-gray-700 hover:border-[rgb(18,201,185)]/50 transition-all duration-300 group">
+          <div className="p-5">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-gray-400 text-sm mb-1">Total de Comissões</p>
+                <h3 className="text-3xl font-bold text-[rgb(18,201,185)]">R$ {affiliateData.metrics.commissions.toFixed(2).replace('.', ',')}</h3>
+                <p className="text-xs text-gray-400 mt-1">Valor acumulado de comissões</p>
+              </div>
+              <div className="bg-[rgb(18,201,185)]/10 p-3 rounded-lg group-hover:bg-[rgb(18,201,185)]/20 transition-all duration-300">
+                <DollarSign size={24} className="text-[rgb(18,201,185)]" />
+              </div>
+            </div>
+            <div className="mt-4 pt-4 border-t border-gray-700/50">
+              <Link href="/relatorios" className="text-[rgb(18,201,185)] text-sm flex items-center hover:underline">
+                Ver relatórios
+                <ArrowRight size={14} className="ml-1" />
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -477,4 +513,3 @@ const DashboardPage = () => {
 };
 
 export default DashboardPage;
-
