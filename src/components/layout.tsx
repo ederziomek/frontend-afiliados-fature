@@ -21,7 +21,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             {/* Saldo */}
             <div className="text-sm">
               <span className="text-white">Saldo:</span>{" "}
-              <span className="text-green-500 font-semibold">R$ 50,30</span>
+              <span className="text-[rgb(18,201,185)] font-semibold">R$ 50,30</span>
             </div>
             {/* Notification Panel */}
             <NotificationPanel />

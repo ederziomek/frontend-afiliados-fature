@@ -23,14 +23,17 @@ const Sidebar = () => {
   return (
     <>
       {/* Mobile Menu Button (visible on small screens) */}
-      <button
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="md:hidden fixed top-4 left-4 z-50 p-2 bg-card text-white rounded-md shadow-lg"
-        aria-label={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"} // Dynamic label
-      >
-        {/* Keep the hamburger icon here, the X will be inside the menu */}
-        <Menu size={24} className="text-[#00FFF0]" />
-      </button>
+      <div className="md:hidden fixed top-4 left-4 z-50 flex items-center">
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="p-2 bg-card text-white rounded-md shadow-lg"
+          aria-label={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"} // Dynamic label
+        >
+          {/* Keep the hamburger icon here, the X will be inside the menu */}
+          <Menu size={24} className="text-[rgb(18,201,185)]" />
+        </button>
+        <span className="ml-2 text-white font-bold">Fature</span>
+      </div>
 
       {/* Sidebar (visible on medium screens and up, or when mobile menu is open) */}
       <aside
@@ -64,7 +67,7 @@ const Sidebar = () => {
                     className="flex items-center px-3 py-2 rounded-md text-text-secondary hover:bg-border hover:text-white transition-colors"
                     // Add active link styling based on current route (requires useRouter hook)
                   >
-                    <item.icon size={20} className="mr-3" />
+                    <item.icon size={20} className="mr-3 text-[rgb(18,201,185)]" />
                     <span>{item.label}</span>
                   </a>
                 </Link>
@@ -94,4 +97,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-
