@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Apply base styles directly if needed, using configured Tailwind colors */
+body {
+  @apply bg-background text-text; /* Using colors defined in tailwind.config.js */
+}
+
+/* Add utility for progress bar gradient */
+@layer components {
+  .bg-progress-gradient {
+    background-image: var(--progress-indicator-bg);
+  }
+}
+

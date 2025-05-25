@@ -1,0 +1,100 @@
+import React from 'react';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react'; // Removed Gift, Box, Trophy
+import { Progress } from '@/components/ui/progress';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+
+// Placeholder data - replace with actual data fetching
+const chestsData = {
+  nextIndicationChest: {
+    name: 'Indicar 10 amigos',
+    current: 7,
+    target: 10,
+    reward: 100,
+  },
+  nextIndirectChest: {
+    name: 'Ter 5 amigos fazendo sequência diária de 3 dias',
+    current: 3,
+    target: 5,
+    reward: 50,
+  },
+};
+
+const ChestsCard = () => {
+  const indicationProgress = chestsData.nextIndicationChest.target > 0 ? (chestsData.nextIndicationChest.current / chestsData.nextIndicationChest.target) * 100 : 0;
+  const indirectProgress = chestsData.nextIndirectChest.target > 0 ? (chestsData.nextIndirectChest.current / chestsData.nextIndirectChest.target) * 100 : 0;
+
+  return (
+    <Card className="bg-card border-border text-white">
+      <CardHeader>
+        <CardTitle className="flex items-center">
+          {/* TODO: Replace with 3D Chest Icon (Indication type) */}
+          <span className="mr-2 text-2xl">🎁</span> {/* Placeholder Emoji */}
+          Baús
+        </CardTitle>
+        <CardDescription className="text-text-secondary pt-1">Complete desafios e ganhe recompensas.</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-5"> {/* Increased spacing */}
+        {/* Baú de Indicação */}
+        <div className="space-y-2">
+          <div className="flex justify-between items-center">
+            <span className="text-sm font-medium flex items-center">
+              {/* TODO: Replace with 3D Chest Icon (Indication type) */}
+              <span className="mr-2 text-xl">🎁</span> {/* Placeholder Emoji */}
+              Baú de Indicações
+            </span>
+            <span className="text-sm font-semibold text-green-500">
+              R$ {chestsData.nextIndicationChest.reward.toFixed(2).replace('.', ',')}
+            </span>
+          </div>
+          {/* Progress Bar (Thicker, 3D style needs more specific CSS/Tailwind) */}
+          <div className="relative w-full">
+            {/* TODO: Apply 3D style to progress bar */}
+            <Progress value={indicationProgress} className="h-4 rounded-md bg-border" />
+            <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-white pointer-events-none" style={{ lineHeight: '1rem' }}>
+              {Math.round(indicationProgress)}%
+            </span>
+          </div>
+          <p className="text-xs text-text-secondary text-center pt-1">
+            Faça indicações e fature mais!
+          </p>
+        </div>
+
+        {/* Baú de Indicação Indireta */}
+        <div className="space-y-2">
+          <div className="flex justify-between items-center">
+            <span className="text-sm font-medium flex items-center">
+              {/* TODO: Replace with 3D Chest Icon (Indirect type) */}
+              <span className="mr-2 text-xl">🏆</span> {/* Placeholder Emoji */}
+              Baú de Ind. Indireta
+            </span>
+            <span className="text-sm font-semibold text-green-500">
+              R$ {chestsData.nextIndirectChest.reward.toFixed(2).replace('.', ',')}
+            </span>
+          </div>
+           {/* Progress Bar (Thicker, 3D style needs more specific CSS/Tailwind) */}
+          <div className="relative w-full">
+            {/* TODO: Apply 3D style to progress bar */}
+            <Progress value={indirectProgress} className="h-4 rounded-md bg-border" />
+            <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-white pointer-events-none" style={{ lineHeight: '1rem' }}>
+              {Math.round(indirectProgress)}%
+            </span>
+          </div>
+          <p className="text-xs text-text-secondary text-center pt-1">
+            Seus amigos fazem sequencia diária e você fatura mais!
+          </p>
+        </div>
+
+        <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary/10" asChild>
+          <Link href="/baus">
+            Ver Todos os Baús <ArrowRight size={16} className="ml-2" />
+          </Link>
+        </Button>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default ChestsCard;
+
