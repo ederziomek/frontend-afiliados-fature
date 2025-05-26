@@ -131,8 +131,8 @@ const SequenceCard = () => {
           </div>
         </div>
 
-        {/* Countdown Timer - Alterado para ciano */}
-        <div className="flex items-center justify-center bg-primary/30 p-2 rounded-md border border-primary/30">
+        {/* Countdown Timer - Com degradê no fundo do elemento inteiro */}
+        <div className="flex items-center justify-center p-2 rounded-md bg-gradient-to-r from-primary/30 to-transparent">
           <Clock size={16} className="text-primary mr-2 animate-pulse" />
           <p className="text-sm text-primary">
             <span className="font-bold">{timeLeft}</span> para completar a indicação de hoje

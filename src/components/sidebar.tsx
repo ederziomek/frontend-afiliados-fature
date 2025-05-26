@@ -70,7 +70,7 @@ const Sidebar = () => {
         <div className={`${isMobileMenuOpen ? 'h-0 mb-0 overflow-hidden' : 'mb-8'} flex justify-center items-center pt-0 md:pt-0 md:mb-8`}>
           {/* Texto removido do menu hambúrguer quando aberto em mobile */}
           {!isMobileMenuOpen && showLogo && (
-            <span className="text-xl font-bold">Fature100x</span>
+            <span className="text-xl font-bold">Fature</span>
           )}
         </div>
 
@@ -82,8 +82,8 @@ const Sidebar = () => {
                 <Link href={item.href} legacyBehavior>
                   <a
                     onClick={() => setIsMobileMenuOpen(false)} // Close menu on navigation
-                    className="flex items-center px-3 py-2 rounded-md text-text-secondary hover:bg-border hover:text-white transition-colors"
-                    // Add active link styling based on current route (requires useRouter hook)
+                    className="flex items-center px-3 py-2 rounded-md text-text-secondary hover:bg-border hover:text-white transition-colors group"
+                    // Add active link styling based on current route
                   >
                     <item.icon size={20} className="mr-3 text-[rgb(18,201,185)]" />
                     <span>{item.label}</span>

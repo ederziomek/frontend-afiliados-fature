@@ -198,18 +198,19 @@ const RankingSection = () => {
           </div>
         </div>
 
-        {/* Jackpot Display - Usando o mesmo fundo do restante do card */}
+        {/* Jackpot Display - Com fundo ciano escuro e brilho especial */}
         <div className={cn(
-            "p-4 rounded-lg text-center mb-6",
-            "bg-card", // Alterado para usar o mesmo fundo do card
-            "border border-primary/50 shadow-xl shadow-primary/20"
+            "p-4 rounded-lg text-center mb-6 relative",
+            "bg-[#00606e]", // Fundo ciano escuro
+            "border border-primary/50 shadow-xl shadow-primary/20",
+            "before:content-[''] before:absolute before:inset-0 before:rounded-lg before:shadow-[0_0_15px_5px_rgba(0,209,209,0.3)] before:pointer-events-none" // Brilho especial
         )}>
-            <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
+            <p className="text-sm font-semibold text-[#00D1D1] uppercase tracking-wider mb-2">
                 Prêmio Total {selectedPeriod === 'weekly' ? 'Semanal' : 'Mensal'}
             </p>
             {/* Use JackpotDisplay component */}
             <JackpotDisplay value={currentJackpotPrize} key={`${selectedRanking}-${selectedPeriod}`} /> 
-            <p className="text-xs text-primary/70 mt-2">({rankingDetails[selectedRanking].title})</p>
+            <p className="text-xs text-[#00D1D1]/70 mt-2">({rankingDetails[selectedRanking].title})</p>
         </div>
 
         <CardDescription className="text-text-secondary pt-2">Veja sua posição e os Top 10 afiliados.</CardDescription>
@@ -219,34 +220,37 @@ const RankingSection = () => {
           <TabsList className="flex flex-wrap justify-center sm:justify-start gap-2 bg-transparent p-0 mb-4">
             <TabsTrigger
               value="directIndications"
-              className={cn(
-                "flex-1 sm:flex-none px-4 py-2 rounded-md border",
-                selectedRanking === "directIndications" 
-                  ? "bg-primary text-white border-primary font-semibold" // Botão selecionado: fundo ciano, texto branco, negrito
-                  : "border-border bg-border/50 text-text-secondary hover:bg-border/70 transition-colors"
-              )}
+              style={{
+                backgroundColor: selectedRanking === "directIndications" ? "#00D1D1" : "",
+                color: selectedRanking === "directIndications" ? "white" : "",
+                borderColor: selectedRanking === "directIndications" ? "#00D1D1" : "",
+                fontWeight: selectedRanking === "directIndications" ? "600" : "400"
+              }}
+              className="flex-1 sm:flex-none px-4 py-2 rounded-md border border-border"
             >
               Indicações Diretas
             </TabsTrigger>
             <TabsTrigger
               value="indirectIndications"
-              className={cn(
-                "flex-1 sm:flex-none px-4 py-2 rounded-md border",
-                selectedRanking === "indirectIndications" 
-                  ? "bg-primary text-white border-primary" // Botão selecionado: fundo ciano, texto branco
-                  : "border-border bg-border/50 text-text-secondary hover:bg-border/70 transition-colors"
-              )}
+              style={{
+                backgroundColor: selectedRanking === "indirectIndications" ? "#00D1D1" : "",
+                color: selectedRanking === "indirectIndications" ? "white" : "",
+                borderColor: selectedRanking === "indirectIndications" ? "#00D1D1" : "",
+                fontWeight: selectedRanking === "indirectIndications" ? "600" : "400"
+              }}
+              className="flex-1 sm:flex-none px-4 py-2 rounded-md border border-border"
             >
               Indicações da Rede
             </TabsTrigger>
             <TabsTrigger
               value="dailySequence"
-              className={cn(
-                "flex-1 sm:flex-none px-4 py-2 rounded-md border",
-                selectedRanking === "dailySequence" 
-                  ? "bg-primary text-white border-primary" // Botão selecionado: fundo ciano, texto branco
-                  : "border-border bg-border/50 text-text-secondary hover:bg-border/70 transition-colors"
-              )}
+              style={{
+                backgroundColor: selectedRanking === "dailySequence" ? "#00D1D1" : "",
+                color: selectedRanking === "dailySequence" ? "white" : "",
+                borderColor: selectedRanking === "dailySequence" ? "#00D1D1" : "",
+                fontWeight: selectedRanking === "dailySequence" ? "600" : "400"
+              }}
+              className="flex-1 sm:flex-none px-4 py-2 rounded-md border border-border"
             >
               Indicação Diária
             </TabsTrigger>
@@ -255,10 +259,13 @@ const RankingSection = () => {
           {(["directIndications", "indirectIndications", "dailySequence"] as RankingType[]).map(rankingType => (
             <TabsContent key={rankingType} value={rankingType}>
               <div className="space-y-4">
-                <div className="bg-border/30 p-3 rounded-lg flex flex-col sm:flex-row justify-between items-center gap-2 text-sm border-2 border-primary/30">
-                  <div className="text-center sm:text-left w-full">
-                    <span className="text-text-secondary">Sua Posição: </span>
-                    <span className="font-bold text-lg text-primary">{currentUserPosition ? `${currentUserPosition}º` : 'Fora do Top 10'}</span>
+                {/* Posição do usuário - Ajustado para evitar sobreposição no mobile */}
+                <div className="mt-20 sm:mt-0">
+                  <div className="bg-border/30 p-3 rounded-lg flex flex-col justify-between items-center gap-2 text-sm border-2 border-primary/30 mb-8">
+                    <div className="text-center w-full">
+                      <span className="text-text-secondary block">Sua Posição: </span>
+                      <span className="font-bold text-lg text-primary">{currentUserPosition ? `${currentUserPosition}º` : 'Fora do Top 10'}</span>
+                    </div>
                   </div>
                 </div>
                 <div className="overflow-x-auto">
