@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -161,11 +159,11 @@ const RankingSection = () => {
   const CurrentIcon = rankingDetails[selectedRanking].icon;
 
   return (
-    <Card className="bg-card border-border text-white overflow-hidden"> {/* Added overflow-hidden */}
+    <Card className="bg-card border-border text-white overflow-hidden border-2 border-primary/30"> {/* Added border-2 border-primary/30 */}
       <CardHeader>
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
           <CardTitle className="flex items-center">
-            <CurrentIcon size={24} className="mr-2 text-primary" />
+            <Trophy size={24} className="mr-2 text-primary" /> {/* Substituído pelo ícone de troféu */}
             Rankings
           </CardTitle>
           <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
@@ -237,7 +235,7 @@ const RankingSection = () => {
           {(["directIndications", "indirectIndications", "dailySequence"] as RankingType[]).map(rankingType => (
             <TabsContent key={rankingType} value={rankingType}>
               <div className="space-y-4">
-                <div className="bg-border/30 p-3 rounded-lg flex flex-col sm:flex-row justify-between items-center gap-2 text-sm">
+                <div className="bg-border/30 p-3 rounded-lg flex flex-col sm:flex-row justify-between items-center gap-2 text-sm border-2 border-primary/30"> {/* Added border-2 border-primary/30 */}
                   <div className="text-center sm:text-left">
                     <span className="text-text-secondary">Sua Posição: </span>
                     <span className="font-bold text-lg text-primary">{currentUserPosition ? `${currentUserPosition}º` : 'Fora do Top 10'}</span>

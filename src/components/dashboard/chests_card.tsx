@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ExternalLink, HelpCircle } from 'lucide-react'; // Added HelpCircle
 import { Progress } from '@/components/ui/progress';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import Image from 'next/image';
 
 // Placeholder data - replace with actual data fetching
 const chestsData = {
@@ -29,8 +30,10 @@ const ChestsCard = () => {
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardTitle className="flex items-center text-xl">
-            {/* TODO: Replace with 3D Chest Icon (Indication type) */}
-            <span className="mr-2 text-2xl">🎁</span> {/* Placeholder Emoji */}
+            {/* Substituído pelo novo ícone de baú */}
+            <span className="mr-2 relative w-6 h-6">
+              <Image src="/bau_icon.png" alt="Baú" width={24} height={24} />
+            </span>
             Baús
             <button className="ml-1 text-primary hover:text-primary/80 transition-colors">
               <HelpCircle size={16} />
@@ -47,12 +50,14 @@ const ChestsCard = () => {
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-sm font-medium flex items-center">
-              {/* TODO: Replace with 3D Chest Icon (Indication type) */}
-              <span className="mr-2 text-xl">🎁</span> {/* Placeholder Emoji */}
+              {/* Substituído pelo novo ícone de baú */}
+              <span className="mr-2 relative w-5 h-5">
+                <Image src="/bau_icon.png" alt="Baú" width={20} height={20} />
+              </span>
               Baú de Indicações
             </span>
-            <span className="text-sm font-semibold text-green-500">
-              R$ {chestsData.nextIndicationChest.reward.toFixed(2).replace('.', ',')}
+            <span className="text-sm font-semibold text-green-400">
+              +R$100,00
             </span>
           </div>
           {/* Progress Bar (Thicker, 3D style needs more specific CSS/Tailwind) */}
@@ -72,12 +77,14 @@ const ChestsCard = () => {
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-sm font-medium flex items-center">
-              {/* TODO: Replace with 3D Chest Icon (Indirect type) */}
-              <span className="mr-2 text-xl">🏆</span> {/* Placeholder Emoji */}
+              {/* Substituído pelo novo ícone de baú */}
+              <span className="mr-2 relative w-5 h-5">
+                <Image src="/bau_icon.png" alt="Baú" width={20} height={20} />
+              </span>
               Baú de Ind. diária
             </span>
-            <span className="text-sm font-semibold text-green-500">
-              R$ {chestsData.nextIndirectChest.reward.toFixed(2).replace('.', ',')}
+            <span className="text-sm font-semibold text-green-400">
+              +R$50,00
             </span>
           </div>
            {/* Progress Bar (Thicker, 3D style needs more specific CSS/Tailwind) */}

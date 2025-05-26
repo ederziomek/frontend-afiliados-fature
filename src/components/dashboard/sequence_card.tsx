@@ -127,14 +127,14 @@ const SequenceCard = () => {
             </p>
           </div>
           <div className="text-xs font-semibold text-green-400">
-            +R${earnedReward}
+            +R$70,00
           </div>
         </div>
 
-        {/* Countdown Timer */}
-        <div className="flex items-center justify-center bg-yellow-900/30 p-2 rounded-md border border-yellow-500/30">
-          <Clock size={16} className="text-yellow-500 mr-2 animate-pulse" />
-          <p className="text-sm text-yellow-400">
+        {/* Countdown Timer - Alterado para ciano */}
+        <div className="flex items-center justify-center bg-primary/30 p-2 rounded-md border border-primary/30">
+          <Clock size={16} className="text-primary mr-2 animate-pulse" />
+          <p className="text-sm text-primary">
             <span className="font-bold">{timeLeft}</span> para completar a indicação de hoje
           </p>
         </div>
@@ -149,26 +149,19 @@ const SequenceCard = () => {
                   w-full rounded-md overflow-hidden border-2 relative flex flex-col shadow min-w-[40px]
                   ${day.isToday ? 'border-primary shadow-primary/30 shadow-lg scale-110 z-10' : 
                     day.completed ? 'border-green-500/50' : 
-                    day.isSpecial ? 'border-yellow-500/50 shadow-yellow-500/20 shadow-md' : 'border-border'}
+                    'border-border'}
                   ${day.completed ? 'bg-gradient-to-b from-green-900/30 to-card' : 
                     day.isToday ? 'bg-gradient-to-b from-primary/30 to-card' : 
-                    day.isSpecial ? 'bg-gradient-to-b from-yellow-900/30 to-card' : 'bg-card'}
+                    'bg-card'}
                   transition-all duration-300
                 `}
               >
-                {/* Special Day Indicator */}
-                {day.isSpecial && !day.isToday && !day.completed && (
-                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-500 rounded-full flex items-center justify-center animate-pulse">
-                    <AlertTriangle size={10} className="text-black" strokeWidth={3}/>
-                  </div>
-                )}
-                
                 {/* Day Header */}
                 <div className={`
                   text-center py-1.5
                   ${day.isToday ? 'bg-primary' : 
                     day.completed ? 'bg-green-600' : 
-                    day.isSpecial ? 'bg-yellow-600' : 'bg-primary/50'}
+                    'bg-primary/50'}
                 `}>
                   <span className="text-xs font-bold text-primary-foreground">{day.dayAbbr}</span>
                 </div>
@@ -179,9 +172,9 @@ const SequenceCard = () => {
                     text-xs font-semibold
                     ${day.isToday ? 'text-primary' : 
                       day.completed ? 'text-green-400' : 
-                      day.isSpecial ? 'text-yellow-400 font-bold' : 'text-white'}
+                      day.isSpecial ? 'text-green-400 font-bold' : 'text-green-400'}
                   `}>
-                    R${day.reward}
+                    R${day.reward},00
                   </span>
                 </div>
                 
@@ -208,7 +201,7 @@ const SequenceCard = () => {
             <span className="text-sm">Recompensa total</span>
           </div>
           <div className="text-sm font-bold text-green-400">
-            R${totalPotentialReward}
+            R$340,00
           </div>
         </div>
       </CardContent>
