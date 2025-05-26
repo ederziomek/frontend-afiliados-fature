@@ -127,7 +127,7 @@ const SequenceCard = () => {
             </p>
           </div>
           <div className="text-xs font-semibold text-green-400">
-            +R$70,00
+            +R$70
           </div>
         </div>
 
@@ -172,9 +172,10 @@ const SequenceCard = () => {
                     text-xs font-semibold
                     ${day.isToday ? 'text-primary' : 
                       day.completed ? 'text-green-400' : 
-                      day.isSpecial ? 'text-green-400 font-bold' : 'text-green-400'}
+                      day.dayAbbr === 'QUI' || day.dayAbbr === 'SAB' ? 'text-primary font-bold' : 
+                      day.dayAbbr === 'QUA' || day.dayAbbr === 'SEX' ? 'text-white' : 'text-green-400'}
                   `}>
-                    R${day.reward},00
+                    R${day.reward}
                   </span>
                 </div>
                 
@@ -201,7 +202,7 @@ const SequenceCard = () => {
             <span className="text-sm">Recompensa total</span>
           </div>
           <div className="text-sm font-bold text-green-400">
-            R$340,00
+            R$340
           </div>
         </div>
       </CardContent>

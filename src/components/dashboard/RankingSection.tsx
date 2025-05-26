@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Trophy, Users, CalendarDays, Crown, Info, ExternalLink } from 'lucide-react'; // Added Info, ExternalLink
-import { cn } from "@/lib/utils"; // Import cn utility
-import Link from 'next/link'; // Import Link
-import JackpotDisplay from './JackpotDisplay'; // Import the new JackpotDisplay component
+import { Users, CalendarDays, Crown, Info, ExternalLink } from 'lucide-react';
+import { cn } from "@/lib/utils";
+import Link from 'next/link';
+import JackpotDisplay from './JackpotDisplay';
+import Image from 'next/image';
 
 // --- Placeholder Data Structures ---
 type RankingPeriod = 'weekly' | 'monthly';
@@ -148,7 +149,7 @@ const RankingSection = () => {
   const [selectedPeriod, setSelectedPeriod] = useState<RankingPeriod>('weekly');
 
   const rankingDetails = {
-    directIndications: { title: 'Indicações Diretas Válidas', icon: Trophy, unit: 'indicações' },
+    directIndications: { title: 'Indicações Diretas Válidas', icon: Image, unit: 'indicações' },
     indirectIndications: { title: 'Indicações Indiretas (Construtor)', icon: Users, unit: 'indicações' },
     dailySequence: { title: 'Maior Sequência Diária', icon: CalendarDays, unit: '' },
   };
@@ -158,12 +159,25 @@ const RankingSection = () => {
   const currentJackpotPrize = placeholderJackpotPrizes[selectedRanking][selectedPeriod]; // Get current jackpot
   const CurrentIcon = rankingDetails[selectedRanking].icon;
 
+  // Função para renderizar o ícone de troféu baseado na posição
+  const renderTrophyIcon = (rank: number) => {
+    if (rank === 1) {
+      return <Image src="/icons/trophy_1.png" width={20} height={20} alt="1º Lugar" className="inline-block" />;
+    } else if (rank === 2) {
+      return <Image src="/icons/trophy_2.png" width={20} height={20} alt="2º Lugar" className="inline-block" />;
+    } else if (rank === 3) {
+      return <Image src="/icons/trophy_3.png" width={20} height={20} alt="3º Lugar" className="inline-block" />;
+    } else {
+      return `${rank}º`;
+    }
+  };
+
   return (
-    <Card className="bg-card border-border text-white overflow-hidden border-2 border-primary/30"> {/* Added border-2 border-primary/30 */}
+    <Card className="bg-card border-border text-white overflow-hidden border-2 border-primary/30">
       <CardHeader>
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
           <CardTitle className="flex items-center">
-            <Trophy size={24} className="mr-2 text-primary" /> {/* Substituído pelo ícone de troféu */}
+            <Image src="/icons/trophy_1.png" width={24} height={24} alt="Troféu" className="mr-2" />
             Rankings
           </CardTitle>
           <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
@@ -184,18 +198,18 @@ const RankingSection = () => {
           </div>
         </div>
 
-        {/* Jackpot Display - Replaced simple text with JackpotDisplay component */}
+        {/* Jackpot Display - Alterado para usar cores ciano em vez de amarelo */}
         <div className={cn(
-            "p-4 rounded-lg text-center mb-6", // Increased mb-6
-            "bg-gradient-to-br from-black via-gray-900 to-black", // Dark background
-            "border border-yellow-600/50 shadow-xl shadow-yellow-500/20" // Border and shadow
+            "p-4 rounded-lg text-center mb-6",
+            "bg-gradient-to-br from-black via-gray-900 to-black",
+            "border border-primary/50 shadow-xl shadow-primary/20" // Alterado para ciano
         )}>
-            <p className="text-sm font-semibold text-yellow-400 uppercase tracking-wider mb-2">
+            <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2"> {/* Alterado para ciano */}
                 Prêmio Total {selectedPeriod === 'weekly' ? 'Semanal' : 'Mensal'}
             </p>
-            {/* Use JackpotDisplay component */}
+            {/* Use JackpotDisplay component - será atualizado para usar cores ciano */}
             <JackpotDisplay value={currentJackpotPrize} key={`${selectedRanking}-${selectedPeriod}`} /> 
-            <p className="text-xs text-yellow-400/70 mt-2">({rankingDetails[selectedRanking].title})</p>
+            <p className="text-xs text-primary/70 mt-2">({rankingDetails[selectedRanking].title})</p> {/* Alterado para ciano */}
         </div>
 
         <CardDescription className="text-text-secondary pt-2">Veja sua posição e os Top 10 afiliados.</CardDescription>
@@ -206,8 +220,10 @@ const RankingSection = () => {
             <TabsTrigger
               value="directIndications"
               className={cn(
-                "flex-1 sm:flex-none px-4 py-2 rounded-md border border-border bg-border/50 text-text-secondary data-[state=active]:bg-primary data-[state=active]:text-black data-[state=active]:border-primary",
-                "hover:bg-border/70 transition-colors"
+                "flex-1 sm:flex-none px-4 py-2 rounded-md border",
+                selectedRanking === "directIndications" 
+                  ? "bg-primary text-white border-primary" // Botão selecionado: fundo ciano, texto branco
+                  : "border-border bg-border/50 text-text-secondary hover:bg-border/70 transition-colors"
               )}
             >
               Ind. Diretas
@@ -215,8 +231,10 @@ const RankingSection = () => {
             <TabsTrigger
               value="indirectIndications"
               className={cn(
-                "flex-1 sm:flex-none px-4 py-2 rounded-md border border-border bg-border/50 text-text-secondary data-[state=active]:bg-primary data-[state=active]:text-black data-[state=active]:border-primary",
-                "hover:bg-border/70 transition-colors"
+                "flex-1 sm:flex-none px-4 py-2 rounded-md border",
+                selectedRanking === "indirectIndications" 
+                  ? "bg-primary text-white border-primary" // Botão selecionado: fundo ciano, texto branco
+                  : "border-border bg-border/50 text-text-secondary hover:bg-border/70 transition-colors"
               )}
             >
               Ind. Indiretas
@@ -224,8 +242,10 @@ const RankingSection = () => {
             <TabsTrigger
               value="dailySequence"
               className={cn(
-                "flex-1 sm:flex-none px-4 py-2 rounded-md border border-border bg-border/50 text-text-secondary data-[state=active]:bg-primary data-[state=active]:text-black data-[state=active]:border-primary",
-                "hover:bg-border/70 transition-colors"
+                "flex-1 sm:flex-none px-4 py-2 rounded-md border",
+                selectedRanking === "dailySequence" 
+                  ? "bg-primary text-white border-primary" // Botão selecionado: fundo ciano, texto branco
+                  : "border-border bg-border/50 text-text-secondary hover:bg-border/70 transition-colors"
               )}
             >
               Sequência
@@ -235,7 +255,7 @@ const RankingSection = () => {
           {(["directIndications", "indirectIndications", "dailySequence"] as RankingType[]).map(rankingType => (
             <TabsContent key={rankingType} value={rankingType}>
               <div className="space-y-4">
-                <div className="bg-border/30 p-3 rounded-lg flex flex-col sm:flex-row justify-between items-center gap-2 text-sm border-2 border-primary/30"> {/* Added border-2 border-primary/30 */}
+                <div className="bg-border/30 p-3 rounded-lg flex flex-col sm:flex-row justify-between items-center gap-2 text-sm border-2 border-primary/30">
                   <div className="text-center sm:text-left">
                     <span className="text-text-secondary">Sua Posição: </span>
                     <span className="font-bold text-lg text-primary">{currentUserPosition ? `${currentUserPosition}º` : 'Fora do Top 10'}</span>
@@ -256,8 +276,8 @@ const RankingSection = () => {
                       )}
                       {currentRankingData.map((entry) => (
                         <tr key={entry.rank} className={`border-b border-border/50 ${entry.isCurrentUser ? 'bg-primary/10 font-semibold' : 'hover:bg-border/30'}`}>
-                          <td className={`px-4 py-2 text-center w-12 ${entry.rank <= 3 ? 'text-yellow-400' : ''}`}>
-                            {entry.rank === 1 ? <Crown size={16} className="inline-block text-yellow-400"/> : `${entry.rank}º`}
+                          <td className={`px-4 py-2 text-center w-12 ${entry.rank <= 3 ? 'text-primary' : ''}`}>
+                            {renderTrophyIcon(entry.rank)}
                           </td>
                           <td className="px-4 py-2">{entry.name}</td>
                           <td className="px-4 py-2 text-right">

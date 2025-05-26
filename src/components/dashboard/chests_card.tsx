@@ -32,7 +32,7 @@ const ChestsCard = () => {
           <CardTitle className="flex items-center text-xl">
             {/* Substituído pelo novo ícone de baú */}
             <span className="mr-2 relative w-6 h-6">
-              <Image src="/bau_icon.png" alt="Baú" width={24} height={24} />
+              <Image src="/icons/vault.png" alt="Baú" width={24} height={24} />
             </span>
             Baús
             <button className="ml-1 text-primary hover:text-primary/80 transition-colors">
@@ -52,12 +52,12 @@ const ChestsCard = () => {
             <span className="text-sm font-medium flex items-center">
               {/* Substituído pelo novo ícone de baú */}
               <span className="mr-2 relative w-5 h-5">
-                <Image src="/bau_icon.png" alt="Baú" width={20} height={20} />
+                <Image src="/icons/vault.png" alt="Baú" width={20} height={20} />
               </span>
               Baú de Indicações
             </span>
             <span className="text-sm font-semibold text-green-400">
-              +R$100,00
+              +R$100
             </span>
           </div>
           {/* Progress Bar (Thicker, 3D style needs more specific CSS/Tailwind) */}
@@ -79,12 +79,12 @@ const ChestsCard = () => {
             <span className="text-sm font-medium flex items-center">
               {/* Substituído pelo novo ícone de baú */}
               <span className="mr-2 relative w-5 h-5">
-                <Image src="/bau_icon.png" alt="Baú" width={20} height={20} />
+                <Image src="/icons/vault.png" alt="Baú" width={20} height={20} />
               </span>
               Baú de Ind. diária
             </span>
             <span className="text-sm font-semibold text-green-400">
-              +R$50,00
+              +R$50
             </span>
           </div>
            {/* Progress Bar (Thicker, 3D style needs more specific CSS/Tailwind) */}

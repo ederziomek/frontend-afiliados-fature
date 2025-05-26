@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Vault, Timer, Info, ExternalLink, PlayCircle, HelpCircle } from 'lucide-react'; // Added HelpCircle
+import { ExternalLink, Timer, Info, HelpCircle } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button'; // Import Button component
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
 
 // Placeholder data - replace with actual data fetching
 const vaultData = {
@@ -54,6 +55,7 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({}); // Initialize timeLeft as an empty object
   // State to control video/modal visibility (placeholder)
   const [showVideoModal, setShowVideoModal] = useState(false);
+  const [showInfoModal, setShowInfoModal] = useState(false);
 
   useEffect(() => {
     setHasMounted(true);
@@ -82,6 +84,37 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
   };
   // --- End of handleOpenVault --- 
 
+  // Info modal content
+  const InfoModal = () => (
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+      <div className="bg-card border-2 border-primary/30 rounded-lg p-5 max-w-md w-full">
+        <div className="flex justify-between items-start mb-4">
+          <h3 className="text-lg font-bold text-white flex items-center">
+            <Image src="/icons/vault.png" width={24} height={24} alt="Cofre" className="mr-2" />
+            Cofre de Comissões
+          </h3>
+          <button 
+            onClick={() => setShowInfoModal(false)}
+            className="text-gray-400 hover:text-white"
+          >
+            <ExternalLink size={18} />
+          </button>
+        </div>
+        
+        <div className="space-y-3 text-sm text-gray-300">
+          <p>Toda semana você pode abrir o seu cofre de comissões e receber as comissões que os jogadores da sua rede geraram para você.</p>
+        </div>
+        
+        <button 
+          onClick={() => setShowInfoModal(false)}
+          className="mt-4 w-full bg-primary text-white py-2 rounded-md hover:bg-primary/80 transition-colors"
+        >
+          Entendi
+        </button>
+      </div>
+    </div>
+  );
+
   // --- Placeholder Video Modal --- 
   const VideoModal = () => (
     <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
@@ -105,9 +138,12 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
             <div>
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-xl font-semibold flex items-center">
-                        <Vault size={20} className="mr-2 text-yellow-400" />
+                        <Image src="/icons/vault.png" width={20} height={20} alt="Cofre" className="mr-2" />
                         Cofre de Comissões
-                        <button className="ml-1 text-primary hover:text-primary/80 transition-colors">
+                        <button 
+                          onClick={() => setShowInfoModal(true)}
+                          className="ml-1 text-primary hover:text-primary/80 transition-colors"
+                        >
                           <HelpCircle size={16} />
                         </button>
                     </h3>
@@ -116,7 +152,7 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
                     </Link>
                 </div>
                 <div className="text-center my-4">
-                    <span className="text-6xl">💰</span>
+                    <Image src="/icons/vault.png" width={100} height={100} alt="Cofre" className="mx-auto" />
                 </div>
                 <div className="text-center mb-4">
                     <p className="text-sm text-text-secondary mb-1">Abre em:</p>
@@ -130,6 +166,12 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
                     Receba suas comissões RevShare semanais aqui!
                 </p>
             </div>
+            <Button 
+              className="w-full bg-primary hover:bg-primary/80 text-white mt-2"
+              onClick={handleOpenVault}
+            >
+              Abrir Cofre
+            </Button>
         </div>
     );
   }
@@ -139,9 +181,12 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
       <div> {/* Wrapper for content before button */}
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-semibold flex items-center">
-            <Vault size={20} className="mr-2 text-yellow-400" />
+            <Image src="/icons/vault.png" width={20} height={20} alt="Cofre" className="mr-2" />
             Cofre de Comissões
-            <button className="ml-1 text-primary hover:text-primary/80 transition-colors">
+            <button 
+              onClick={() => setShowInfoModal(true)}
+              className="ml-1 text-primary hover:text-primary/80 transition-colors"
+            >
               <HelpCircle size={16} />
             </button>
           </h3>
@@ -150,9 +195,9 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
           </Link>
         </div>
 
-        {/* 3D Gold Vault Image Placeholder */}
+        {/* Vault Image */}
         <div className="text-center my-4">
-          <span className="text-6xl">💰</span> {/* Placeholder Emoji */}
+          <Image src="/icons/vault.png" width={100} height={100} alt="Cofre" className="mx-auto" />
         </div>
 
         {/* Timer */}
@@ -169,15 +214,21 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
           <Info size={14} className="mr-1 text-primary"/>
           Receba suas comissões RevShare semanais aqui!
         </p>
-
-        {/* --- Category Progress Section REMOVED --- */}
-
       </div>
 
-      {/* --- Button Removed --- */}
+      {/* Added Button */}
+      <Button 
+        className="w-full bg-primary hover:bg-primary/80 text-white mt-2"
+        onClick={handleOpenVault}
+      >
+        Abrir Cofre
+      </Button>
 
       {/* Render Video Modal if showVideoModal is true */}
       {showVideoModal && <VideoModal />}
+      
+      {/* Render Info Modal if showInfoModal is true */}
+      {showInfoModal && <InfoModal />}
     </div>
   );
 };
