@@ -1,8 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react'; // Removed Gift, Box, Trophy
+import { ExternalLink } from 'lucide-react'; // Changed from ArrowRight to ExternalLink
 import { Progress } from '@/components/ui/progress';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
 // Placeholder data - replace with actual data fetching
@@ -26,13 +25,18 @@ const ChestsCard = () => {
   const indirectProgress = chestsData.nextIndirectChest.target > 0 ? (chestsData.nextIndirectChest.current / chestsData.nextIndirectChest.target) * 100 : 0;
 
   return (
-    <Card className="bg-card border-border text-white">
+    <Card className="bg-card border-border text-white border-2 border-primary/30">
       <CardHeader>
-        <CardTitle className="flex items-center">
-          {/* TODO: Replace with 3D Chest Icon (Indication type) */}
-          <span className="mr-2 text-2xl">🎁</span> {/* Placeholder Emoji */}
-          Baús
-        </CardTitle>
+        <div className="flex justify-between items-center">
+          <CardTitle className="flex items-center">
+            {/* TODO: Replace with 3D Chest Icon (Indication type) */}
+            <span className="mr-2 text-2xl">🎁</span> {/* Placeholder Emoji */}
+            Baús
+          </CardTitle>
+          <Link href="/baus" className="p-1.5 bg-primary/20 hover:bg-primary/40 rounded-md transition-all duration-200 text-primary hover:text-white">
+            <ExternalLink size={16} />
+          </Link>
+        </div>
         <CardDescription className="text-text-secondary pt-1">Complete desafios e ganhe recompensas.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-5"> {/* Increased spacing */}
@@ -85,16 +89,9 @@ const ChestsCard = () => {
             Seus amigos fazem sequencia diária e você fatura mais!
           </p>
         </div>
-
-        <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary/10" asChild>
-          <Link href="/baus">
-            Ver Todos os Baús <ArrowRight size={16} className="ml-2" />
-          </Link>
-        </Button>
       </CardContent>
     </Card>
   );
 };
 
 export default ChestsCard;
-

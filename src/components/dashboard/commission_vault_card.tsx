@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Vault, Timer, Info, ArrowRight, PlayCircle } from 'lucide-react'; // Added PlayCircle
+import { Vault, Timer, Info, ExternalLink, PlayCircle } from 'lucide-react'; // Changed from ArrowRight to ExternalLink
 import Link from 'next/link';
 import { Button } from '@/components/ui/button'; // Import Button component
 
@@ -101,12 +101,17 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
   if (!hasMounted) {
     // Render a placeholder or null during SSR and initial client render before useEffect runs
     return (
-        <div className="bg-card p-4 rounded-lg shadow text-white flex flex-col justify-between h-full">
+        <div className="bg-card p-4 rounded-lg shadow text-white flex flex-col justify-between h-full border-2 border-primary/30">
             <div>
-                <h3 className="text-lg font-semibold mb-4 flex items-center">
-                    <Vault size={20} className="mr-2 text-yellow-400" />
-                    Cofre de Comissões
-                </h3>
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-semibold flex items-center">
+                        <Vault size={20} className="mr-2 text-yellow-400" />
+                        Cofre de Comissões
+                    </h3>
+                    <Link href="/carteira" className="p-1.5 bg-primary/20 hover:bg-primary/40 rounded-md transition-all duration-200 text-primary hover:text-white">
+                        <ExternalLink size={16} />
+                    </Link>
+                </div>
                 <div className="text-center my-4">
                     <span className="text-6xl">💰</span>
                 </div>
@@ -122,25 +127,22 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
                     Receba suas comissões RevShare semanais aqui!
                 </p>
             </div>
-            <Button 
-                variant="outline" 
-                className="mt-auto w-full border-primary text-primary hover:bg-primary/10 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={true}
-            >
-                <PlayCircle size={16} className="mr-2" />
-                Abrir Cofre
-            </Button>
         </div>
     );
   }
 
   return (
-    <div className="bg-card p-4 rounded-lg shadow text-white flex flex-col justify-between h-full">
+    <div className="bg-card p-4 rounded-lg shadow text-white flex flex-col justify-between h-full border-2 border-primary/30">
       <div> {/* Wrapper for content before button */}
-        <h3 className="text-lg font-semibold mb-4 flex items-center">
-          <Vault size={20} className="mr-2 text-yellow-400" />
-          Cofre de Comissões
-        </h3>
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-semibold flex items-center">
+            <Vault size={20} className="mr-2 text-yellow-400" />
+            Cofre de Comissões
+          </h3>
+          <Link href="/carteira" className="p-1.5 bg-primary/20 hover:bg-primary/40 rounded-md transition-all duration-200 text-primary hover:text-white">
+            <ExternalLink size={16} />
+          </Link>
+        </div>
 
         {/* 3D Gold Vault Image Placeholder */}
         <div className="text-center my-4">
@@ -166,17 +168,7 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
 
       </div>
 
-      {/* --- Button Updated to match "Ver todos os baús" style --- */}
-      <Button 
-        variant="outline" 
-        className="mt-auto w-full border-primary text-primary hover:bg-primary/10 disabled:opacity-50 disabled:cursor-not-allowed" // Applied matching styles and disabled state styles
-        onClick={handleOpenVault}
-        disabled={Object.keys(timeLeft).length > 0} // Disable button if timer is running
-      >
-        <PlayCircle size={16} className="mr-2" /> {/* Adjusted icon margin */}
-        Abrir Cofre
-      </Button>
-      {/* --- End of Updated Button --- */}
+      {/* --- Button Removed --- */}
 
       {/* Render Video Modal if showVideoModal is true */}
       {showVideoModal && <VideoModal />}
@@ -185,4 +177,3 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
 };
 
 export default CommissionVaultCard;
-
