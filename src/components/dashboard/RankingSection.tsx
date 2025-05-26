@@ -52,7 +52,7 @@ const placeholderRankingData: RankingData = {
     weekly: [
       { rank: 1, name: 'Ana Silva', value: 28 },
       { rank: 2, name: 'Carlos Souza', value: 25 },
-      { rank: 3, name: 'Jéssica Miranda', value: 21, isCurrentUser: true }, // Example Current User
+      { rank: 3, name: 'Eder Ziomek', value: 21, isCurrentUser: true }, // Example Current User
       { rank: 4, name: 'Bruno Costa', value: 19 },
       { rank: 5, name: 'Fernanda Lima', value: 17 },
       { rank: 6, name: 'Ricardo Alves', value: 15 },
@@ -65,7 +65,7 @@ const placeholderRankingData: RankingData = {
       { rank: 1, name: 'Ana Silva', value: 95 },
       { rank: 2, name: 'Carlos Souza', value: 88 },
       { rank: 3, name: 'Bruno Costa', value: 82 },
-      { rank: 4, name: 'Jéssica Miranda', value: 79, isCurrentUser: true },
+      { rank: 4, name: 'Eder Ziomek', value: 79, isCurrentUser: true },
       { rank: 5, name: 'Fernanda Lima', value: 75 },
       { rank: 6, name: 'Ricardo Alves', value: 73 },
       { rank: 7, name: 'Mariana Dias', value: 70 },
@@ -78,7 +78,7 @@ const placeholderRankingData: RankingData = {
     weekly: [
         { rank: 1, name: 'Equipe Sol', value: 80 },
         { rank: 2, name: 'Time Lua', value: 75 },
-        { rank: 3, name: 'Jéssica Miranda', value: 70, isCurrentUser: true },
+        { rank: 3, name: 'Eder Ziomek', value: 70, isCurrentUser: true },
         { rank: 4, name: 'Grupo Estrela', value: 68 },
         { rank: 5, name: 'Rede Cometa', value: 65 },
         { rank: 6, name: 'Bonde Trovão', value: 62 },
@@ -91,7 +91,7 @@ const placeholderRankingData: RankingData = {
         { rank: 1, name: 'Equipe Sol', value: 350 },
         { rank: 2, name: 'Time Lua', value: 330 },
         { rank: 3, name: 'Grupo Estrela', value: 310 },
-        { rank: 4, name: 'Jéssica Miranda', value: 300, isCurrentUser: true },
+        { rank: 4, name: 'Eder Ziomek', value: 300, isCurrentUser: true },
         { rank: 5, name: 'Rede Cometa', value: 290 },
         { rank: 6, name: 'Bonde Trovão', value: 280 },
         { rank: 7, name: 'Esquadrão Raio', value: 270 },
@@ -104,7 +104,7 @@ const placeholderRankingData: RankingData = {
     weekly: [
         { rank: 1, name: 'Perseverante 1', value: '7 dias' },
         { rank: 2, name: 'Constante 2', value: '7 dias' },
-        { rank: 3, name: 'Jéssica Miranda', value: '6 dias', isCurrentUser: true },
+        { rank: 3, name: 'Eder Ziomek', value: '6 dias', isCurrentUser: true },
         { rank: 4, name: 'Focado 4', value: '6 dias' },
         { rank: 5, name: 'Regular 5', value: '5 dias' },
         { rank: 6, name: 'Assíduo 6', value: '5 dias' },
@@ -198,18 +198,18 @@ const RankingSection = () => {
           </div>
         </div>
 
-        {/* Jackpot Display - Alterado para usar cores ciano em vez de amarelo */}
+        {/* Jackpot Display - Usando o mesmo fundo do restante do card */}
         <div className={cn(
             "p-4 rounded-lg text-center mb-6",
-            "bg-gradient-to-br from-black via-gray-900 to-black",
-            "border border-primary/50 shadow-xl shadow-primary/20" // Alterado para ciano
+            "bg-card", // Alterado para usar o mesmo fundo do card
+            "border border-primary/50 shadow-xl shadow-primary/20"
         )}>
-            <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2"> {/* Alterado para ciano */}
+            <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
                 Prêmio Total {selectedPeriod === 'weekly' ? 'Semanal' : 'Mensal'}
             </p>
-            {/* Use JackpotDisplay component - será atualizado para usar cores ciano */}
+            {/* Use JackpotDisplay component */}
             <JackpotDisplay value={currentJackpotPrize} key={`${selectedRanking}-${selectedPeriod}`} /> 
-            <p className="text-xs text-primary/70 mt-2">({rankingDetails[selectedRanking].title})</p> {/* Alterado para ciano */}
+            <p className="text-xs text-primary/70 mt-2">({rankingDetails[selectedRanking].title})</p>
         </div>
 
         <CardDescription className="text-text-secondary pt-2">Veja sua posição e os Top 10 afiliados.</CardDescription>
@@ -222,7 +222,7 @@ const RankingSection = () => {
               className={cn(
                 "flex-1 sm:flex-none px-4 py-2 rounded-md border",
                 selectedRanking === "directIndications" 
-                  ? "bg-primary text-white border-primary" // Botão selecionado: fundo ciano, texto branco
+                  ? "bg-primary text-white border-primary font-semibold" // Botão selecionado: fundo ciano, texto branco, negrito
                   : "border-border bg-border/50 text-text-secondary hover:bg-border/70 transition-colors"
               )}
             >
@@ -256,7 +256,7 @@ const RankingSection = () => {
             <TabsContent key={rankingType} value={rankingType}>
               <div className="space-y-4">
                 <div className="bg-border/30 p-3 rounded-lg flex flex-col sm:flex-row justify-between items-center gap-2 text-sm border-2 border-primary/30">
-                  <div className="text-center sm:text-left">
+                  <div className="text-center sm:text-left w-full">
                     <span className="text-text-secondary">Sua Posição: </span>
                     <span className="font-bold text-lg text-primary">{currentUserPosition ? `${currentUserPosition}º` : 'Fora do Top 10'}</span>
                   </div>

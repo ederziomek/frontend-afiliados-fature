@@ -1136,7 +1136,7 @@ const DashboardPage = () => {
       <RankingSection />
 
       {/* Update Info */}
-      <div className="bg-card p-3 rounded-lg shadow flex items-center text-sm text-text-secondary">
+      <div className="bg-card p-3 rounded-lg shadow flex items-center text-sm text-text-secondary border-2 border-primary/30">
         <Info size={16} className="mr-2 text-primary flex-shrink-0" />
         <span>Os dados do painel podem levar até 1 hora para serem atualizados. Última atualização: {affiliateData.lastUpdate}</span>
       </div>
