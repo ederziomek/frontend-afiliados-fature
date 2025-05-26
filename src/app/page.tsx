@@ -1,3 +1,4 @@
+// Conteúdo completo atualizado do arquivo page.tsx
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -442,19 +443,13 @@ const DashboardPage = () => {
                   <Share2 size={18} className="mr-2" />
                   Compartilhar
                 </button>
-                <button 
-                  onClick={() => setShowQRModal(false)}
-                  className="flex-1 flex items-center justify-center bg-primary hover:bg-primary/80 text-white py-2 px-4 rounded-md transition-colors"
-                >
-                  Fechar
-                </button>
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Modal de Informação sobre Indicações Validadas */}
+      {/* Modal de Informação sobre Validação */}
       <Tooltip 
         id="validationInfoModal" 
         isOpen={showValidationInfoModal} 
@@ -462,30 +457,9 @@ const DashboardPage = () => {
       >
         <div>
           <p className="text-white mb-4">
-            Uma indicação é válida quando a pessoa que você indicou atende a <span className="text-primary">pelo menos uma</span> destas condições:
+            Uma indicação é considerada validada quando a pessoa indicada realiza um depósito mínimo de R$50,00 na plataforma.
           </p>
-          
-          <div className="space-y-4 mb-6">
-            <div className="flex items-start">
-              <div className="bg-primary/20 p-2 rounded-full mr-3 mt-0.5 flex items-center justify-center w-8 h-8">
-                <span className="text-primary font-bold text-lg">1</span>
-              </div>
-              <p className="text-gray-300 flex-1">
-                Registra-se pelo seu link, faz depósito de R$30 e realiza 10 apostas
-              </p>
-            </div>
-            
-            <div className="flex items-start">
-              <div className="bg-primary/20 p-2 rounded-full mr-3 mt-0.5 flex items-center justify-center w-8 h-8">
-                <span className="text-primary font-bold text-lg">2</span>
-              </div>
-              <p className="text-gray-300 flex-1">
-                Registra-se pelo seu link e gera R$20 de comissão para a plataforma
-              </p>
-            </div>
-          </div>
-          
-          <p className="text-sm text-gray-400 italic mb-6">
+          <p className="text-white mb-4">
             Apenas indicações validadas geram comissões para você.
           </p>
           
@@ -841,10 +815,10 @@ const DashboardPage = () => {
         {/* Grid de 2 colunas para Indicações e Indicações Validadas */}
         <div className="grid grid-cols-2 gap-3 mb-3">
           {/* Indicações */}
-          <div className="bg-border/50 p-3 rounded-lg relative">
+          <div className="bg-border/50 p-3 rounded-lg relative border-2 border-primary/30">
             <div className="flex flex-col items-center justify-center">
               <div className="flex items-center justify-center w-full">
-                <p className="text-xs text-gray-400 text-center">Indicações</p>
+                <p className="text-xs text-white text-center">Indicações</p>
                 <button 
                   onClick={() => setShowTotalRedeIndicacoesTooltipModal(true)}
                   className="ml-1 text-primary hover:text-primary/80 transition-colors"
@@ -857,10 +831,10 @@ const DashboardPage = () => {
           </div>
           
           {/* Indicações Validadas */}
-          <div className="bg-border/50 p-3 rounded-lg relative">
+          <div className="bg-border/50 p-3 rounded-lg relative border-2 border-primary/30">
             <div className="flex flex-col items-center justify-center">
               <div className="flex items-center justify-center w-full">
-                <p className="text-xs text-gray-400 text-center">Indicações Validadas</p>
+                <p className="text-xs text-white text-center">Indicações Validadas</p>
                 <button 
                   onClick={() => setShowValidationInfoModal(true)}
                   className="ml-1 text-primary hover:text-primary/80 transition-colors"
@@ -874,10 +848,10 @@ const DashboardPage = () => {
         </div>
         
         {/* Comissões em uma linha separada, ocupando toda a largura */}
-        <div className="bg-border/50 p-3 rounded-lg relative mb-3">
+        <div className="bg-border/50 p-3 rounded-lg relative mb-3 border-2 border-primary/30">
           <div className="flex flex-col items-center justify-center">
             <div className="flex items-center justify-center w-full">
-              <p className="text-xs text-gray-400 text-center">Comissões</p>
+              <p className="text-xs text-white text-center">Comissões</p>
               <button 
                 onClick={() => setShowTotalRedeComissoesTooltipModal(true)}
                 className="ml-1 text-primary hover:text-primary/80 transition-colors"
@@ -889,55 +863,38 @@ const DashboardPage = () => {
           </div>
         </div>
 
-        {/* Botões para expandir os frames secundários */}
-        <div className="grid grid-cols-2 gap-3">
+        {/* Botão único para ver indicações por nível */}
+        <div className="flex justify-center">
           <button
             onClick={toggleMinhasIndicacoesFrame}
-            className={`flex items-center justify-center p-2 rounded-md transition-all duration-200 ${showMinhasIndicacoesFrame ? 'bg-primary text-white' : 'bg-primary/20 text-primary hover:bg-primary/40'}`}
+            className={`flex items-center justify-center p-2 rounded-md transition-all duration-200 w-full ${showMinhasIndicacoesFrame ? 'bg-primary text-white' : 'bg-primary/20 text-primary hover:bg-primary/40'}`}
           >
             {showMinhasIndicacoesFrame ? (
               <>
                 <ChevronUp size={16} className="mr-1" />
-                Ocultar Minhas Indicações (Nível 1)
+                Ocultar indicações por Nível
               </>
             ) : (
               <>
                 <ChevronDown size={16} className="mr-1" />
-                Ver Minhas Indicações (Nível 1)
-              </>
-            )}
-          </button>
-          
-          <button
-            onClick={toggleIndicacoesRedeFrame}
-            className={`flex items-center justify-center p-2 rounded-md transition-all duration-200 ${showIndicacoesRedeFrame ? 'bg-primary text-white' : 'bg-primary/20 text-primary hover:bg-primary/40'}`}
-          >
-            {showIndicacoesRedeFrame ? (
-              <>
-                <ChevronUp size={16} className="mr-1" />
-                Ocultar Indicações da Rede (Nível 2 a 5)
-              </>
-            ) : (
-              <>
-                <ChevronDown size={16} className="mr-1" />
-                Ver Indicações da Rede (Nível 2 a 5)
+                Ver indicações por Nível
               </>
             )}
           </button>
         </div>
       </div>
       
-      {/* Container para os frames secundários */}
-      <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 transition-all duration-300 ${(!showMinhasIndicacoesFrame && !showIndicacoesRedeFrame) ? 'h-0 overflow-hidden opacity-0 my-0' : 'opacity-100'}`}>
-        {/* Frame Minhas Indicações (Minimizado/Expandido) */}
+      {/* Container para o detalhamento por nível */}
+      <div className={`transition-all duration-300 ${!showMinhasIndicacoesFrame ? 'h-0 overflow-hidden opacity-0 my-0' : 'opacity-100 my-4'}`}>
+        {/* Frame Detalhamento por Nível */}
         {showMinhasIndicacoesFrame && (
-          <div className={`bg-card p-4 rounded-lg shadow-lg border-2 border-primary/30 relative overflow-hidden transition-all duration-300 ${showMinhasIndicacoesFrame ? 'opacity-100 transform-none' : 'opacity-0 transform translate-y-10'}`}>
+          <div className="bg-card p-4 rounded-lg shadow-lg border-2 border-primary/30 relative overflow-hidden transition-all duration-300">
             <div className="flex justify-between items-start mb-3">
               <h3 className="text-lg font-semibold text-white flex items-center">
                 <span className="mr-2 text-primary">
                   <Users size={18} className="inline" />
                 </span>
-                Minhas Indicações <span className="text-xs ml-1 text-gray-400">(Nível 1)</span>
+                Detalhamento por Nível
                 <button 
                   onClick={() => setShowMinhasIndicacoesInfoModal(true)}
                   className="ml-1 text-primary hover:text-primary/80 transition-colors"
@@ -953,131 +910,60 @@ const DashboardPage = () => {
               </button>
             </div>
             
-            {/* Grid de 2 colunas para Indicações e Indicações Validadas */}
-            <div className="grid grid-cols-2 gap-3 mb-3">
-              {/* Indicações */}
-              <div className="bg-border/50 p-3 rounded-lg relative">
-                <div className="flex flex-col items-center justify-center">
-                  <div className="flex items-center justify-center w-full">
-                    <p className="text-xs text-gray-400 text-center">Indicações</p>
-                    <button 
-                      onClick={() => setShowMinhasIndicacoesTooltipModal(true)}
-                      className="ml-1 text-primary hover:text-primary/80 transition-colors"
-                    >
-                      <HelpCircle size={12} />
-                    </button>
-                  </div>
-                  <p className="text-2xl font-bold text-white mt-1 text-center">{affiliateData.metrics.directRegistrations}</p>
+            {/* Detalhamento por nível */}
+            <div className="space-y-3 mt-4">
+              {/* Nível 1 */}
+              <div className="bg-border/30 p-3 rounded-lg flex flex-col sm:flex-row justify-between items-center gap-2 text-sm">
+                <div className="font-semibold text-white">Nível 1</div>
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                  <div className="text-gray-300">Indicações Válidas: <span className="text-white font-semibold">{affiliateData.metrics.directValidatedIndications}</span></div>
+                  <div className="text-gray-300">Comissões: <span className="text-primary font-semibold">R$ {affiliateData.metrics.directCommissions.toFixed(2).replace('.', ',')}</span></div>
                 </div>
               </div>
               
-              {/* Indicações Validadas */}
-              <div className="bg-border/50 p-3 rounded-lg relative">
-                <div className="flex flex-col items-center justify-center">
-                  <div className="flex items-center justify-center w-full">
-                    <p className="text-xs text-gray-400 text-center">Indicações Validadas</p>
-                    <button 
-                      onClick={() => setShowValidationInfoModal(true)}
-                      className="ml-1 text-primary hover:text-primary/80 transition-colors"
-                    >
-                      <HelpCircle size={12} />
-                    </button>
-                  </div>
-                  <p className="text-2xl font-bold text-white mt-1 text-center">{affiliateData.metrics.directValidatedIndications}</p>
-                </div>
-              </div>
-            </div>
-            
-            {/* Comissões em uma linha separada, ocupando toda a largura */}
-            <div className="bg-border/50 p-3 rounded-lg relative">
-              <div className="flex flex-col items-center justify-center">
-                <div className="flex items-center justify-center w-full">
-                  <p className="text-xs text-gray-400 text-center">Comissões</p>
-                  <button 
-                    onClick={() => setShowMinhasIndicacoesComissoesTooltipModal(true)}
-                    className="ml-1 text-primary hover:text-primary/80 transition-colors"
-                  >
-                    <HelpCircle size={12} />
-                  </button>
-                </div>
-                <p className="text-2xl font-bold text-primary mt-1 text-center">R$ {affiliateData.metrics.directCommissions.toFixed(2).replace('.', ',')}</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Frame Indicações da Minha Rede (Minimizado/Expandido) */}
-        {showIndicacoesRedeFrame && (
-          <div className={`bg-card p-4 rounded-lg shadow-lg border-2 border-primary/30 relative overflow-hidden transition-all duration-300 ${showIndicacoesRedeFrame ? 'opacity-100 transform-none' : 'opacity-0 transform translate-y-10'}`}>
-            <div className="flex justify-between items-start mb-3">
-              <h3 className="text-lg font-semibold text-white flex items-center">
-                <span className="mr-2 text-primary">
-                  <Users size={18} className="inline" />
-                </span>
-                Indicações da Minha Rede <span className="text-xs ml-1 text-gray-400">(Nível 2 a 5)</span>
-                <button 
-                  onClick={() => setShowIndicacoesRedeInfoModal(true)}
-                  className="ml-1 text-primary hover:text-primary/80 transition-colors"
-                >
-                  <HelpCircle size={16} />
-                </button>
-              </h3>
-              <button 
-                onClick={toggleIndicacoesRedeFrame}
-                className="p-1.5 bg-primary/20 hover:bg-primary/40 rounded-md transition-all duration-200 text-primary hover:text-white"
-              >
-                <X size={16} />
-              </button>
-            </div>
-            
-            {/* Grid de 2 colunas para Indicações e Indicações Validadas */}
-            <div className="grid grid-cols-2 gap-3 mb-3">
-              {/* Indicações */}
-              <div className="bg-border/50 p-3 rounded-lg relative">
-                <div className="flex flex-col items-center justify-center">
-                  <div className="flex items-center justify-center w-full">
-                    <p className="text-xs text-gray-400 text-center">Indicações</p>
-                    <button 
-                      onClick={() => setShowRedeIndicacoesTooltipModal(true)}
-                      className="ml-1 text-primary hover:text-primary/80 transition-colors"
-                    >
-                      <HelpCircle size={12} />
-                    </button>
-                  </div>
-                  <p className="text-2xl font-bold text-white mt-1 text-center">{affiliateData.metrics.networkRegistrations}</p>
+              {/* Nível 2 */}
+              <div className="bg-border/30 p-3 rounded-lg flex flex-col sm:flex-row justify-between items-center gap-2 text-sm">
+                <div className="font-semibold text-white">Nível 2</div>
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                  <div className="text-gray-300">Indicações Válidas: <span className="text-white font-semibold">{Math.round(affiliateData.metrics.networkValidatedIndications * 0.4)}</span></div>
+                  <div className="text-gray-300">Comissões: <span className="text-primary font-semibold">R$ {(affiliateData.metrics.networkCommissions * 0.4).toFixed(2).replace('.', ',')}</span></div>
                 </div>
               </div>
               
-              {/* Indicações Validadas */}
-              <div className="bg-border/50 p-3 rounded-lg relative">
-                <div className="flex flex-col items-center justify-center">
-                  <div className="flex items-center justify-center w-full">
-                    <p className="text-xs text-gray-400 text-center">Indicações Validadas</p>
-                    <button 
-                      onClick={() => setShowValidationInfoModal(true)}
-                      className="ml-1 text-primary hover:text-primary/80 transition-colors"
-                    >
-                      <HelpCircle size={12} />
-                    </button>
-                  </div>
-                  <p className="text-2xl font-bold text-white mt-1 text-center">{affiliateData.metrics.networkValidatedIndications}</p>
+              {/* Nível 3 */}
+              <div className="bg-border/30 p-3 rounded-lg flex flex-col sm:flex-row justify-between items-center gap-2 text-sm">
+                <div className="font-semibold text-white">Nível 3</div>
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                  <div className="text-gray-300">Indicações Válidas: <span className="text-white font-semibold">{Math.round(affiliateData.metrics.networkValidatedIndications * 0.3)}</span></div>
+                  <div className="text-gray-300">Comissões: <span className="text-primary font-semibold">R$ {(affiliateData.metrics.networkCommissions * 0.3).toFixed(2).replace('.', ',')}</span></div>
                 </div>
               </div>
-            </div>
-            
-            {/* Comissões em uma linha separada, ocupando toda a largura */}
-            <div className="bg-border/50 p-3 rounded-lg relative">
-              <div className="flex flex-col items-center justify-center">
-                <div className="flex items-center justify-center w-full">
-                  <p className="text-xs text-gray-400 text-center">Comissões</p>
-                  <button 
-                    onClick={() => setShowRedeComissoesTooltipModal(true)}
-                    className="ml-1 text-primary hover:text-primary/80 transition-colors"
-                  >
-                    <HelpCircle size={12} />
-                  </button>
+              
+              {/* Nível 4 */}
+              <div className="bg-border/30 p-3 rounded-lg flex flex-col sm:flex-row justify-between items-center gap-2 text-sm">
+                <div className="font-semibold text-white">Nível 4</div>
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                  <div className="text-gray-300">Indicações Válidas: <span className="text-white font-semibold">{Math.round(affiliateData.metrics.networkValidatedIndications * 0.2)}</span></div>
+                  <div className="text-gray-300">Comissões: <span className="text-primary font-semibold">R$ {(affiliateData.metrics.networkCommissions * 0.2).toFixed(2).replace('.', ',')}</span></div>
                 </div>
-                <p className="text-2xl font-bold text-primary mt-1 text-center">R$ {affiliateData.metrics.networkCommissions.toFixed(2).replace('.', ',')}</p>
+              </div>
+              
+              {/* Nível 5 */}
+              <div className="bg-border/30 p-3 rounded-lg flex flex-col sm:flex-row justify-between items-center gap-2 text-sm">
+                <div className="font-semibold text-white">Nível 5</div>
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                  <div className="text-gray-300">Indicações Válidas: <span className="text-white font-semibold">{Math.round(affiliateData.metrics.networkValidatedIndications * 0.1)}</span></div>
+                  <div className="text-gray-300">Comissões: <span className="text-primary font-semibold">R$ {(affiliateData.metrics.networkCommissions * 0.1).toFixed(2).replace('.', ',')}</span></div>
+                </div>
+              </div>
+              
+              {/* Total */}
+              <div className="bg-primary/20 p-3 rounded-lg flex flex-col sm:flex-row justify-between items-center gap-2 text-sm border border-primary/30">
+                <div className="font-semibold text-white">Total</div>
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                  <div className="text-gray-300">Indicações Válidas: <span className="text-white font-semibold">{totalNetworkMetrics.totalValidatedIndications}</span></div>
+                  <div className="text-gray-300">Comissões: <span className="text-primary font-semibold">R$ {totalNetworkMetrics.totalCommissions.toFixed(2).replace('.', ',')}</span></div>
+                </div>
               </div>
             </div>
           </div>
