@@ -1,14 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Check } from 'lucide-react'; // Using Check for the small indicator
-import { Progress } from '@/components/ui/progress';
-import { Button } from '@/components/ui/button';
+import { ExternalLink, Check } from 'lucide-react'; // Changed from ArrowRight to ExternalLink
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
 // Placeholder data - replace with actual data fetching
 const sequenceData = {
   currentStreak: 2, // Example: 2 days streak
-  totalRewardFor7Days: 70.00, // Example reward
   // Mock data for weekly status - needs real data source
   weeklyStatus: [
     { dayAbbr: 'DOM', dayFull: '', reward: 35, completed: true },
@@ -22,16 +19,19 @@ const sequenceData = {
 };
 
 const SequenceCard = () => {
-  const progressPercent = sequenceData.currentStreak >= 7 ? 100 : (sequenceData.currentStreak / 7) * 100;
-
   return (
     <Card className="bg-card border-border text-white border-2 border-primary/30">
       <CardHeader>
-        <CardTitle className="flex items-center">
-          {/* TODO: Replace with 3D Fire Icon */}
-          <span className="mr-2 text-2xl">🔥</span> {/* Placeholder Emoji */}
-          Indicação Diária
-        </CardTitle>
+        <div className="flex justify-between items-center">
+          <CardTitle className="flex items-center">
+            {/* TODO: Replace with 3D Fire Icon */}
+            <span className="mr-2 text-2xl">🔥</span> {/* Placeholder Emoji */}
+            Indicação Diária
+          </CardTitle>
+          <Link href="/sequencia-diaria" className="p-1.5 bg-primary/20 hover:bg-primary/40 rounded-md transition-all duration-200 text-primary hover:text-white">
+            <ExternalLink size={16} />
+          </Link>
+        </div>
         {/* Reduced margin-bottom/padding-top if CardDescription had it */}
         <CardDescription className="text-text-secondary pt-1">Faça pelo menos 1 indicação por dia.</CardDescription>
       </CardHeader>
@@ -47,14 +47,14 @@ const SequenceCard = () => {
           {sequenceData.weeklyStatus.map((day, index) => (
             <div key={index} className="flex flex-col items-center">
               {/* Calendar Icon Square */}
-              <div className={`w-full aspect-square rounded-md overflow-hidden border ${day.isToday ? 'border-primary' : 'border-border'} bg-card relative flex flex-col shadow min-w-[40px]`}>
+              <div className={`w-full rounded-md overflow-hidden border ${day.isToday ? 'border-primary' : 'border-border'} bg-card relative flex flex-col shadow min-w-[40px]`}>
                 {/* Top Bar (Day Abbreviation) - Adapt color based on theme, using primary for now */}
-                <div className="bg-primary text-center py-0.5">
+                <div className="bg-primary text-center py-1.5">
                   <span className="text-xs font-bold text-primary-foreground">{day.dayAbbr}</span>
                 </div>
                 {/* Main Body (Reward Value) */}
-                <div className="flex-grow flex items-center justify-center">
-                  <span className="text-sm font-semibold text-white">R${day.reward}</span>
+                <div className="py-1.5 flex items-center justify-center">
+                  <span className="text-xs font-semibold text-white">R${day.reward}</span>
                 </div>
                 {/* Completion Checkmark (Bottom Right) */}
                 {day.completed && (
@@ -66,20 +66,6 @@ const SequenceCard = () => {
             </div>
           ))}
         </div>
-
-        {/* Progress Bar - Keeping previous style for overall 7-day bonus */}
-        <div className="relative w-full pt-2">
-          <Progress value={progressPercent} className="h-4 rounded-md" />
-        </div>
-        <p className="text-sm font-semibold text-green-500 text-center">
-          Bônus de R$ {sequenceData.totalRewardFor7Days.toFixed(2).replace('.', ',')} ao completar 7 dias!
-        </p>
-
-        <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary/10" asChild>
-          <Link href="/sequencia-diaria">
-            Ver Premiações <ArrowRight size={16} className="ml-2" />
-          </Link>
-        </Button>
       </CardContent>
     </Card>
   );
