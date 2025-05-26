@@ -183,7 +183,7 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
       <div> {/* Wrapper for content before button */}
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-semibold flex items-center">
-            <Image src="/icons/bau_icon.png" width={20} height={20} alt="Cofre" className="mr-2" />
+            <Image src="/icons/cofre.png" width={20} height={20} alt="Cofre" className="mr-2" />
             Cofre de Comissões
             <button 
               onClick={() => setShowInfoModal(true)}
@@ -199,7 +199,7 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
 
         {/* Vault Image */}
         <div className="text-center my-4">
-          <Image src="/icons/bau_icon.png" width={100} height={100} alt="Cofre" className="mx-auto" />
+          <Image src="/icons/cofre.png" width={100} height={100} alt="Cofre" className="mx-auto" />
         </div>
 
         {/* Timer */}
