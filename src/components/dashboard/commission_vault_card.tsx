@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Vault, Timer, Info, ExternalLink, PlayCircle } from 'lucide-react'; // Changed from ArrowRight to ExternalLink
+import { Vault, Timer, Info, ExternalLink, PlayCircle, HelpCircle } from 'lucide-react'; // Added HelpCircle
 import Link from 'next/link';
 import { Button } from '@/components/ui/button'; // Import Button component
 
@@ -104,9 +104,12 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
         <div className="bg-card p-4 rounded-lg shadow text-white flex flex-col justify-between h-full border-2 border-primary/30">
             <div>
                 <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-semibold flex items-center">
+                    <h3 className="text-xl font-semibold flex items-center">
                         <Vault size={20} className="mr-2 text-yellow-400" />
                         Cofre de Comissões
+                        <button className="ml-1 text-primary hover:text-primary/80 transition-colors">
+                          <HelpCircle size={16} />
+                        </button>
                     </h3>
                     <Link href="/carteira" className="p-1.5 bg-primary/20 hover:bg-primary/40 rounded-md transition-all duration-200 text-primary hover:text-white">
                         <ExternalLink size={16} />
@@ -135,9 +138,12 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
     <div className="bg-card p-4 rounded-lg shadow text-white flex flex-col justify-between h-full border-2 border-primary/30">
       <div> {/* Wrapper for content before button */}
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold flex items-center">
+          <h3 className="text-xl font-semibold flex items-center">
             <Vault size={20} className="mr-2 text-yellow-400" />
             Cofre de Comissões
+            <button className="ml-1 text-primary hover:text-primary/80 transition-colors">
+              <HelpCircle size={16} />
+            </button>
           </h3>
           <Link href="/carteira" className="p-1.5 bg-primary/20 hover:bg-primary/40 rounded-md transition-all duration-200 text-primary hover:text-white">
             <ExternalLink size={16} />
