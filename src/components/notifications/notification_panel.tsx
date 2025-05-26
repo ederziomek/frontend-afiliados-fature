@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import NotificationItem, { Notification } from './notification_item';
-import { Bell, X } from 'lucide-react';
+import { Bell, X, Check } from 'lucide-react';
 
 // Dados mockados - ordenados cronologicamente (mais recentes primeiro)
 const initialNotifications: Notification[] = [
@@ -35,7 +35,7 @@ const initialNotifications: Notification[] = [
     id: 'n4', 
     type: 'reward', 
     title: 'Recompensa Desbloqueada', 
-    message: 'Recompensa de Sequência Diária (3 dias) desbloqueada!', 
+    message: 'Recompensa de Indicação Diária (3 dias) desbloqueada!', 
     timestamp: '2024-04-29 08:00', 
     read: true 
   },
@@ -114,6 +114,11 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ className }) => {
     setNotifications(notifications.map(n => 
       n.id === id ? { ...n, read: true } : n
     ));
+  };
+
+  // Função para marcar todas as notificações como lidas
+  const markAllAsRead = () => {
+    setNotifications(notifications.map(n => ({ ...n, read: true })));
   };
 
   // Ordenar notificações cronologicamente (mais recentes primeiro)
@@ -195,9 +200,21 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ className }) => {
           >
             <div style={headerStyle}>
               <h4 className="font-semibold text-white text-xl">Notificações</h4>
-              <button onClick={togglePanel} className="text-gray-400 hover:text-white">
-                <X size={24} />
-              </button>
+              <div className="flex items-center space-x-2">
+                {unreadCount > 0 && (
+                  <button 
+                    onClick={markAllAsRead} 
+                    className="flex items-center text-primary hover:text-primary/80 text-sm bg-primary/10 px-2 py-1 rounded"
+                    title="Marcar todas como visualizadas"
+                  >
+                    <Check size={14} className="mr-1" />
+                    <span>Marcar todas</span>
+                  </button>
+                )}
+                <button onClick={togglePanel} className="text-gray-400 hover:text-white">
+                  <X size={24} />
+                </button>
+              </div>
             </div>
             
             <div style={contentStyle}>

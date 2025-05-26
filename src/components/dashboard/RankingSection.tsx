@@ -47,61 +47,61 @@ interface JackpotPrizes {
   dailySequence: { weekly: number; monthly: number };
 }
 
-// --- Placeholder Data ---
+// --- Placeholder Data (Aumentado) ---
 const placeholderRankingData: RankingData = {
   directIndications: {
     weekly: [
-      { rank: 1, name: 'Ana Silva', value: 15 },
-      { rank: 2, name: 'Carlos Souza', value: 12 },
-      { rank: 3, name: 'Jéssica Miranda', value: 11, isCurrentUser: true }, // Example Current User
-      { rank: 4, name: 'Bruno Costa', value: 10 },
-      { rank: 5, name: 'Fernanda Lima', value: 9 },
-      { rank: 6, name: 'Ricardo Alves', value: 8 },
-      { rank: 7, name: 'Mariana Dias', value: 7 },
-      { rank: 8, name: 'Lucas Martins', value: 6 },
-      { rank: 9, name: 'Patrícia Rocha', value: 5 },
-      { rank: 10, name: 'Gabriel Santos', value: 4 },
+      { rank: 1, name: 'Ana Silva', value: 28 },
+      { rank: 2, name: 'Carlos Souza', value: 25 },
+      { rank: 3, name: 'Jéssica Miranda', value: 21, isCurrentUser: true }, // Example Current User
+      { rank: 4, name: 'Bruno Costa', value: 19 },
+      { rank: 5, name: 'Fernanda Lima', value: 17 },
+      { rank: 6, name: 'Ricardo Alves', value: 15 },
+      { rank: 7, name: 'Mariana Dias', value: 14 },
+      { rank: 8, name: 'Lucas Martins', value: 12 },
+      { rank: 9, name: 'Patrícia Rocha', value: 10 },
+      { rank: 10, name: 'Gabriel Santos', value: 8 },
     ],
     monthly: [
-      { rank: 1, name: 'Ana Silva', value: 55 },
-      { rank: 2, name: 'Carlos Souza', value: 48 },
-      { rank: 3, name: 'Bruno Costa', value: 42 },
-      { rank: 4, name: 'Jéssica Miranda', value: 39, isCurrentUser: true },
-      { rank: 5, name: 'Fernanda Lima', value: 35 },
-      { rank: 6, name: 'Ricardo Alves', value: 33 },
-      { rank: 7, name: 'Mariana Dias', value: 30 },
-      { rank: 8, name: 'Lucas Martins', value: 28 },
-      { rank: 9, name: 'Patrícia Rocha', value: 25 },
-      { rank: 10, name: 'Gabriel Santos', value: 22 },
+      { rank: 1, name: 'Ana Silva', value: 95 },
+      { rank: 2, name: 'Carlos Souza', value: 88 },
+      { rank: 3, name: 'Bruno Costa', value: 82 },
+      { rank: 4, name: 'Jéssica Miranda', value: 79, isCurrentUser: true },
+      { rank: 5, name: 'Fernanda Lima', value: 75 },
+      { rank: 6, name: 'Ricardo Alves', value: 73 },
+      { rank: 7, name: 'Mariana Dias', value: 70 },
+      { rank: 8, name: 'Lucas Martins', value: 68 },
+      { rank: 9, name: 'Patrícia Rocha', value: 65 },
+      { rank: 10, name: 'Gabriel Santos', value: 62 },
     ],
   },
-  indirectIndications: { // Placeholder - Similar structure
+  indirectIndications: { // Dados aumentados
     weekly: [
-        { rank: 1, name: 'Equipe Sol', value: 50 },
-        { rank: 2, name: 'Time Lua', value: 45 },
-        { rank: 3, name: 'Jéssica Miranda', value: 40, isCurrentUser: true },
-        { rank: 4, name: 'Grupo Estrela', value: 38 },
-        { rank: 5, name: 'Rede Cometa', value: 35 },
-        { rank: 6, name: 'Bonde Trovão', value: 32 },
-        { rank: 7, name: 'Esquadrão Raio', value: 30 },
-        { rank: 8, name: 'Clã Fênix', value: 28 },
-        { rank: 9, name: 'Aliança Dragão', value: 25 },
-        { rank: 10, name: 'Liga Centauro', value: 22 },
+        { rank: 1, name: 'Equipe Sol', value: 80 },
+        { rank: 2, name: 'Time Lua', value: 75 },
+        { rank: 3, name: 'Jéssica Miranda', value: 70, isCurrentUser: true },
+        { rank: 4, name: 'Grupo Estrela', value: 68 },
+        { rank: 5, name: 'Rede Cometa', value: 65 },
+        { rank: 6, name: 'Bonde Trovão', value: 62 },
+        { rank: 7, name: 'Esquadrão Raio', value: 60 },
+        { rank: 8, name: 'Clã Fênix', value: 58 },
+        { rank: 9, name: 'Aliança Dragão', value: 55 },
+        { rank: 10, name: 'Liga Centauro', value: 52 },
     ],
     monthly: [
-        { rank: 1, name: 'Equipe Sol', value: 200 },
-        { rank: 2, name: 'Time Lua', value: 180 },
-        { rank: 3, name: 'Grupo Estrela', value: 160 },
-        { rank: 4, name: 'Jéssica Miranda', value: 150, isCurrentUser: true },
-        { rank: 5, name: 'Rede Cometa', value: 140 },
-        { rank: 6, name: 'Bonde Trovão', value: 130 },
-        { rank: 7, name: 'Esquadrão Raio', value: 120 },
-        { rank: 8, name: 'Clã Fênix', value: 110 },
-        { rank: 9, name: 'Aliança Dragão', value: 100 },
-        { rank: 10, name: 'Liga Centauro', value: 90 },
+        { rank: 1, name: 'Equipe Sol', value: 350 },
+        { rank: 2, name: 'Time Lua', value: 330 },
+        { rank: 3, name: 'Grupo Estrela', value: 310 },
+        { rank: 4, name: 'Jéssica Miranda', value: 300, isCurrentUser: true },
+        { rank: 5, name: 'Rede Cometa', value: 290 },
+        { rank: 6, name: 'Bonde Trovão', value: 280 },
+        { rank: 7, name: 'Esquadrão Raio', value: 270 },
+        { rank: 8, name: 'Clã Fênix', value: 260 },
+        { rank: 9, name: 'Aliança Dragão', value: 250 },
+        { rank: 10, name: 'Liga Centauro', value: 240 },
     ],
   },
-  dailySequence: { // Placeholder - Similar structure
+  dailySequence: { // Dados aumentados
     weekly: [
         { rank: 1, name: 'Perseverante 1', value: '7 dias' },
         { rank: 2, name: 'Constante 2', value: '7 dias' },
@@ -135,11 +135,11 @@ const placeholderUserPosition: UserPosition = {
   dailySequence: { weekly: 3, monthly: 4 },
 };
 
-// Placeholder for Jackpot Prizes
+// Placeholder for Jackpot Prizes (Aumentado)
 const placeholderJackpotPrizes: JackpotPrizes = {
-  directIndications: { weekly: 500.00, monthly: 1000.00 },
-  indirectIndications: { weekly: 250.00, monthly: 500.00 },
-  dailySequence: { weekly: 150.00, monthly: 300.00 },
+  directIndications: { weekly: 1500.00, monthly: 3000.00 },
+  indirectIndications: { weekly: 750.00, monthly: 1500.00 },
+  dailySequence: { weekly: 500.00, monthly: 1000.00 },
 };
 
 // --- Ranking Component ---
@@ -280,4 +280,3 @@ const RankingSection = () => {
 };
 
 export default RankingSection;
-

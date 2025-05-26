@@ -11,13 +11,13 @@ const sequenceData = {
   totalRewardFor7Days: 70.00, // Example reward
   // Mock data for weekly status - needs real data source
   weeklyStatus: [
-    { dayAbbr: 'DOM', dayFull: 'Domingo', reward: 35, completed: true },
-    { dayAbbr: 'SEG', dayFull: 'Segunda', reward: 37, completed: true },
-    { dayAbbr: 'TER', dayFull: 'Terça',   reward: 39, completed: false, isToday: true }, // Example: Today is Tuesday
-    { dayAbbr: 'QUA', dayFull: 'Quarta',  reward: 41, completed: false },
-    { dayAbbr: 'QUI', dayFull: 'Quinta',  reward: 43, completed: false },
-    { dayAbbr: 'SEX', dayFull: 'Sexta',   reward: 45, completed: false },
-    { dayAbbr: 'SAB', dayFull: 'Sábado',  reward: 47, completed: false },
+    { dayAbbr: 'DOM', dayFull: '', reward: 35, completed: true },
+    { dayAbbr: 'SEG', dayFull: '', reward: 35, completed: true },
+    { dayAbbr: 'TER', dayFull: '', reward: 50, completed: false, isToday: true }, // Example: Today is Tuesday
+    { dayAbbr: 'QUA', dayFull: '', reward: 35, completed: false },
+    { dayAbbr: 'QUI', dayFull: '', reward: 50, completed: false },
+    { dayAbbr: 'SEX', dayFull: '', reward: 35, completed: false },
+    { dayAbbr: 'SAB', dayFull: '', reward: 100, completed: false },
   ]
 };
 
@@ -25,12 +25,12 @@ const SequenceCard = () => {
   const progressPercent = sequenceData.currentStreak >= 7 ? 100 : (sequenceData.currentStreak / 7) * 100;
 
   return (
-    <Card className="bg-card border-border text-white">
+    <Card className="bg-card border-border text-white border-2 border-primary/30">
       <CardHeader>
         <CardTitle className="flex items-center">
           {/* TODO: Replace with 3D Fire Icon */}
           <span className="mr-2 text-2xl">🔥</span> {/* Placeholder Emoji */}
-          Sequência Diária
+          Indicação Diária
         </CardTitle>
         {/* Reduced margin-bottom/padding-top if CardDescription had it */}
         <CardDescription className="text-text-secondary pt-1">Faça pelo menos 1 indicação por dia.</CardDescription>
@@ -47,7 +47,7 @@ const SequenceCard = () => {
           {sequenceData.weeklyStatus.map((day, index) => (
             <div key={index} className="flex flex-col items-center">
               {/* Calendar Icon Square */}
-              <div className={`w-full aspect-square rounded-md overflow-hidden border ${day.isToday ? 'border-primary' : 'border-border'} bg-card relative flex flex-col shadow`}>
+              <div className={`w-full aspect-square rounded-md overflow-hidden border ${day.isToday ? 'border-primary' : 'border-border'} bg-card relative flex flex-col shadow min-w-[40px]`}>
                 {/* Top Bar (Day Abbreviation) - Adapt color based on theme, using primary for now */}
                 <div className="bg-primary text-center py-0.5">
                   <span className="text-xs font-bold text-primary-foreground">{day.dayAbbr}</span>
@@ -63,8 +63,6 @@ const SequenceCard = () => {
                   </div>
                 )}
               </div>
-              {/* Day Name Label */}
-              <span className="text-xs text-text-secondary mt-1 whitespace-nowrap overflow-hidden text-ellipsis w-full text-center">{day.dayFull}</span>
             </div>
           ))}
         </div>
@@ -88,4 +86,3 @@ const SequenceCard = () => {
 };
 
 export default SequenceCard;
-

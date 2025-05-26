@@ -59,15 +59,18 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onCli
 
   return (
     <div
-      className="p-4 border-b border-gray-800 flex items-start space-x-3 cursor-pointer hover:bg-gray-800/50"
+      className={`p-4 border-b border-gray-800 flex items-start space-x-3 cursor-pointer hover:bg-gray-800/50 ${notification.read ? 'bg-transparent' : 'bg-primary/5'}`}
       onClick={onClick}
     >
       <div className="flex-shrink-0">{getIcon()}</div>
       <div className="flex-grow">
-        <p className="font-semibold text-white text-base">{notification.title}</p>
-        <p className="text-gray-400 text-sm">{notification.message}</p>
+        <p className={`font-semibold text-base ${notification.read ? 'text-gray-300' : 'text-white'}`}>{notification.title}</p>
+        <p className={`text-sm ${notification.read ? 'text-gray-500' : 'text-gray-400'}`}>{notification.message}</p>
         <p className="text-gray-500 text-sm mt-1">{formatDate(notification.timestamp)}</p>
       </div>
+      {!notification.read && (
+        <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+      )}
     </div>
   );
 };

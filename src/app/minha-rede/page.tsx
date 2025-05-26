@@ -16,30 +16,41 @@ import { format } from "date-fns";
 import { ptBR } from 'date-fns/locale';
 import { Separator } from '@/components/ui/separator'; // Import Separator
 
-// --- Placeholder Data (Includes Category/Level) ---
+// --- Placeholder Data (Aumentado) ---
 // NOTE: Actual data fetching needs to provide category and level for affiliates
 const networkData = {
   overview: {
-    total: 8,
-    active: 5,
-    level2: 3,
-    commissions: 470.00,
+    total: 18,
+    active: 12,
+    level2: 8,
+    commissions: 1250.75,
   },
   referrals: [
-    { id: 1, name: 'Maria Santos', level: 1, subReferrals: 3, commission: 150.00, initials: 'MS', dailySequence: 5, category: 'Profissional', categoryLevel: 2 }, // Added category/level
-    { id: 2, name: 'Pedro Lima', level: 1, subReferrals: 1, commission: 80.00, initials: 'PL', dailySequence: 2, category: 'Regular', categoryLevel: 8 }, // Added category/level
-    { id: 3, name: 'Ana Costa', level: 1, subReferrals: 0, commission: 50.00, initials: 'AC', dailySequence: 7, category: 'Iniciante', categoryLevel: 5 }, // Added category/level
-    { id: 4, name: 'Roberto Silva', level: 2, via: 'Maria Santos', commission: 30.00, initials: 'RS', category: 'Iniciante', categoryLevel: 3 }, // Added category/level
-    { id: 5, name: 'Luciana Martins', level: 1, subReferrals: 0, commission: 0.00, initials: 'LM', dailySequence: 0, category: 'Jogador', categoryLevel: 1 }, // Added category/level
-    { id: 6, name: 'Carlos Pereira', level: 3, via: 'Roberto Silva', commission: 10.00, initials: 'CP', category: 'Jogador', categoryLevel: 1 }, // Added category/level
-    { id: 7, name: 'Juliana Alves', level: 1, subReferrals: 2, commission: 120.00, initials: 'JA', dailySequence: 3, category: 'Regular', categoryLevel: 5 }, // Added category/level
-    { id: 8, name: 'Fernando Dias', level: 2, via: 'Juliana Alves', commission: 40.00, initials: 'FD', category: 'Iniciante', categoryLevel: 1 }, // Added category/level
+    { id: 1, name: 'Maria Santos', level: 1, subReferrals: 5, commission: 350.00, initials: 'MS', dailySequence: 5, category: 'Profissional', categoryLevel: 4 }, // Aumentado
+    { id: 2, name: 'Pedro Lima', level: 1, subReferrals: 3, commission: 180.00, initials: 'PL', dailySequence: 4, category: 'Regular', categoryLevel: 8 }, // Aumentado
+    { id: 3, name: 'Ana Costa', level: 1, subReferrals: 2, commission: 150.00, initials: 'AC', dailySequence: 7, category: 'Iniciante', categoryLevel: 5 }, // Aumentado
+    { id: 4, name: 'Roberto Silva', level: 2, via: 'Maria Santos', commission: 90.00, initials: 'RS', category: 'Regular', categoryLevel: 3 }, // Aumentado
+    { id: 5, name: 'Luciana Martins', level: 1, subReferrals: 1, commission: 75.00, initials: 'LM', dailySequence: 3, category: 'Jogador', categoryLevel: 2 }, // Aumentado
+    { id: 6, name: 'Carlos Pereira', level: 3, via: 'Roberto Silva', commission: 60.00, initials: 'CP', category: 'Jogador', categoryLevel: 3 }, // Aumentado
+    { id: 7, name: 'Juliana Alves', level: 1, subReferrals: 4, commission: 220.00, initials: 'JA', dailySequence: 6, category: 'Regular', categoryLevel: 5 }, // Aumentado
+    { id: 8, name: 'Fernando Dias', level: 2, via: 'Juliana Alves', commission: 125.75, initials: 'FD', category: 'Iniciante', categoryLevel: 3 }, // Aumentado
+    // Novos indicados
+    { id: 9, name: 'Mariana Oliveira', level: 1, subReferrals: 2, commission: 120.00, initials: 'MO', dailySequence: 4, category: 'Regular', categoryLevel: 4 },
+    { id: 10, name: 'Ricardo Gomes', level: 2, via: 'Mariana Oliveira', commission: 85.00, initials: 'RG', category: 'Iniciante', categoryLevel: 4 },
+    { id: 11, name: 'Camila Souza', level: 2, via: 'Mariana Oliveira', commission: 70.00, initials: 'CS', category: 'Jogador', categoryLevel: 3 },
+    { id: 12, name: 'Bruno Ferreira', level: 1, subReferrals: 0, commission: 45.00, initials: 'BF', dailySequence: 2, category: 'Jogador', categoryLevel: 2 },
+    { id: 13, name: 'Patrícia Mendes', level: 3, via: 'Carlos Pereira', commission: 40.00, initials: 'PM', category: 'Jogador', categoryLevel: 1 },
+    { id: 14, name: 'Gabriel Santos', level: 2, via: 'Pedro Lima', commission: 35.00, initials: 'GS', category: 'Jogador', categoryLevel: 1 },
+    { id: 15, name: 'Larissa Costa', level: 2, via: 'Pedro Lima', commission: 30.00, initials: 'LC', category: 'Jogador', categoryLevel: 1 },
+    { id: 16, name: 'Thiago Martins', level: 2, via: 'Pedro Lima', commission: 25.00, initials: 'TM', category: 'Jogador', categoryLevel: 1 },
+    { id: 17, name: 'Vanessa Lima', level: 3, via: 'Gabriel Santos', commission: 20.00, initials: 'VL', category: 'Jogador', categoryLevel: 1 },
+    { id: 18, name: 'Eduardo Pereira', level: 4, via: 'Vanessa Lima', commission: 15.00, initials: 'EP', category: 'Jogador', categoryLevel: 1 },
   ],
   performance: [
-    { level: 1, count: 5, revenue: 400.00 },
-    { level: 2, count: 2, revenue: 70.00 },
-    { level: 3, count: 1, revenue: 10.00 },
-    { level: 4, count: 0, revenue: 0.00 },
+    { level: 1, count: 5, revenue: 975.00 },
+    { level: 2, count: 6, revenue: 425.75 },
+    { level: 3, count: 3, revenue: 120.00 },
+    { level: 4, count: 1, revenue: 15.00 },
     { level: 5, count: 0, revenue: 0.00 },
   ]
 };
@@ -293,19 +304,14 @@ const MinhaRedePage = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {/* Placeholder for Tree View */}
-          <div className="text-center text-text-secondary py-8">
-            <GitBranch size={48} className="mx-auto mb-4 text-primary opacity-50" />
+          {/* Placeholder for tree visualization */}
+          <div className="bg-background p-6 rounded-lg border border-border text-center text-text-secondary">
             <p>Visualização em árvore da rede em breve.</p>
-            {/* Example Link (Optional) */}
-            {/* <Button variant="link" className="mt-2 text-primary">Ver detalhes</Button> */}
           </div>
         </CardContent>
       </Card>
-
     </div>
   );
 };
 
 export default MinhaRedePage;
-

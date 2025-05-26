@@ -39,7 +39,7 @@ const SequenceCard = () => {
             <div className="flex justify-between items-center mb-3">
                 <h3 className="text-lg font-semibold flex items-center">
                     <Flame size={20} className="mr-2 text-primary" /> {/* Using Flame icon */}
-                    Sequência Diária
+                    Indicação Diária
                 </h3>
                 <div className="flex items-center text-sm text-primary">
                     <Calendar size={16} className="mr-1" />
@@ -88,4 +88,3 @@ const SequenceCard = () => {
 };
 
 export default SequenceCard;
-

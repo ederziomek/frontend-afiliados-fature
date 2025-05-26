@@ -27,7 +27,7 @@ const Sidebar = () => {
   const navItems = [
     { href: '/', icon: Home, label: 'Início' }, // Renamed from Painel
     { href: '/categoria', icon: Star, label: 'Categoria' }, // Renamed from Minha Categoria
-    { href: '/sequencia-diaria', icon: CalendarDays, label: 'Sequência Diária' },
+    { href: '/sequencia-diaria', icon: CalendarDays, label: 'Indicação Diária' },
     { href: '/baus', icon: Gift, label: 'Baús' },
     { href: '/relatorios', icon: BarChart2, label: 'Relatórios' },
     { href: '/minha-rede', icon: Users, label: 'Minha Rede' },
