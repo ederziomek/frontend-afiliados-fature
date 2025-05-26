@@ -32,7 +32,7 @@ const ChestsCard = () => {
           <CardTitle className="flex items-center text-xl">
             {/* Substituído pelo novo ícone de baú */}
             <span className="mr-2 relative w-6 h-6">
-              <Image src="/icons/vault.png" alt="Baú" width={24} height={24} />
+              <Image src="/icons/bau_icon.png" alt="Baú" width={24} height={24} />
             </span>
             Baús
             <button className="ml-1 text-primary hover:text-primary/80 transition-colors">
@@ -52,7 +52,7 @@ const ChestsCard = () => {
             <span className="text-sm font-medium flex items-center">
               {/* Substituído pelo novo ícone de baú */}
               <span className="mr-2 relative w-5 h-5">
-                <Image src="/icons/vault.png" alt="Baú" width={20} height={20} />
+                <Image src="/icons/bau_icon.png" alt="Baú" width={20} height={20} />
               </span>
               Baú de Indicações
             </span>
@@ -79,7 +79,7 @@ const ChestsCard = () => {
             <span className="text-sm font-medium flex items-center">
               {/* Substituído pelo novo ícone de baú */}
               <span className="mr-2 relative w-5 h-5">
-                <Image src="/icons/vault.png" alt="Baú" width={20} height={20} />
+                <Image src="/icons/bau_icon.png" alt="Baú" width={20} height={20} />
               </span>
               Baú de Ind. diária
             </span>

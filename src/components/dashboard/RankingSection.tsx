@@ -150,7 +150,7 @@ const RankingSection = () => {
 
   const rankingDetails = {
     directIndications: { title: 'Indicações Diretas Válidas', icon: Image, unit: 'indicações' },
-    indirectIndications: { title: 'Indicações Indiretas (Construtor)', icon: Users, unit: 'indicações' },
+    indirectIndications: { title: 'Indicações da sua Rede', icon: Users, unit: 'indicações' },
     dailySequence: { title: 'Maior Sequência Diária', icon: CalendarDays, unit: '' },
   };
 
@@ -226,7 +226,7 @@ const RankingSection = () => {
                   : "border-border bg-border/50 text-text-secondary hover:bg-border/70 transition-colors"
               )}
             >
-              Ind. Diretas
+              Indicações Diretas
             </TabsTrigger>
             <TabsTrigger
               value="indirectIndications"
@@ -237,7 +237,7 @@ const RankingSection = () => {
                   : "border-border bg-border/50 text-text-secondary hover:bg-border/70 transition-colors"
               )}
             >
-              Ind. Indiretas
+              Indicações da Rede
             </TabsTrigger>
             <TabsTrigger
               value="dailySequence"
@@ -248,7 +248,7 @@ const RankingSection = () => {
                   : "border-border bg-border/50 text-text-secondary hover:bg-border/70 transition-colors"
               )}
             >
-              Sequência
+              Indicação Diária
             </TabsTrigger>
           </TabsList>
 
@@ -281,7 +281,7 @@ const RankingSection = () => {
                           </td>
                           <td className="px-4 py-2">{entry.name}</td>
                           <td className="px-4 py-2 text-right">
-                            {entry.value} {entry.rank <=3 && rankingDetails[rankingType].unit ? <span className='text-xs text-gray-400'>{rankingDetails[rankingType].unit}</span> : rankingDetails[rankingType].unit}
+                            {entry.value} {rankingDetails[rankingType].unit ? <span className='text-xs text-gray-400'>{rankingDetails[rankingType].unit}</span> : ''}
                           </td>
                         </tr>
                       ))}

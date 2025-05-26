@@ -812,7 +812,7 @@ const DashboardPage = () => {
           
           <div className="flex items-center justify-center">
             <p className="text-xs text-primary text-center">
-              Copie e compartilhe seu link para começar a faturar R$!
+              Copie e compartilhe seu link para começar a faturar!
             </p>
           </div>
         </div>

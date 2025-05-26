@@ -12,9 +12,9 @@ const JackpotDigit: React.FC<JackpotDigitProps> = ({ digit }) => {
     <div className={cn(
       "h-16 w-10 sm:h-20 sm:w-12", // Responsive size
       "flex items-center justify-center",
-      "bg-gradient-to-b from-yellow-400 via-yellow-600 to-yellow-700", // Gold gradient
-      "border-2 border-yellow-700 rounded-md shadow-lg", // Border and shadow
-      "text-3xl sm:text-4xl font-bold text-black", // Text style
+      "bg-gradient-to-b from-primary/80 via-primary to-primary/90", // Ciano gradient
+      "border-2 border-primary/70 rounded-md shadow-lg", // Border and shadow
+      "text-3xl sm:text-4xl font-bold text-white", // Text style - mudado para branco para melhor contraste
       "relative overflow-hidden" // For potential shine effect
     )}>
       {/* Optional: Add a subtle shine effect */}
@@ -72,13 +72,13 @@ const JackpotDisplay: React.FC<JackpotDisplayProps> = ({ value, duration = 2, cl
 
   return (
     <div className={cn("flex items-center justify-center space-x-1 sm:space-x-2", className)}>
-      <span className="text-2xl sm:text-3xl font-bold text-yellow-400 mr-1">R$</span>
+      <span className="text-2xl sm:text-3xl font-bold text-primary mr-1">R$</span>
       {/* Render the digit boxes based on the state */}
       {digits.map((digit, index) => (
           <React.Fragment key={index}>
             {/* Insert separator before the last two digits */}
             {index === digits.length - 2 && (
-                <span className="text-3xl sm:text-4xl font-bold text-yellow-500">,</span>
+                <span className="text-3xl sm:text-4xl font-bold text-primary">,</span>
             )}
              <JackpotDigit digit={digit} />
           </React.Fragment>
@@ -88,4 +88,3 @@ const JackpotDisplay: React.FC<JackpotDisplayProps> = ({ value, duration = 2, cl
 };
 
 export default JackpotDisplay;
-

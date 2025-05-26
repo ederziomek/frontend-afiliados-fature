@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { ExternalLink, Timer, Info, HelpCircle } from 'lucide-react';
+import { ExternalLink, Timer, Info, HelpCircle, Lock } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -73,14 +73,16 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
     ? `${timeLeft.days ?? 0}d ${timeLeft.hours ?? 0}h ${timeLeft.minutes ?? 0}m ${timeLeft.seconds ?? 0}s`
     : <span>Aberto!</span>; // Changed text when timer finishes
 
+  // Verificar se o cofre está bloqueado (se há tempo restante)
+  const isVaultLocked = Object.keys(timeLeft).length > 0;
+
   // --- Function to handle opening the vault (placeholder) --- 
   const handleOpenVault = () => {
-    // TODO: Implement logic to show video modal
-    // This might involve setting state, calling a modal component, etc.
-    // For now, just log to console and potentially set state
-    console.log("Abrir Cofre clicado! Mostrar vídeo com valor: R$", weeklyRevShare.toFixed(2));
-    setShowVideoModal(true); // Example state change
-    // Reset timer or handle post-opening state if needed
+    // Só permite abrir se não estiver bloqueado
+    if (!isVaultLocked) {
+      console.log("Abrir Cofre clicado! Mostrar vídeo com valor: R$", weeklyRevShare.toFixed(2));
+      setShowVideoModal(true); // Example state change
+    }
   };
   // --- End of handleOpenVault --- 
 
@@ -152,7 +154,7 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
                     </Link>
                 </div>
                 <div className="text-center my-4">
-                    <Image src="/icons/vault.png" width={100} height={100} alt="Cofre" className="mx-auto" />
+                    <Image src="/icons/bau_icon.png" width={100} height={100} alt="Cofre" className="mx-auto" />
                 </div>
                 <div className="text-center mb-4">
                     <p className="text-sm text-text-secondary mb-1">Abre em:</p>
@@ -167,10 +169,10 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
                 </p>
             </div>
             <Button 
-              className="w-full bg-primary hover:bg-primary/80 text-white mt-2"
-              onClick={handleOpenVault}
+              className="w-full bg-gray-700 hover:bg-gray-600 text-gray-300 mt-2 cursor-not-allowed opacity-80"
+              disabled={true}
             >
-              Abrir Cofre
+              <Lock size={16} className="mr-2" /> Abrir Cofre
             </Button>
         </div>
     );
@@ -181,7 +183,7 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
       <div> {/* Wrapper for content before button */}
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-semibold flex items-center">
-            <Image src="/icons/vault.png" width={20} height={20} alt="Cofre" className="mr-2" />
+            <Image src="/icons/bau_icon.png" width={20} height={20} alt="Cofre" className="mr-2" />
             Cofre de Comissões
             <button 
               onClick={() => setShowInfoModal(true)}
@@ -197,7 +199,7 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
 
         {/* Vault Image */}
         <div className="text-center my-4">
-          <Image src="/icons/vault.png" width={100} height={100} alt="Cofre" className="mx-auto" />
+          <Image src="/icons/bau_icon.png" width={100} height={100} alt="Cofre" className="mx-auto" />
         </div>
 
         {/* Timer */}
@@ -216,13 +218,22 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
         </p>
       </div>
 
-      {/* Added Button */}
-      <Button 
-        className="w-full bg-primary hover:bg-primary/80 text-white mt-2"
-        onClick={handleOpenVault}
-      >
-        Abrir Cofre
-      </Button>
+      {/* Botão com estado bloqueado/desbloqueado */}
+      {isVaultLocked ? (
+        <Button 
+          className="w-full bg-gray-700 hover:bg-gray-600 text-gray-300 mt-2 cursor-not-allowed opacity-80"
+          disabled={true}
+        >
+          <Lock size={16} className="mr-2" /> Abrir Cofre
+        </Button>
+      ) : (
+        <Button 
+          className="w-full bg-primary hover:bg-primary/80 text-white mt-2"
+          onClick={handleOpenVault}
+        >
+          Abrir Cofre
+        </Button>
+      )}
 
       {/* Render Video Modal if showVideoModal is true */}
       {showVideoModal && <VideoModal />}
