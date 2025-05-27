@@ -1,317 +1,141 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Users, UserCheck, UserPlus, DollarSign, Search, ArrowRight, GitBranch, BarChartHorizontal, CalendarDays, CheckCircle, Award } from 'lucide-react'; // Added Award
-import Link from 'next/link';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DateRange } from "react-day-picker";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
-import { ptBR } from 'date-fns/locale';
-import { Separator } from '@/components/ui/separator'; // Import Separator
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ListaAfiliados } from "@/components/minha-rede/lista_afiliados";
 
-// --- Placeholder Data (Aumentado) ---
-// NOTE: Actual data fetching needs to provide category and level for affiliates
-const networkData = {
-  overview: {
-    total: 18,
-    active: 12,
-    level2: 8,
-    commissions: 1250.75,
-  },
-  referrals: [
-    { id: 1, name: 'Maria Santos', level: 1, subReferrals: 5, commission: 350.00, initials: 'MS', dailySequence: 5, category: 'Profissional', categoryLevel: 4 }, // Aumentado
-    { id: 2, name: 'Pedro Lima', level: 1, subReferrals: 3, commission: 180.00, initials: 'PL', dailySequence: 4, category: 'Regular', categoryLevel: 8 }, // Aumentado
-    { id: 3, name: 'Ana Costa', level: 1, subReferrals: 2, commission: 150.00, initials: 'AC', dailySequence: 7, category: 'Iniciante', categoryLevel: 5 }, // Aumentado
-    { id: 4, name: 'Roberto Silva', level: 2, via: 'Maria Santos', commission: 90.00, initials: 'RS', category: 'Regular', categoryLevel: 3 }, // Aumentado
-    { id: 5, name: 'Luciana Martins', level: 1, subReferrals: 1, commission: 75.00, initials: 'LM', dailySequence: 3, category: 'Jogador', categoryLevel: 2 }, // Aumentado
-    { id: 6, name: 'Carlos Pereira', level: 3, via: 'Roberto Silva', commission: 60.00, initials: 'CP', category: 'Jogador', categoryLevel: 3 }, // Aumentado
-    { id: 7, name: 'Juliana Alves', level: 1, subReferrals: 4, commission: 220.00, initials: 'JA', dailySequence: 6, category: 'Regular', categoryLevel: 5 }, // Aumentado
-    { id: 8, name: 'Fernando Dias', level: 2, via: 'Juliana Alves', commission: 125.75, initials: 'FD', category: 'Iniciante', categoryLevel: 3 }, // Aumentado
-    // Novos indicados
-    { id: 9, name: 'Mariana Oliveira', level: 1, subReferrals: 2, commission: 120.00, initials: 'MO', dailySequence: 4, category: 'Regular', categoryLevel: 4 },
-    { id: 10, name: 'Ricardo Gomes', level: 2, via: 'Mariana Oliveira', commission: 85.00, initials: 'RG', category: 'Iniciante', categoryLevel: 4 },
-    { id: 11, name: 'Camila Souza', level: 2, via: 'Mariana Oliveira', commission: 70.00, initials: 'CS', category: 'Jogador', categoryLevel: 3 },
-    { id: 12, name: 'Bruno Ferreira', level: 1, subReferrals: 0, commission: 45.00, initials: 'BF', dailySequence: 2, category: 'Jogador', categoryLevel: 2 },
-    { id: 13, name: 'Patrícia Mendes', level: 3, via: 'Carlos Pereira', commission: 40.00, initials: 'PM', category: 'Jogador', categoryLevel: 1 },
-    { id: 14, name: 'Gabriel Santos', level: 2, via: 'Pedro Lima', commission: 35.00, initials: 'GS', category: 'Jogador', categoryLevel: 1 },
-    { id: 15, name: 'Larissa Costa', level: 2, via: 'Pedro Lima', commission: 30.00, initials: 'LC', category: 'Jogador', categoryLevel: 1 },
-    { id: 16, name: 'Thiago Martins', level: 2, via: 'Pedro Lima', commission: 25.00, initials: 'TM', category: 'Jogador', categoryLevel: 1 },
-    { id: 17, name: 'Vanessa Lima', level: 3, via: 'Gabriel Santos', commission: 20.00, initials: 'VL', category: 'Jogador', categoryLevel: 1 },
-    { id: 18, name: 'Eduardo Pereira', level: 4, via: 'Vanessa Lima', commission: 15.00, initials: 'EP', category: 'Jogador', categoryLevel: 1 },
-  ],
-  performance: [
-    { level: 1, count: 5, revenue: 975.00 },
-    { level: 2, count: 6, revenue: 425.75 },
-    { level: 3, count: 3, revenue: 120.00 },
-    { level: 4, count: 1, revenue: 15.00 },
-    { level: 5, count: 0, revenue: 0.00 },
-  ]
-};
-// --- End Placeholder Data ---
-
-// Define type for levelColors with index signature
-interface LevelColors {
-  [key: number]: string; // Allows number keys
+// Dados de exemplo para resumo
+interface ResumoNivel {
+  nivel: number;
+  indicacoes: number;
+  indicacoesValidas: number;
+  comissoes: number;
 }
 
-const levelColors: LevelColors = {
-  1: 'bg-cyan-500 border-cyan-500 text-cyan-50',
-  2: 'bg-yellow-500 border-yellow-500 text-yellow-50',
-  3: 'bg-green-500 border-green-500 text-green-50',
-  4: 'bg-orange-500 border-orange-500 text-orange-50',
-  5: 'bg-purple-500 border-purple-500 text-purple-50',
+interface ResumoTotal {
+  indicacoes: number;
+  indicacoesValidas: number;
+  comissoes: number;
+  resumosPorNivel: ResumoNivel[];
+}
+
+// Dados de exemplo para afiliados
+interface Afiliado {
+  id: string;
+  nome: string;
+  nivel: number;
+  indicacoesValidas: number;
+  valorDepositado: number;
+  comissao: number;
+}
+
+// Dados mockados para demonstração
+const dadosResumo: ResumoTotal = {
+  indicacoes: 247,
+  indicacoesValidas: 183,
+  comissoes: 5490.00,
+  resumosPorNivel: [
+    { nivel: 1, indicacoes: 98, indicacoesValidas: 76, comissoes: 3040.00 },
+    { nivel: 2, indicacoes: 67, indicacoesValidas: 52, comissoes: 1300.00 },
+    { nivel: 3, indicacoes: 45, indicacoesValidas: 32, comissoes: 640.00 },
+    { nivel: 4, indicacoes: 24, indicacoesValidas: 16, comissoes: 320.00 },
+    { nivel: 5, indicacoes: 13, indicacoesValidas: 7, comissoes: 190.00 }
+  ]
 };
 
-const MinhaRedePage = () => {
-  const [selectedLevel, setSelectedLevel] = useState(0); // Default to Level 0 (Todos)
-  const [dateRange, setDateRange] = useState<DateRange | undefined>();
-  const [periodFilter, setPeriodFilter] = useState<string>("this_month");
-  const [searchTerm, setSearchTerm] = useState<string>("");
+// Dados mockados de afiliados
+const dadosAfiliados: Afiliado[] = [
+  { id: "#AF12345", nome: "João Silva", nivel: 1, indicacoesValidas: 12, valorDepositado: 2400.00, comissao: 480.00 },
+  { id: "#AF12346", nome: "Maria Oliveira", nivel: 1, indicacoesValidas: 18, valorDepositado: 3600.00, comissao: 720.00 },
+  { id: "#AF12347", nome: "Carlos Santos", nivel: 2, indicacoesValidas: 8, valorDepositado: 1600.00, comissao: 320.00 },
+  { id: "#AF12348", nome: "Ana Pereira", nivel: 1, indicacoesValidas: 15, valorDepositado: 3000.00, comissao: 600.00 },
+  { id: "#AF12349", nome: "Pedro Almeida", nivel: 3, indicacoesValidas: 5, valorDepositado: 1000.00, comissao: 200.00 },
+  { id: "#AF12350", nome: "Juliana Costa", nivel: 2, indicacoesValidas: 10, valorDepositado: 2000.00, comissao: 400.00 },
+  { id: "#AF12351", nome: "Marcos Souza", nivel: 4, indicacoesValidas: 7, valorDepositado: 1400.00, comissao: 280.00 },
+  { id: "#AF12352", nome: "Fernanda Lima", nivel: 1, indicacoesValidas: 14, valorDepositado: 2800.00, comissao: 560.00 },
+  { id: "#AF12353", nome: "Ricardo Gomes", nivel: 5, indicacoesValidas: 6, valorDepositado: 1200.00, comissao: 240.00 },
+  { id: "#AF12354", nome: "Camila Ferreira", nivel: 3, indicacoesValidas: 9, valorDepositado: 1800.00, comissao: 360.00 },
+  { id: "#AF12355", nome: "Roberto Dias", nivel: 2, indicacoesValidas: 11, valorDepositado: 2200.00, comissao: 440.00 },
+  { id: "#AF12356", nome: "Luciana Martins", nivel: 1, indicacoesValidas: 16, valorDepositado: 3200.00, comissao: 640.00 },
+  { id: "#AF12357", nome: "Felipe Cardoso", nivel: 3, indicacoesValidas: 4, valorDepositado: 800.00, comissao: 160.00 },
+  { id: "#AF12358", nome: "Mariana Costa", nivel: 2, indicacoesValidas: 9, valorDepositado: 1800.00, comissao: 360.00 },
+  { id: "#AF12359", nome: "Eduardo Nunes", nivel: 1, indicacoesValidas: 13, valorDepositado: 2600.00, comissao: 520.00 },
+  { id: "#AF12360", nome: "Patrícia Lopes", nivel: 4, indicacoesValidas: 5, valorDepositado: 1000.00, comissao: 200.00 },
+  { id: "#AF12361", nome: "Gabriel Mendes", nivel: 2, indicacoesValidas: 7, valorDepositado: 1400.00, comissao: 280.00 },
+  { id: "#AF12362", nome: "Isabela Rocha", nivel: 1, indicacoesValidas: 19, valorDepositado: 3800.00, comissao: 760.00 },
+  { id: "#AF12363", nome: "Thiago Alves", nivel: 3, indicacoesValidas: 6, valorDepositado: 1200.00, comissao: 240.00 },
+  { id: "#AF12364", nome: "Carla Ribeiro", nivel: 5, indicacoesValidas: 3, valorDepositado: 600.00, comissao: 120.00 }
+];
 
-  const handlePeriodChange = (value: string) => {
-    setPeriodFilter(value);
-    if (value !== "custom") {
-      setDateRange(undefined);
-    }
-    // TODO: Add logic here to fetch data based on the selected period
-    console.log("Fetching data for period:", value, dateRange);
-  };
-
-  // Filtering logic
-  const filteredReferrals = networkData.referrals.filter(ref => {
-    const levelMatch = selectedLevel === 0 || ref.level === selectedLevel;
-    const nameMatch = searchTerm === "" || ref.name.toLowerCase().includes(searchTerm.toLowerCase());
-    // TODO: Add date filtering based on dateRange/periodFilter
-    return levelMatch && nameMatch;
-  });
-
+export default function MinhaRedePage() {
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-semibold text-white">Minha Rede</h1>
-
-      {/* Gerencie Sua Rede Card */}
-      <Card className="bg-card border-border">
-        <CardHeader>
-          <CardTitle className="flex items-center text-white">
-            <Users size={20} className="mr-2 text-primary" />
-            Gerencie Sua Rede
-          </CardTitle>
-          <CardDescription className="text-text-secondary">
-            Acompanhe o desempenho dos seus indicados diretos e indiretos. Quanto maior sua rede, maiores são seus ganhos!
-          </CardDescription>
-        </CardHeader>
-      </Card>
-
-      {/* --- Unified Card for Visão Geral and Meus Indicados --- */}
-      <Card className="bg-card border-border">
-        {/* Visão Geral Section */}
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between text-white">
-            <span className="flex items-center">
-              <BarChartHorizontal size={20} className="mr-2 text-primary" />
-              Visão Geral
-            </span>
-            {/* Filters remain the same */}
-            <div className="flex items-center space-x-2">
-              <Select value={periodFilter} onValueChange={handlePeriodChange}>
-                <SelectTrigger className="w-[130px] h-8 text-xs">
-                  <SelectValue placeholder="Selecionar Período" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="today">Hoje</SelectItem>
-                  <SelectItem value="yesterday">Ontem</SelectItem>
-                  <SelectItem value="this_week">Esta Semana</SelectItem>
-                  <SelectItem value="this_month">Este Mês</SelectItem>
-                  <SelectItem value="custom">Personalizado</SelectItem>
-                </SelectContent>
-              </Select>
-              {periodFilter === "custom" && (
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant={"outline"}
-                      className="w-[240px] h-8 justify-start text-left font-normal text-xs"
-                    >
-                      <CalendarDays className="mr-2 h-4 w-4" />
-                      {dateRange?.from ? (
-                        dateRange.to ? (
-                          <>{format(dateRange.from, "dd/MM/yy", { locale: ptBR })} - {format(dateRange.to, "dd/MM/yy", { locale: ptBR })}</>
-                        ) : (
-                          format(dateRange.from, "dd/MM/yy", { locale: ptBR })
-                        )
-                      ) : (
-                        <span>Selecione as datas</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="end">
-                    <Calendar
-                      initialFocus
-                      mode="range"
-                      defaultMonth={dateRange?.from}
-                      selected={dateRange}
-                      onSelect={setDateRange}
-                      numberOfMonths={2}
-                      locale={ptBR}
-                    />
-                  </PopoverContent>
-                </Popover>
-              )}
-            </div>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {/* Overview Cards - Data should be updated based on filter */}
-          <div className="bg-background p-4 rounded-lg shadow text-center border border-border">
-            <Users size={24} className="mx-auto mb-2 text-primary" />
-            <p className="text-2xl font-bold text-white">{networkData.overview.total}</p>
-            <p className="text-sm text-text-secondary">Total de Indicados</p>
-          </div>
-          <div className="bg-background p-4 rounded-lg shadow text-center border border-border">
-            <UserCheck size={24} className="mx-auto mb-2 text-green-500" />
-            <p className="text-2xl font-bold text-white">{networkData.overview.active}</p>
-            <p className="text-sm text-text-secondary">Indicados Ativos</p>
-          </div>
-          <div className="bg-background p-4 rounded-lg shadow text-center border border-border">
-            <UserPlus size={24} className="mx-auto mb-2 text-blue-400" />
-            <p className="text-2xl font-bold text-white">{networkData.overview.level2}</p>
-            <p className="text-sm text-text-secondary">Indicados Nível 2+</p>
-          </div>
-          <div className="bg-background p-4 rounded-lg shadow text-center border border-border">
-            <DollarSign size={24} className="mx-auto mb-2 text-yellow-400" />
-            <p className="text-2xl font-bold text-white">R$ {networkData.overview.commissions.toFixed(2).replace(".", ",")}</p>
-            <p className="text-sm text-text-secondary">Comissões da Rede</p>
-          </div>
-        </CardContent>
-
-        {/* Separator between sections */}
-        <Separator className="my-4 bg-border" />
-
-        {/* Meus Indicados Section */}
-        {/* Removed CardHeader wrapper, kept content */}
-        <div className="px-6"> {/* Added padding to match CardHeader/CardContent */}
-          <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center text-white">
-              <Users size={20} className="mr-2 text-primary" />
-              Meus Indicados
+    <div className="container mx-auto py-6 space-y-6">
+      <h1 className="text-2xl font-bold">Minha Rede</h1>
+      
+      {/* Seção de Resumo */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+        {/* Card Total */}
+        <Card className="lg:col-span-2 border-primary/30 border-2">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-xl flex justify-between items-center">
+              Minha Rede - Total
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 16v-4"></path>
+                <path d="M12 8h.01"></path>
+              </svg>
             </CardTitle>
-          </div>
-          <div className="flex flex-col sm:flex-row items-center justify-between pt-4 gap-4">
-            {/* Level Filters */}
-            <div className="flex space-x-1 sm:space-x-2 overflow-x-auto pb-2 sm:pb-0">
-              <Button variant={selectedLevel === 0 ? "default" : "outline"} size="sm" onClick={() => setSelectedLevel(0)}>Todos</Button>
-              <Button variant={selectedLevel === 1 ? "default" : "outline"} size="sm" onClick={() => setSelectedLevel(1)} className="border-cyan-500 text-cyan-500 hover:bg-cyan-500/10 data-[state=active]:bg-cyan-500 data-[state=active]:text-cyan-50">Nível 1</Button>
-              <Button variant={selectedLevel === 2 ? "default" : "outline"} size="sm" onClick={() => setSelectedLevel(2)} className="border-yellow-500 text-yellow-500 hover:bg-yellow-500/10 data-[state=active]:bg-yellow-500 data-[state=active]:text-yellow-50">Nível 2</Button>
-              <Button variant={selectedLevel === 3 ? "default" : "outline"} size="sm" onClick={() => setSelectedLevel(3)} className="border-green-500 text-green-500 hover:bg-green-500/10 data-[state=active]:bg-green-500 data-[state=active]:text-green-50">Nível 3</Button>
-              <Button variant={selectedLevel === 4 ? "default" : "outline"} size="sm" onClick={() => setSelectedLevel(4)} className="border-orange-500 text-orange-500 hover:bg-orange-500/10 data-[state=active]:bg-orange-500 data-[state=active]:text-orange-50">Nível 4</Button>
-              <Button variant={selectedLevel === 5 ? "default" : "outline"} size="sm" onClick={() => setSelectedLevel(5)} className="border-purple-500 text-purple-500 hover:bg-purple-500/10 data-[state=active]:bg-purple-500 data-[state=active]:text-purple-50">Nível 5</Button>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-3 gap-2">
+              <div className="text-center">
+                <p className="text-sm text-muted-foreground">Indicações</p>
+                <p className="text-lg font-bold">{dadosResumo.indicacoes}</p>
+              </div>
+              <div className="text-center">
+                <p className="text-sm text-muted-foreground">Ind. Válidas</p>
+                <p className="text-lg font-bold">{dadosResumo.indicacoesValidas}</p>
+              </div>
+              <div className="text-center">
+                <p className="text-sm text-muted-foreground">Comissões</p>
+                <p className="text-lg font-bold text-green-500">R$ {dadosResumo.comissoes.toFixed(2).replace('.', ',')}</p>
+              </div>
             </div>
-            {/* Search Input */}
-            <div className="relative w-full sm:w-auto sm:max-w-xs">
-              <Input
-                type="search"
-                placeholder="Buscar por nome..."
-                className="pl-8 h-9"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <Search size={16} className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-text-secondary" />
-            </div>
-          </div>
-        </div>
-        <CardContent className="space-y-4 pt-4"> {/* Added top padding */} 
-          {filteredReferrals.length > 0 ? filteredReferrals.map((ref) => (
-            <div key={ref.id} className="flex items-center justify-between bg-background p-3 rounded-lg border border-border">
-              <div className="flex items-center space-x-3">
-                <Avatar>
-                  {/* Now correctly typed due to index signature in LevelColors */}
-                  <AvatarFallback className={`${levelColors[ref.level] || 'bg-gray-500 border-gray-500 text-gray-50'}`}>{ref.initials}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-sm font-semibold text-white">{ref.name}</p>
-                  <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-xs text-text-secondary mt-1">
-                    {/* Now correctly typed due to index signature in LevelColors */}
-                    <Badge variant="outline" className={`border ${levelColors[ref.level]?.split(' ')[1] || 'border-gray-500'} ${levelColors[ref.level]?.split(' ')[2] || 'text-gray-500'}`}>Nível {ref.level}</Badge>
-                    {/* --- Display Category (Level) --- */}
-                    {ref.category && (
-                      <span className="flex items-center">
-                        <Award size={12} className="mr-0.5 text-yellow-400"/>
-                        {ref.category} (Lvl {ref.categoryLevel})
-                      </span>
-                    )}
-                    {/* --- End Display Category (Level) --- */}
-                    {ref.level === 1 && <span>{ref.subReferrals} indicados</span>}
-                    {ref.level > 1 && <span>Via {ref.via}</span>}
-                  </div>
+          </CardContent>
+        </Card>
+        
+        {/* Cards de Nível */}
+        {dadosResumo.resumosPorNivel.map((resumo) => (
+          <Card key={resumo.nivel} className="border-primary/30 border-2">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">Nível {resumo.nivel}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-sm text-muted-foreground">Indicações</span>
+                  <span className="font-medium">{resumo.indicacoes}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-muted-foreground">Ind. Válidas</span>
+                  <span className="font-medium">{resumo.indicacoesValidas}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-muted-foreground">Comissões</span>
+                  <span className="font-medium text-green-500">R$ {resumo.comissoes.toFixed(2).replace('.', ',')}</span>
                 </div>
               </div>
-              <div className="text-right flex-shrink-0 ml-2">
-                <p className="text-sm font-semibold text-green-500">R$ {ref.commission.toFixed(2).replace('.', ',')}</p>
-              </div>
-            </div>
-          )) : (
-            <p className="text-center text-text-secondary py-4">Nenhum indicado encontrado para os filtros selecionados.</p>
-          )}
-          {/* TODO: Add pagination controls if needed */}
-        </CardContent>
-      </Card>
-      {/* --- End of Unified Card --- */}
-
-      {/* Sequência Diária Nível 1 Section (Remains separate) */}
-      <Card className="bg-card border-border">
-        <CardHeader>
-          <CardTitle className="flex items-center text-white">
-            <CheckCircle size={20} className="mr-2 text-primary" />
-            Sequência Diária (Nível 1)
-          </CardTitle>
-          <CardDescription className="text-text-secondary">
-            Acompanhe a sequência diária dos seus indicados diretos.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {/* List 5 affiliates by default, add load more */}
-          {networkData.referrals.filter(r => r.level === 1).slice(0, 5).map(ref => (
-            <div key={ref.id} className="flex items-center justify-between bg-background p-2 rounded border border-border">
-              <span className="text-sm text-white">{ref.name}</span>
-              <span className={`text-sm font-semibold ${(ref.dailySequence ?? 0) > 0 ? 'text-primary' : 'text-text-secondary'}`}>{ref.dailySequence ?? 0} dias</span>
-            </div>
-          ))}
-          {networkData.referrals.filter(r => r.level === 1).length > 5 && (
-            <Button variant="outline" size="sm" className="w-full mt-2">Carregar Mais</Button>
-          )}
-           {networkData.referrals.filter(r => r.level === 1).length === 0 && (
-            <p className="text-center text-text-secondary py-4">Nenhum indicado nível 1 encontrado.</p>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Árvore de Indicados (Remains separate) */}
-      <Card className="bg-card border-border">
-        <CardHeader>
-          <CardTitle className="flex items-center text-white">
-            <GitBranch size={20} className="mr-2 text-primary" />
-            Árvore de Indicados
-          </CardTitle>
-          <CardDescription className="text-text-secondary">
-            Visualize a estrutura completa da sua rede.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {/* Placeholder for tree visualization */}
-          <div className="bg-background p-6 rounded-lg border border-border text-center text-text-secondary">
-            <p>Visualização em árvore da rede em breve.</p>
-          </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      
+      {/* Seção de Lista de Afiliados */}
+      <Card className="border-primary/30 border-2">
+        <CardContent className="pt-6">
+          <ListaAfiliados afiliados={dadosAfiliados} />
         </CardContent>
       </Card>
     </div>
   );
-};
-
-export default MinhaRedePage;
+}
