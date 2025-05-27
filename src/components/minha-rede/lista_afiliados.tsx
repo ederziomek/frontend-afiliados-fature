@@ -1,7 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { FiUsers, FiInfo, FiChevronDown, FiChevronUp, FiSearch } from 'react-icons/fi';
+import { 
+  Users, Info, ChevronDown, ChevronUp, Search, 
+  ChevronLeft, ChevronRight 
+} from 'lucide-react';
 
 // Componente para o card de resumo por nível
 const NivelCard = ({ titulo, indicacoes, indValidas, comissoes }) => {
@@ -160,7 +163,7 @@ const ListaAfiliados = ({ data }) => {
         <div className="border-2 border-primary/30 bg-darker rounded-lg p-4 mb-4 transition-all hover:translate-y-[-2px]">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-medium">Minha Rede - Total</h2>
-            <FiInfo className="text-primary" size={20} />
+            <Info className="text-primary" size={20} />
           </div>
           <div className="grid grid-cols-3 gap-2 mb-4">
             <div className="text-center">
@@ -183,7 +186,7 @@ const ListaAfiliados = ({ data }) => {
             className="w-full py-2 px-4 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors flex items-center justify-center"
           >
             <span>{mostrarNiveis ? 'Ocultar informações por nível' : 'Exibir informações por nível'}</span>
-            {mostrarNiveis ? <FiChevronUp className="ml-2" /> : <FiChevronDown className="ml-2" />}
+            {mostrarNiveis ? <ChevronUp className="ml-2" /> : <ChevronDown className="ml-2" />}
           </button>
         </div>
         
@@ -228,7 +231,7 @@ const ListaAfiliados = ({ data }) => {
       <div className="border-2 border-primary/30 bg-darker rounded-lg p-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
           <div className="flex items-center">
-            <FiUsers className="text-primary mr-2" size={24} />
+            <Users className="text-primary mr-2" size={24} />
             <h2 className="text-xl font-medium">Lista de Afiliados</h2>
           </div>
           
@@ -283,7 +286,7 @@ const ListaAfiliados = ({ data }) => {
             onChange={(e) => setTermoBusca(e.target.value)}
           />
           <div className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-primary rounded-lg p-2">
-            <FiSearch className="text-darker" size={16} />
+            <Search className="text-darker" size={16} />
           </div>
         </div>
         
@@ -434,7 +437,7 @@ const ListaAfiliados = ({ data }) => {
               onClick={() => paginaAtual > 1 && setPaginaAtual(paginaAtual - 1)}
               disabled={paginaAtual <= 1}
             >
-              <FiChevronDown className="transform rotate-90" />
+              <ChevronLeft size={16} />
             </button>
             
             {Array.from({ length: Math.min(totalPaginas, 3) }).map((_, i) => {
@@ -466,7 +469,7 @@ const ListaAfiliados = ({ data }) => {
               onClick={() => paginaAtual < totalPaginas && setPaginaAtual(paginaAtual + 1)}
               disabled={paginaAtual >= totalPaginas}
             >
-              <FiChevronDown className="transform -rotate-90" />
+              <ChevronRight size={16} />
             </button>
           </div>
         </div>
