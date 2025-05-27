@@ -1,332 +1,498 @@
 'use client';
 
-import React, { useState } from 'react';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, ArrowUpDown } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { FiUsers, FiInfo, FiChevronDown, FiChevronUp, FiSearch } from 'react-icons/fi';
 
-// Tipos
-interface Afiliado {
-  id: string;
-  nome: string;
-  nivel: number;
-  indicacoesValidas: number;
-  valorDepositado: number;
-  comissao: number;
-}
+// Componente para o card de resumo por nível
+const NivelCard = ({ titulo, indicacoes, indValidas, comissoes }) => {
+  return (
+    <div className="bg-darker rounded-lg p-4 border-2 border-primary/30">
+      <h2 className="text-lg font-medium mb-3">{titulo}</h2>
+      <div className="space-y-2">
+        <div className="flex justify-between">
+          <span className="text-sm text-gray-400">Indicações</span>
+          <span className="font-medium">{indicacoes}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-sm text-gray-400">Ind. Válidas</span>
+          <span className="font-medium">{indValidas}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-sm text-gray-400">Comissões</span>
+          <span className="font-medium text-success">R$ {comissoes}</span>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-interface ListaAfiliadosProps {
-  afiliados: Afiliado[];
-}
+// Componente para o avatar com iniciais
+const Avatar = ({ nome }) => {
+  const getInitials = (name) => {
+    const names = name.split(' ');
+    if (names.length >= 2) {
+      return `${names[0][0]}${names[1][0]}`;
+    }
+    return names[0].substring(0, 2);
+  };
 
-export function ListaAfiliados({ afiliados }: ListaAfiliadosProps) {
-  // Estados
-  const [filtroNivel, setFiltroNivel] = useState<string>("total");
-  const [termoPesquisa, setTermoPesquisa] = useState<string>("");
-  const [itensPorPagina, setItensPorPagina] = useState<number>(10);
-  const [paginaAtual, setPaginaAtual] = useState<number>(1);
-  const [ordenacao, setOrdenacao] = useState<{coluna: string, direcao: 'asc' | 'desc'}>({
-    coluna: 'comissao',
-    direcao: 'desc'
-  });
+  return (
+    <div className="w-12 h-12 rounded-full bg-darker border-2 border-primary/30 flex items-center justify-center text-lg font-bold">
+      {getInitials(nome)}
+    </div>
+  );
+};
 
-  // Filtragem de afiliados
-  const afiliadosFiltrados = afiliados
-    .filter(afiliado => {
-      // Filtro por nível
-      if (filtroNivel !== "total" && afiliado.nivel !== parseInt(filtroNivel.replace("nivel", ""))) {
-        return false;
+// Componente principal da lista de afiliados
+const ListaAfiliados = ({ data }) => {
+  const [mostrarNiveis, setMostrarNiveis] = useState(false);
+  const [nivelFiltro, setNivelFiltro] = useState('total');
+  const [termoBusca, setTermoBusca] = useState('');
+  const [paginaAtual, setPaginaAtual] = useState(1);
+  const [itensPorPagina, setItensPorPagina] = useState(10);
+  const [dadosFiltrados, setDadosFiltrados] = useState([]);
+  const [ordenacao, setOrdenacao] = useState({ campo: 'comissao', direcao: 'desc' });
+
+  // Dados de resumo
+  const resumo = {
+    total: {
+      indicacoes: 247,
+      indValidas: 183,
+      comissoes: '5.490,00'
+    },
+    nivel1: {
+      indicacoes: 98,
+      indValidas: 76,
+      comissoes: '3.040,00'
+    },
+    nivel2: {
+      indicacoes: 67,
+      indValidas: 52,
+      comissoes: '1.300,00'
+    },
+    nivel3: {
+      indicacoes: 45,
+      indValidas: 32,
+      comissoes: '640,00'
+    },
+    nivel4: {
+      indicacoes: 24,
+      indValidas: 16,
+      comissoes: '320,00'
+    },
+    nivel5: {
+      indicacoes: 13,
+      indValidas: 7,
+      comissoes: '190,00'
+    }
+  };
+
+  // Efeito para filtrar e ordenar os dados
+  useEffect(() => {
+    let resultado = [...data];
+    
+    // Aplicar filtro de nível
+    if (nivelFiltro !== 'total') {
+      const nivel = parseInt(nivelFiltro.replace('nivel', ''));
+      resultado = resultado.filter(item => item.nivel === nivel);
+    }
+    
+    // Aplicar busca
+    if (termoBusca) {
+      const termo = termoBusca.toLowerCase();
+      resultado = resultado.filter(
+        item => item.id.toLowerCase().includes(termo) || 
+               item.nome.toLowerCase().includes(termo)
+      );
+    }
+    
+    // Aplicar ordenação
+    resultado.sort((a, b) => {
+      let valorA = a[ordenacao.campo];
+      let valorB = b[ordenacao.campo];
+      
+      // Converter para número se for valor monetário
+      if (typeof valorA === 'string' && valorA.includes('R$')) {
+        valorA = parseFloat(valorA.replace('R$', '').replace('.', '').replace(',', '.'));
+      }
+      if (typeof valorB === 'string' && valorB.includes('R$')) {
+        valorB = parseFloat(valorB.replace('R$', '').replace('.', '').replace(',', '.'));
       }
       
-      // Filtro por pesquisa (ID ou nome)
-      if (termoPesquisa && !afiliado.id.toLowerCase().includes(termoPesquisa.toLowerCase()) && 
-          !afiliado.nome.toLowerCase().includes(termoPesquisa.toLowerCase())) {
-        return false;
+      if (ordenacao.direcao === 'asc') {
+        return valorA > valorB ? 1 : -1;
+      } else {
+        return valorA < valorB ? 1 : -1;
       }
-      
-      return true;
-    })
-    .sort((a, b) => {
-      // Ordenação
-      const coluna = ordenacao.coluna as keyof Afiliado;
-      const fatorOrdenacao = ordenacao.direcao === 'asc' ? 1 : -1;
-      
-      if (a[coluna] < b[coluna]) return -1 * fatorOrdenacao;
-      if (a[coluna] > b[coluna]) return 1 * fatorOrdenacao;
-      return 0;
     });
-
-  // Paginação
-  const totalPaginas = Math.ceil(afiliadosFiltrados.length / itensPorPagina);
-  const indiceInicial = (paginaAtual - 1) * itensPorPagina;
-  const afiliadosPaginados = afiliadosFiltrados.slice(indiceInicial, indiceInicial + itensPorPagina);
+    
+    setDadosFiltrados(resultado);
+  }, [data, nivelFiltro, termoBusca, ordenacao]);
 
   // Função para alternar ordenação
-  const alternarOrdenacao = (coluna: string) => {
-    if (ordenacao.coluna === coluna) {
+  const alternarOrdenacao = (campo) => {
+    if (ordenacao.campo === campo) {
       setOrdenacao({
-        coluna,
+        campo,
         direcao: ordenacao.direcao === 'asc' ? 'desc' : 'asc'
       });
     } else {
       setOrdenacao({
-        coluna,
+        campo,
         direcao: 'desc'
       });
     }
   };
 
-  // Cores para os níveis
-  const coresNiveis: Record<number, string> = {
-    1: "bg-primary/20 text-primary",
-    2: "bg-primary/20 text-primary",
-    3: "bg-primary/20 text-primary",
-    4: "bg-primary/20 text-primary",
-    5: "bg-primary/20 text-primary"
-  };
+  // Calcular dados paginados
+  const indiceInicial = (paginaAtual - 1) * itensPorPagina;
+  const indiceFinal = indiceInicial + itensPorPagina;
+  const dadosPaginados = dadosFiltrados.slice(indiceInicial, indiceFinal);
+  const totalPaginas = Math.ceil(dadosFiltrados.length / itensPorPagina);
 
   return (
-    <div className="space-y-4">
-      {/* Cabeçalho com pesquisa e filtros */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <h2 className="text-xl font-medium">Lista de Afiliados</h2>
+    <div className="container mx-auto px-4 py-8">
+      {/* Seção de Resumo */}
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold mb-6">Minha Rede</h1>
         
-        <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-          {/* Campo de Pesquisa */}
-          <div className="relative w-full md:w-64">
-            <Input
-              placeholder="Buscar por ID ou nome"
-              value={termoPesquisa}
-              onChange={(e) => setTermoPesquisa(e.target.value)}
-              className="pl-8 pr-4 py-2 w-full"
-            />
-            <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
+        {/* Card Total */}
+        <div className="border-2 border-primary/30 bg-darker rounded-lg p-4 mb-4 transition-all hover:translate-y-[-2px]">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-medium">Minha Rede - Total</h2>
+            <FiInfo className="text-primary" size={20} />
+          </div>
+          <div className="grid grid-cols-3 gap-2 mb-4">
+            <div className="text-center">
+              <p className="text-sm text-gray-400">Indicações</p>
+              <p className="text-lg font-bold">{resumo.total.indicacoes}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-gray-400">Ind. Válidas</p>
+              <p className="text-lg font-bold">{resumo.total.indValidas}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-gray-400">Comissões</p>
+              <p className="text-lg font-bold text-success">R$ {resumo.total.comissoes}</p>
+            </div>
           </div>
           
-          {/* Filtro de Níveis */}
-          <Select value={filtroNivel} onValueChange={setFiltroNivel}>
-            <SelectTrigger className="w-full md:w-auto">
-              <SelectValue placeholder="Filtrar por nível" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="total">Total</SelectItem>
-              <SelectItem value="nivel1">Nível 1</SelectItem>
-              <SelectItem value="nivel2">Nível 2</SelectItem>
-              <SelectItem value="nivel3">Nível 3</SelectItem>
-              <SelectItem value="nivel4">Nível 4</SelectItem>
-              <SelectItem value="nivel5">Nível 5</SelectItem>
-            </SelectContent>
-          </Select>
+          {/* Botão para exibir/ocultar informações por nível */}
+          <button 
+            onClick={() => setMostrarNiveis(!mostrarNiveis)}
+            className="w-full py-2 px-4 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors flex items-center justify-center"
+          >
+            <span>{mostrarNiveis ? 'Ocultar informações por nível' : 'Exibir informações por nível'}</span>
+            {mostrarNiveis ? <FiChevronUp className="ml-2" /> : <FiChevronDown className="ml-2" />}
+          </button>
         </div>
-      </div>
-      
-      <div className="text-sm text-muted-foreground">
-        Exibindo <span className="font-medium">{afiliadosPaginados.length}</span> de <span className="font-medium">{afiliadosFiltrados.length}</span> afiliados
-      </div>
-      
-      {/* Tabela Desktop */}
-      <div className="rounded-md border hidden md:block">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="text-center">
-                <Button 
-                  variant="ghost" 
-                  onClick={() => alternarOrdenacao('id')}
-                  className="flex items-center justify-center"
-                >
-                  ID Afiliado
-                  <ArrowUpDown size={14} className="ml-1" />
-                </Button>
-              </TableHead>
-              <TableHead className="text-center">
-                <Button 
-                  variant="ghost" 
-                  onClick={() => alternarOrdenacao('nome')}
-                  className="flex items-center justify-center"
-                >
-                  Nome Afiliado
-                  <ArrowUpDown size={14} className="ml-1" />
-                </Button>
-              </TableHead>
-              <TableHead className="text-center">
-                <Button 
-                  variant="ghost" 
-                  onClick={() => alternarOrdenacao('nivel')}
-                  className="flex items-center justify-center"
-                >
-                  Nível
-                  <ArrowUpDown size={14} className="ml-1" />
-                </Button>
-              </TableHead>
-              <TableHead className="text-center">
-                <Button 
-                  variant="ghost" 
-                  onClick={() => alternarOrdenacao('indicacoesValidas')}
-                  className="flex items-center justify-center"
-                >
-                  Ind. Válidas
-                  <ArrowUpDown size={14} className="ml-1" />
-                </Button>
-              </TableHead>
-              <TableHead className="text-center">
-                <Button 
-                  variant="ghost" 
-                  onClick={() => alternarOrdenacao('valorDepositado')}
-                  className="flex items-center justify-center"
-                >
-                  Valor Depositado
-                  <ArrowUpDown size={14} className="ml-1" />
-                </Button>
-              </TableHead>
-              <TableHead className="text-center">
-                <Button 
-                  variant="ghost" 
-                  onClick={() => alternarOrdenacao('comissao')}
-                  className={`flex items-center justify-center ${ordenacao.coluna === 'comissao' ? 'text-primary' : ''}`}
-                >
-                  Comissão
-                  <ArrowUpDown size={14} className="ml-1" />
-                </Button>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {afiliadosPaginados.length > 0 ? (
-              afiliadosPaginados.map((afiliado, index) => (
-                <TableRow key={afiliado.id} className={index % 2 === 0 ? 'bg-muted/5' : 'bg-background'}>
-                  <TableCell className="text-center">{afiliado.id}</TableCell>
-                  <TableCell className="text-center">{afiliado.nome}</TableCell>
-                  <TableCell className="text-center">
-                    <Badge variant="outline" className={`${coresNiveis[afiliado.nivel]}`}>
-                      Nível {afiliado.nivel}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-center">{afiliado.indicacoesValidas}</TableCell>
-                  <TableCell className="text-center">R$ {afiliado.valorDepositado.toFixed(2).replace('.', ',')}</TableCell>
-                  <TableCell className="text-center text-green-500">R$ {afiliado.comissao.toFixed(2).replace('.', ',')}</TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={6} className="text-center py-4">
-                  Nenhum afiliado encontrado para os filtros selecionados.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      
-      {/* Cards Mobile */}
-      <div className="space-y-4 md:hidden">
-        {afiliadosPaginados.length > 0 ? (
-          afiliadosPaginados.map((afiliado) => (
-            <div key={afiliado.id} className="border rounded-lg p-4 bg-card">
-              <div className="flex justify-between mb-2">
-                <span className="font-medium">{afiliado.id}</span>
-                <span className="text-green-500 font-medium">R$ {afiliado.comissao.toFixed(2).replace('.', ',')}</span>
-              </div>
-              <div className="mb-2">
-                <div className="text-xs text-muted-foreground">Nome Afiliado</div>
-                <div className="text-sm text-center">{afiliado.nome}</div>
-              </div>
-              <div className="mb-2">
-                <div className="text-xs text-muted-foreground">Nível</div>
-                <div className="text-sm text-center">
-                  <Badge variant="outline" className={`${coresNiveis[afiliado.nivel]}`}>
-                    Nível {afiliado.nivel}
-                  </Badge>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <div className="text-xs text-muted-foreground">Ind. Válidas</div>
-                  <div className="text-sm text-center">{afiliado.indicacoesValidas}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-muted-foreground">Valor Depositado</div>
-                  <div className="text-sm text-center">R$ {afiliado.valorDepositado.toFixed(2).replace('.', ',')}</div>
-                </div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="text-center py-4 text-muted-foreground">
-            Nenhum afiliado encontrado para os filtros selecionados.
+        
+        {/* Cards de Nível */}
+        {mostrarNiveis && (
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <NivelCard 
+              titulo="Nível 1" 
+              indicacoes={resumo.nivel1.indicacoes} 
+              indValidas={resumo.nivel1.indValidas} 
+              comissoes={resumo.nivel1.comissoes} 
+            />
+            <NivelCard 
+              titulo="Nível 2" 
+              indicacoes={resumo.nivel2.indicacoes} 
+              indValidas={resumo.nivel2.indValidas} 
+              comissoes={resumo.nivel2.comissoes} 
+            />
+            <NivelCard 
+              titulo="Nível 3" 
+              indicacoes={resumo.nivel3.indicacoes} 
+              indValidas={resumo.nivel3.indValidas} 
+              comissoes={resumo.nivel3.comissoes} 
+            />
+            <NivelCard 
+              titulo="Nível 4" 
+              indicacoes={resumo.nivel4.indicacoes} 
+              indValidas={resumo.nivel4.indValidas} 
+              comissoes={resumo.nivel4.comissoes} 
+            />
+            <NivelCard 
+              titulo="Nível 5" 
+              indicacoes={resumo.nivel5.indicacoes} 
+              indValidas={resumo.nivel5.indValidas} 
+              comissoes={resumo.nivel5.comissoes} 
+            />
           </div>
         )}
       </div>
       
-      {/* Paginação */}
-      <div className="flex flex-col md:flex-row justify-between items-center mt-4">
-        <div className="mb-4 md:mb-0">
-          <Select value={itensPorPagina.toString()} onValueChange={(value) => {
-            setItensPorPagina(parseInt(value));
-            setPaginaAtual(1);
-          }}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Itens por página" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="10">10 por página</SelectItem>
-              <SelectItem value="25">25 por página</SelectItem>
-              <SelectItem value="50">50 por página</SelectItem>
-              <SelectItem value="100">100 por página</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        
-        <div className="flex items-center space-x-2">
-          <Button 
-            variant="outline" 
-            size="icon" 
-            onClick={() => setPaginaAtual(1)} 
-            disabled={paginaAtual === 1}
-          >
-            <ChevronsLeft size={16} />
-          </Button>
-          <Button 
-            variant="outline" 
-            size="icon" 
-            onClick={() => setPaginaAtual(prev => Math.max(prev - 1, 1))} 
-            disabled={paginaAtual === 1}
-          >
-            <ChevronLeft size={16} />
-          </Button>
-          
-          <div className="px-4 py-2 border rounded-md text-sm">
-            Página <span className="font-medium">{paginaAtual}</span> de <span className="font-medium">{totalPaginas || 1}</span>
+      {/* Seção de Lista de Afiliados */}
+      <div className="border-2 border-primary/30 bg-darker rounded-lg p-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+          <div className="flex items-center">
+            <FiUsers className="text-primary mr-2" size={24} />
+            <h2 className="text-xl font-medium">Lista de Afiliados</h2>
           </div>
           
-          <Button 
-            variant="outline" 
-            size="icon" 
-            onClick={() => setPaginaAtual(prev => Math.min(prev + 1, totalPaginas))} 
-            disabled={paginaAtual === totalPaginas || totalPaginas === 0}
-          >
-            <ChevronRight size={16} />
-          </Button>
-          <Button 
-            variant="outline" 
-            size="icon" 
-            onClick={() => setPaginaAtual(totalPaginas)} 
-            disabled={paginaAtual === totalPaginas || totalPaginas === 0}
-          >
-            <ChevronsRight size={16} />
-          </Button>
+          {/* Tabs de Filtro por Nível */}
+          <div className="flex flex-wrap gap-2">
+            <button 
+              className={`py-2 px-4 rounded-full text-sm transition-all ${nivelFiltro === 'total' ? 'bg-primary text-darker' : 'bg-gray-800 text-white'}`}
+              onClick={() => setNivelFiltro('total')}
+            >
+              Total
+            </button>
+            <button 
+              className={`py-2 px-4 rounded-full text-sm transition-all ${nivelFiltro === 'nivel1' ? 'bg-primary text-darker' : 'bg-gray-800 text-white'}`}
+              onClick={() => setNivelFiltro('nivel1')}
+            >
+              Nível 1
+            </button>
+            <button 
+              className={`py-2 px-4 rounded-full text-sm transition-all ${nivelFiltro === 'nivel2' ? 'bg-primary text-darker' : 'bg-gray-800 text-white'}`}
+              onClick={() => setNivelFiltro('nivel2')}
+            >
+              Nível 2
+            </button>
+            <button 
+              className={`py-2 px-4 rounded-full text-sm transition-all ${nivelFiltro === 'nivel3' ? 'bg-primary text-darker' : 'bg-gray-800 text-white'}`}
+              onClick={() => setNivelFiltro('nivel3')}
+            >
+              Nível 3
+            </button>
+            <button 
+              className={`py-2 px-4 rounded-full text-sm transition-all ${nivelFiltro === 'nivel4' ? 'bg-primary text-darker' : 'bg-gray-800 text-white'}`}
+              onClick={() => setNivelFiltro('nivel4')}
+            >
+              Nível 4
+            </button>
+            <button 
+              className={`py-2 px-4 rounded-full text-sm transition-all ${nivelFiltro === 'nivel5' ? 'bg-primary text-darker' : 'bg-gray-800 text-white'}`}
+              onClick={() => setNivelFiltro('nivel5')}
+            >
+              Nível 5
+            </button>
+          </div>
+        </div>
+        
+        {/* Campo de Pesquisa */}
+        <div className="relative w-full mb-6">
+          <input 
+            type="text" 
+            placeholder="Buscar por ID ou nome" 
+            className="w-full bg-gray-800 border border-gray-700 rounded-lg py-3 px-4 pr-10 text-sm focus:outline-none focus:border-primary"
+            value={termoBusca}
+            onChange={(e) => setTermoBusca(e.target.value)}
+          />
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-primary rounded-lg p-2">
+            <FiSearch className="text-darker" size={16} />
+          </div>
+        </div>
+        
+        <div className="text-sm text-gray-400 mb-4">
+          Exibindo <span className="font-medium text-white">{dadosPaginados.length}</span> de <span className="font-medium text-white">{dadosFiltrados.length}</span> afiliados
+        </div>
+        
+        {/* Tabela Desktop */}
+        <div className="overflow-x-auto hidden md:block">
+          <table className="min-w-full">
+            <thead>
+              <tr className="border-b border-gray-700">
+                <th className="py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                  <button 
+                    className="flex items-center justify-center w-full"
+                    onClick={() => alternarOrdenacao('id')}
+                  >
+                    ID Afiliado
+                    <span className="ml-1">
+                      {ordenacao.campo === 'id' ? (
+                        ordenacao.direcao === 'asc' ? '↑' : '↓'
+                      ) : '↕'}
+                    </span>
+                  </button>
+                </th>
+                <th className="py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                  <button 
+                    className="flex items-center justify-center w-full"
+                    onClick={() => alternarOrdenacao('nome')}
+                  >
+                    Nome Afiliado
+                    <span className="ml-1">
+                      {ordenacao.campo === 'nome' ? (
+                        ordenacao.direcao === 'asc' ? '↑' : '↓'
+                      ) : '↕'}
+                    </span>
+                  </button>
+                </th>
+                <th className="py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                  <button 
+                    className="flex items-center justify-center w-full"
+                    onClick={() => alternarOrdenacao('nivel')}
+                  >
+                    Nível
+                    <span className="ml-1">
+                      {ordenacao.campo === 'nivel' ? (
+                        ordenacao.direcao === 'asc' ? '↑' : '↓'
+                      ) : '↕'}
+                    </span>
+                  </button>
+                </th>
+                <th className="py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                  <button 
+                    className="flex items-center justify-center w-full"
+                    onClick={() => alternarOrdenacao('indValidas')}
+                  >
+                    Ind. Válidas
+                    <span className="ml-1">
+                      {ordenacao.campo === 'indValidas' ? (
+                        ordenacao.direcao === 'asc' ? '↑' : '↓'
+                      ) : '↕'}
+                    </span>
+                  </button>
+                </th>
+                <th className="py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                  <button 
+                    className="flex items-center justify-center w-full"
+                    onClick={() => alternarOrdenacao('valorDepositado')}
+                  >
+                    Valor Depositado
+                    <span className="ml-1">
+                      {ordenacao.campo === 'valorDepositado' ? (
+                        ordenacao.direcao === 'asc' ? '↑' : '↓'
+                      ) : '↕'}
+                    </span>
+                  </button>
+                </th>
+                <th className="py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                  <button 
+                    className="flex items-center justify-center w-full"
+                    onClick={() => alternarOrdenacao('comissao')}
+                  >
+                    Comissão
+                    <span className="ml-1 text-primary">
+                      {ordenacao.campo === 'comissao' ? (
+                        ordenacao.direcao === 'asc' ? '↑' : '↓'
+                      ) : '↕'}
+                    </span>
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {dadosPaginados.map((afiliado, index) => (
+                <tr 
+                  key={afiliado.id} 
+                  className={`${index % 2 === 0 ? 'bg-gray-800/30' : 'bg-gray-900/50'} border-b border-gray-800 hover:bg-primary/10`}
+                >
+                  <td className="py-4 text-sm text-center border-r border-gray-800/50">{afiliado.id}</td>
+                  <td className="py-4 text-sm text-center border-r border-gray-800/50">{afiliado.nome}</td>
+                  <td className="py-4 text-sm text-center border-r border-gray-800/50">
+                    <span className="bg-primary/20 text-primary px-2 py-1 rounded-full text-xs">
+                      Nível {afiliado.nivel}
+                    </span>
+                  </td>
+                  <td className="py-4 text-sm text-center border-r border-gray-800/50">{afiliado.indValidas}</td>
+                  <td className="py-4 text-sm text-center border-r border-gray-800/50">{afiliado.valorDepositado}</td>
+                  <td className="py-4 text-sm text-center text-success">{afiliado.comissao}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        
+        {/* Cards Mobile */}
+        <div className="md:hidden space-y-4">
+          {dadosPaginados.map((afiliado) => (
+            <div key={afiliado.id} className="bg-gray-800/50 rounded-lg p-4 border border-gray-800">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center">
+                  <Avatar nome={afiliado.nome} />
+                  <div className="ml-3">
+                    <h3 className="font-medium text-base">{afiliado.nome}</h3>
+                    <div className="flex items-center mt-1">
+                      <span className="bg-primary/20 text-primary px-2 py-1 rounded-full text-xs">
+                        Nível {afiliado.nivel}
+                      </span>
+                      <span className="text-xs text-gray-400 ml-2">
+                        {afiliado.indValidas} indicações válidas
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-success text-xl font-semibold">{afiliado.comissao}</p>
+                  <p className="text-xs text-gray-400">{afiliado.id}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        {/* Paginação */}
+        <div className="mt-8 flex justify-center">
+          <div className="flex items-center space-x-1">
+            <button 
+              className={`w-10 h-10 flex items-center justify-center rounded-full ${paginaAtual > 1 ? 'bg-gray-800 text-white cursor-pointer' : 'bg-gray-800/50 text-gray-600 cursor-not-allowed'}`}
+              onClick={() => paginaAtual > 1 && setPaginaAtual(paginaAtual - 1)}
+              disabled={paginaAtual <= 1}
+            >
+              <FiChevronDown className="transform rotate-90" />
+            </button>
+            
+            {Array.from({ length: Math.min(totalPaginas, 3) }).map((_, i) => {
+              // Lógica para mostrar páginas ao redor da página atual
+              let pageNum;
+              if (totalPaginas <= 3) {
+                pageNum = i + 1;
+              } else if (paginaAtual <= 2) {
+                pageNum = i + 1;
+              } else if (paginaAtual >= totalPaginas - 1) {
+                pageNum = totalPaginas - 2 + i;
+              } else {
+                pageNum = paginaAtual - 1 + i;
+              }
+              
+              return (
+                <button 
+                  key={pageNum}
+                  className={`w-10 h-10 flex items-center justify-center rounded-full ${pageNum === paginaAtual ? 'bg-primary text-darker font-medium' : 'bg-gray-800 text-white'}`}
+                  onClick={() => setPaginaAtual(pageNum)}
+                >
+                  {pageNum}
+                </button>
+              );
+            })}
+            
+            <button 
+              className={`w-10 h-10 flex items-center justify-center rounded-full ${paginaAtual < totalPaginas ? 'bg-gray-800 text-white cursor-pointer' : 'bg-gray-800/50 text-gray-600 cursor-not-allowed'}`}
+              onClick={() => paginaAtual < totalPaginas && setPaginaAtual(paginaAtual + 1)}
+              disabled={paginaAtual >= totalPaginas}
+            >
+              <FiChevronDown className="transform -rotate-90" />
+            </button>
+          </div>
+        </div>
+        
+        {/* Seletor de itens por página */}
+        <div className="mt-4 flex justify-center">
+          <div className="flex items-center space-x-2 text-sm text-gray-400">
+            <span>Itens por página:</span>
+            <select 
+              className="bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white"
+              value={itensPorPagina}
+              onChange={(e) => {
+                setItensPorPagina(Number(e.target.value));
+                setPaginaAtual(1); // Reset para primeira página ao mudar itens por página
+              }}
+            >
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default ListaAfiliados;
