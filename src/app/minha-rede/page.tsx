@@ -3,8 +3,18 @@
 import React from 'react';
 import ListaAfiliados from '@/components/minha-rede/lista_afiliados';
 
+// Interface para tipagem dos dados de afiliados
+interface AfiliadoData {
+  id: string;
+  nome: string;
+  nivel: number;
+  indValidas: number;
+  valorDepositado: string;
+  comissao: string;
+}
+
 // Dados mockados para a lista de afiliados
-const dadosAfiliados = [
+const dadosAfiliados: AfiliadoData[] = [
   {
     id: '#AF12345',
     nome: 'João Silva',

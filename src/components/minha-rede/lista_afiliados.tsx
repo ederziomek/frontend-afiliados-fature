@@ -6,8 +6,48 @@ import {
   ChevronLeft, ChevronRight 
 } from 'lucide-react';
 
+// Interfaces para tipagem
+interface NivelCardProps {
+  titulo: string;
+  indicacoes: number;
+  indValidas: number;
+  comissoes: string;
+}
+
+interface AvatarProps {
+  nome: string;
+}
+
+interface AfiliadoData {
+  id: string;
+  nome: string;
+  nivel: number;
+  indValidas: number;
+  valorDepositado: string;
+  comissao: string;
+}
+
+interface ListaAfiliadosProps {
+  data: AfiliadoData[];
+}
+
+interface ResumoNivel {
+  indicacoes: number;
+  indValidas: number;
+  comissoes: string;
+}
+
+interface ResumoData {
+  total: ResumoNivel;
+  nivel1: ResumoNivel;
+  nivel2: ResumoNivel;
+  nivel3: ResumoNivel;
+  nivel4: ResumoNivel;
+  nivel5: ResumoNivel;
+}
+
 // Componente para o card de resumo por nível
-const NivelCard = ({ titulo, indicacoes, indValidas, comissoes }) => {
+const NivelCard: React.FC<NivelCardProps> = ({ titulo, indicacoes, indValidas, comissoes }) => {
   return (
     <div className="bg-darker rounded-lg p-4 border-2 border-primary/30">
       <h2 className="text-lg font-medium mb-3">{titulo}</h2>
@@ -30,8 +70,8 @@ const NivelCard = ({ titulo, indicacoes, indValidas, comissoes }) => {
 };
 
 // Componente para o avatar com iniciais
-const Avatar = ({ nome }) => {
-  const getInitials = (name) => {
+const Avatar: React.FC<AvatarProps> = ({ nome }) => {
+  const getInitials = (name: string): string => {
     const names = name.split(' ');
     if (names.length >= 2) {
       return `${names[0][0]}${names[1][0]}`;
@@ -47,17 +87,20 @@ const Avatar = ({ nome }) => {
 };
 
 // Componente principal da lista de afiliados
-const ListaAfiliados = ({ data }) => {
-  const [mostrarNiveis, setMostrarNiveis] = useState(false);
-  const [nivelFiltro, setNivelFiltro] = useState('total');
-  const [termoBusca, setTermoBusca] = useState('');
-  const [paginaAtual, setPaginaAtual] = useState(1);
-  const [itensPorPagina, setItensPorPagina] = useState(10);
-  const [dadosFiltrados, setDadosFiltrados] = useState([]);
-  const [ordenacao, setOrdenacao] = useState({ campo: 'comissao', direcao: 'desc' });
+const ListaAfiliados: React.FC<ListaAfiliadosProps> = ({ data }) => {
+  const [mostrarNiveis, setMostrarNiveis] = useState<boolean>(false);
+  const [nivelFiltro, setNivelFiltro] = useState<string>('total');
+  const [termoBusca, setTermoBusca] = useState<string>('');
+  const [paginaAtual, setPaginaAtual] = useState<number>(1);
+  const [itensPorPagina, setItensPorPagina] = useState<number>(10);
+  const [dadosFiltrados, setDadosFiltrados] = useState<AfiliadoData[]>([]);
+  const [ordenacao, setOrdenacao] = useState<{ campo: string; direcao: 'asc' | 'desc' }>({ 
+    campo: 'comissao', 
+    direcao: 'desc' 
+  });
 
   // Dados de resumo
-  const resumo = {
+  const resumo: ResumoData = {
     total: {
       indicacoes: 247,
       indValidas: 183,
@@ -111,15 +154,15 @@ const ListaAfiliados = ({ data }) => {
     
     // Aplicar ordenação
     resultado.sort((a, b) => {
-      let valorA = a[ordenacao.campo];
-      let valorB = b[ordenacao.campo];
+      let valorA = a[ordenacao.campo as keyof AfiliadoData];
+      let valorB = b[ordenacao.campo as keyof AfiliadoData];
       
       // Converter para número se for valor monetário
       if (typeof valorA === 'string' && valorA.includes('R$')) {
-        valorA = parseFloat(valorA.replace('R$', '').replace('.', '').replace(',', '.'));
+        valorA = parseFloat(valorA.replace('R$', '').replace('.', '').replace(',', '.')) as any;
       }
       if (typeof valorB === 'string' && valorB.includes('R$')) {
-        valorB = parseFloat(valorB.replace('R$', '').replace('.', '').replace(',', '.'));
+        valorB = parseFloat(valorB.replace('R$', '').replace('.', '').replace(',', '.')) as any;
       }
       
       if (ordenacao.direcao === 'asc') {
@@ -133,7 +176,7 @@ const ListaAfiliados = ({ data }) => {
   }, [data, nivelFiltro, termoBusca, ordenacao]);
 
   // Função para alternar ordenação
-  const alternarOrdenacao = (campo) => {
+  const alternarOrdenacao = (campo: string): void => {
     if (ordenacao.campo === campo) {
       setOrdenacao({
         campo,
