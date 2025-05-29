@@ -45,7 +45,7 @@ interface ResumoData {
 // Componente para o card de resumo por nível
 const NivelCard: React.FC<NivelCardProps> = ({ titulo, indicacoes, indValidas, comissoes }) => {
   return (
-    <div className="bg-gray-800 rounded-lg p-4 border-2 border-primary/30">
+    <div className="bg-[#131823] rounded-lg p-4 border-2 border-primary/30">
       <h2 className="text-lg font-medium mb-3">{titulo}</h2>
       <div className="space-y-2">
         <div className="flex justify-between">
@@ -176,13 +176,13 @@ const ListaAfiliados: React.FC<ListaAfiliadosProps> = ({ data }) => {
   const totalPaginas = Math.ceil(dadosFiltrados.length / itensPorPagina);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 max-w-[1200px]">
       {/* Seção de Resumo */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold mb-6">Minha Rede</h1>
         
         {/* Card Total */}
-        <div className="border-2 border-primary/30 bg-gray-800 rounded-lg p-4 mb-4 transition-all hover:translate-y-[-2px]">
+        <div className="border-2 border-primary/30 bg-[#131823] rounded-lg p-4 mb-4 transition-all hover:translate-y-[-2px]">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-medium">Minha Rede - Total</h2>
             <Info className="text-primary" size={20} />
@@ -250,7 +250,7 @@ const ListaAfiliados: React.FC<ListaAfiliadosProps> = ({ data }) => {
       </div>
       
       {/* Seção de Lista de Afiliados */}
-      <div className="border-2 border-primary/30 bg-gray-800 rounded-lg p-6">
+      <div className="border-2 border-primary/30 bg-[#131823] rounded-lg p-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
           <div className="flex items-center">
             <Users className="text-primary mr-2" size={24} />
@@ -260,7 +260,7 @@ const ListaAfiliados: React.FC<ListaAfiliadosProps> = ({ data }) => {
           {/* Seletor de Nível (Dropdown) */}
           <div className="w-full md:w-auto">
             <select 
-              className="w-full md:w-auto bg-gray-900 border border-gray-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:border-primary"
+              className="w-full md:w-auto bg-[#1A1E28] border border-gray-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:border-primary"
               value={nivelFiltro}
               onChange={(e) => setNivelFiltro(e.target.value)}
             >
@@ -279,7 +279,7 @@ const ListaAfiliados: React.FC<ListaAfiliadosProps> = ({ data }) => {
           <input 
             type="text" 
             placeholder="Buscar por ID ou nome" 
-            className="w-full bg-gray-900 border border-gray-700 rounded-lg py-3 px-4 pr-10 text-sm focus:outline-none focus:border-primary"
+            className="w-full bg-[#1A1E28] border border-gray-700 rounded-lg py-3 px-4 pr-10 text-sm focus:outline-none focus:border-primary"
             value={termoBusca}
             onChange={(e) => setTermoBusca(e.target.value)}
           />
@@ -381,7 +381,7 @@ const ListaAfiliados: React.FC<ListaAfiliadosProps> = ({ data }) => {
               {dadosPaginados.map((afiliado, index) => (
                 <tr 
                   key={afiliado.id} 
-                  className={`${index % 2 === 0 ? 'bg-gray-800/30' : 'bg-gray-900/50'} border-b border-gray-800 hover:bg-primary/10`}
+                  className={`${index % 2 === 0 ? 'bg-[#1A1E28]/30' : 'bg-[#131823]/50'} border-b border-gray-800 hover:bg-primary/10`}
                 >
                   <td className="py-4 text-sm text-center border-r border-gray-800/50">{afiliado.id}</td>
                   <td className="py-4 text-sm text-center border-r border-gray-800/50">{afiliado.nome}</td>
@@ -402,7 +402,7 @@ const ListaAfiliados: React.FC<ListaAfiliadosProps> = ({ data }) => {
         {/* Cards Mobile */}
         <div className="md:hidden space-y-4">
           {dadosPaginados.map((afiliado) => (
-            <div key={afiliado.id} className="bg-gray-900 rounded-lg p-4 border border-gray-800">
+            <div key={afiliado.id} className="bg-[#131823] rounded-lg p-4 border border-gray-800">
               {/* Primeira linha: Nome e Comissão */}
               <div className="flex justify-between items-center mb-2">
                 <h3 className="font-medium text-base">{afiliado.nome}</h3>
@@ -428,7 +428,7 @@ const ListaAfiliados: React.FC<ListaAfiliadosProps> = ({ data }) => {
         <div className="mt-8 flex justify-center">
           <div className="flex items-center space-x-1">
             <button 
-              className={`w-10 h-10 flex items-center justify-center rounded-full ${paginaAtual > 1 ? 'bg-gray-800 text-white cursor-pointer' : 'bg-gray-800/50 text-gray-600 cursor-not-allowed'}`}
+              className={`w-10 h-10 flex items-center justify-center rounded-full ${paginaAtual > 1 ? 'bg-[#1A1E28] text-white cursor-pointer' : 'bg-[#1A1E28]/50 text-gray-600 cursor-not-allowed'}`}
               onClick={() => paginaAtual > 1 && setPaginaAtual(paginaAtual - 1)}
               disabled={paginaAtual <= 1}
             >
@@ -451,7 +451,7 @@ const ListaAfiliados: React.FC<ListaAfiliadosProps> = ({ data }) => {
               return (
                 <button 
                   key={pageNum}
-                  className={`w-10 h-10 flex items-center justify-center rounded-full ${pageNum === paginaAtual ? 'bg-primary text-darker font-medium' : 'bg-gray-800 text-white'}`}
+                  className={`w-10 h-10 flex items-center justify-center rounded-full ${pageNum === paginaAtual ? 'bg-primary text-darker font-medium' : 'bg-[#1A1E28] text-white'}`}
                   onClick={() => setPaginaAtual(pageNum)}
                 >
                   {pageNum}
@@ -460,7 +460,7 @@ const ListaAfiliados: React.FC<ListaAfiliadosProps> = ({ data }) => {
             })}
             
             <button 
-              className={`w-10 h-10 flex items-center justify-center rounded-full ${paginaAtual < totalPaginas ? 'bg-gray-800 text-white cursor-pointer' : 'bg-gray-800/50 text-gray-600 cursor-not-allowed'}`}
+              className={`w-10 h-10 flex items-center justify-center rounded-full ${paginaAtual < totalPaginas ? 'bg-[#1A1E28] text-white cursor-pointer' : 'bg-[#1A1E28]/50 text-gray-600 cursor-not-allowed'}`}
               onClick={() => paginaAtual < totalPaginas && setPaginaAtual(paginaAtual + 1)}
               disabled={paginaAtual >= totalPaginas}
             >
@@ -474,7 +474,7 @@ const ListaAfiliados: React.FC<ListaAfiliadosProps> = ({ data }) => {
           <div className="flex items-center space-x-2 text-sm text-gray-400">
             <span>Itens por página:</span>
             <select 
-              className="bg-gray-900 border border-gray-700 rounded px-2 py-1 text-white"
+              className="bg-[#1A1E28] border border-gray-700 rounded px-2 py-1 text-white"
               value={itensPorPagina}
               onChange={(e) => {
                 setItensPorPagina(Number(e.target.value));
