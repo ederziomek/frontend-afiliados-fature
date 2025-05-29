@@ -14,10 +14,6 @@ interface NivelCardProps {
   comissoes: string;
 }
 
-interface AvatarProps {
-  nome: string;
-}
-
 interface AfiliadoData {
   id: string;
   nome: string;
@@ -49,7 +45,7 @@ interface ResumoData {
 // Componente para o card de resumo por nível
 const NivelCard: React.FC<NivelCardProps> = ({ titulo, indicacoes, indValidas, comissoes }) => {
   return (
-    <div className="bg-darker rounded-lg p-4 border-2 border-primary/30">
+    <div className="bg-gray-800 rounded-lg p-4 border-2 border-primary/30">
       <h2 className="text-lg font-medium mb-3">{titulo}</h2>
       <div className="space-y-2">
         <div className="flex justify-between">
@@ -65,23 +61,6 @@ const NivelCard: React.FC<NivelCardProps> = ({ titulo, indicacoes, indValidas, c
           <span className="font-medium text-success">R$ {comissoes}</span>
         </div>
       </div>
-    </div>
-  );
-};
-
-// Componente para o avatar com iniciais
-const Avatar: React.FC<AvatarProps> = ({ nome }) => {
-  const getInitials = (name: string): string => {
-    const names = name.split(' ');
-    if (names.length >= 2) {
-      return `${names[0][0]}${names[1][0]}`;
-    }
-    return names[0].substring(0, 2);
-  };
-
-  return (
-    <div className="w-12 h-12 rounded-full bg-darker border-2 border-primary/30 flex items-center justify-center text-lg font-bold">
-      {getInitials(nome)}
     </div>
   );
 };
@@ -203,7 +182,7 @@ const ListaAfiliados: React.FC<ListaAfiliadosProps> = ({ data }) => {
         <h1 className="text-2xl font-bold mb-6">Minha Rede</h1>
         
         {/* Card Total */}
-        <div className="border-2 border-primary/30 bg-darker rounded-lg p-4 mb-4 transition-all hover:translate-y-[-2px]">
+        <div className="border-2 border-primary/30 bg-gray-800 rounded-lg p-4 mb-4 transition-all hover:translate-y-[-2px]">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-medium">Minha Rede - Total</h2>
             <Info className="text-primary" size={20} />
@@ -271,51 +250,27 @@ const ListaAfiliados: React.FC<ListaAfiliadosProps> = ({ data }) => {
       </div>
       
       {/* Seção de Lista de Afiliados */}
-      <div className="border-2 border-primary/30 bg-darker rounded-lg p-6">
+      <div className="border-2 border-primary/30 bg-gray-800 rounded-lg p-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
           <div className="flex items-center">
             <Users className="text-primary mr-2" size={24} />
             <h2 className="text-xl font-medium">Lista de Afiliados</h2>
           </div>
           
-          {/* Tabs de Filtro por Nível */}
-          <div className="flex flex-wrap gap-2">
-            <button 
-              className={`py-2 px-4 rounded-full text-sm transition-all ${nivelFiltro === 'total' ? 'bg-primary text-darker' : 'bg-gray-800 text-white'}`}
-              onClick={() => setNivelFiltro('total')}
+          {/* Seletor de Nível (Dropdown) */}
+          <div className="w-full md:w-auto">
+            <select 
+              className="w-full md:w-auto bg-gray-900 border border-gray-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:border-primary"
+              value={nivelFiltro}
+              onChange={(e) => setNivelFiltro(e.target.value)}
             >
-              Total
-            </button>
-            <button 
-              className={`py-2 px-4 rounded-full text-sm transition-all ${nivelFiltro === 'nivel1' ? 'bg-primary text-darker' : 'bg-gray-800 text-white'}`}
-              onClick={() => setNivelFiltro('nivel1')}
-            >
-              Nível 1
-            </button>
-            <button 
-              className={`py-2 px-4 rounded-full text-sm transition-all ${nivelFiltro === 'nivel2' ? 'bg-primary text-darker' : 'bg-gray-800 text-white'}`}
-              onClick={() => setNivelFiltro('nivel2')}
-            >
-              Nível 2
-            </button>
-            <button 
-              className={`py-2 px-4 rounded-full text-sm transition-all ${nivelFiltro === 'nivel3' ? 'bg-primary text-darker' : 'bg-gray-800 text-white'}`}
-              onClick={() => setNivelFiltro('nivel3')}
-            >
-              Nível 3
-            </button>
-            <button 
-              className={`py-2 px-4 rounded-full text-sm transition-all ${nivelFiltro === 'nivel4' ? 'bg-primary text-darker' : 'bg-gray-800 text-white'}`}
-              onClick={() => setNivelFiltro('nivel4')}
-            >
-              Nível 4
-            </button>
-            <button 
-              className={`py-2 px-4 rounded-full text-sm transition-all ${nivelFiltro === 'nivel5' ? 'bg-primary text-darker' : 'bg-gray-800 text-white'}`}
-              onClick={() => setNivelFiltro('nivel5')}
-            >
-              Nível 5
-            </button>
+              <option value="total">Todos os Níveis</option>
+              <option value="nivel1">Nível 1</option>
+              <option value="nivel2">Nível 2</option>
+              <option value="nivel3">Nível 3</option>
+              <option value="nivel4">Nível 4</option>
+              <option value="nivel5">Nível 5</option>
+            </select>
           </div>
         </div>
         
@@ -324,7 +279,7 @@ const ListaAfiliados: React.FC<ListaAfiliadosProps> = ({ data }) => {
           <input 
             type="text" 
             placeholder="Buscar por ID ou nome" 
-            className="w-full bg-gray-800 border border-gray-700 rounded-lg py-3 px-4 pr-10 text-sm focus:outline-none focus:border-primary"
+            className="w-full bg-gray-900 border border-gray-700 rounded-lg py-3 px-4 pr-10 text-sm focus:outline-none focus:border-primary"
             value={termoBusca}
             onChange={(e) => setTermoBusca(e.target.value)}
           />
@@ -447,26 +402,23 @@ const ListaAfiliados: React.FC<ListaAfiliadosProps> = ({ data }) => {
         {/* Cards Mobile */}
         <div className="md:hidden space-y-4">
           {dadosPaginados.map((afiliado) => (
-            <div key={afiliado.id} className="bg-gray-800/50 rounded-lg p-4 border border-gray-800">
-              <div className="flex items-center justify-between mb-3">
+            <div key={afiliado.id} className="bg-gray-900 rounded-lg p-4 border border-gray-800">
+              {/* Primeira linha: Nome e Comissão */}
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="font-medium text-base">{afiliado.nome}</h3>
+                <p className="text-success text-xl font-semibold">{afiliado.comissao}</p>
+              </div>
+              
+              {/* Segunda linha: ID, Nível e Indicações */}
+              <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center">
-                  <Avatar nome={afiliado.nome} />
-                  <div className="ml-3">
-                    <h3 className="font-medium text-base">{afiliado.nome}</h3>
-                    <div className="flex items-center mt-1">
-                      <span className="bg-primary/20 text-primary px-2 py-1 rounded-full text-xs">
-                        Nível {afiliado.nivel}
-                      </span>
-                      <span className="text-xs text-gray-400 ml-2">
-                        {afiliado.indValidas} indicações válidas
-                      </span>
-                    </div>
-                  </div>
+                  <span className="text-gray-400">{afiliado.id}</span>
+                  <span className="mx-2 text-gray-600">|</span>
+                  <span className="bg-primary/20 text-primary px-2 py-1 rounded-full text-xs">
+                    Nível {afiliado.nivel}
+                  </span>
                 </div>
-                <div className="text-right">
-                  <p className="text-success text-xl font-semibold">{afiliado.comissao}</p>
-                  <p className="text-xs text-gray-400">{afiliado.id}</p>
-                </div>
+                <span className="text-gray-400">{afiliado.indValidas} indicações válidas</span>
               </div>
             </div>
           ))}
@@ -522,7 +474,7 @@ const ListaAfiliados: React.FC<ListaAfiliadosProps> = ({ data }) => {
           <div className="flex items-center space-x-2 text-sm text-gray-400">
             <span>Itens por página:</span>
             <select 
-              className="bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white"
+              className="bg-gray-900 border border-gray-700 rounded px-2 py-1 text-white"
               value={itensPorPagina}
               onChange={(e) => {
                 setItensPorPagina(Number(e.target.value));
