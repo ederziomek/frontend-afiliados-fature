@@ -1011,15 +1011,10 @@ const DashboardPage = () => {
         </SmallTooltip>
       )}
 
-      {/* Second Row: Sequence, Chests, Vault */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      {/* Indicação Diária */}
+      <div className="grid grid-cols-1 gap-4">
         <SequenceCard />
-        <ChestsCard />
-        <CommissionVaultCard weeklyRevShare={123.45} />
       </div>
-
-      {/* Third Row: Rankings */}
-      <RankingSection />
 
       {/* Update Info */}
       <div className="bg-card p-3 rounded-lg shadow flex items-center text-sm text-text-secondary border-2 border-primary/30">
