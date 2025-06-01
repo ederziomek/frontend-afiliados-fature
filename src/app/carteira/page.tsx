@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Clock, ArrowRight, Info, ListChecks, Building, Check } from 'lucide-react'; // Added Info, ListChecks, Building, Check
+import CommissionVaultCard from '@/components/dashboard/commission_vault_card';
 
 // --- Define Types for Rules ---
 interface WithdrawalRule {
@@ -195,6 +196,9 @@ const CarteiraPage = () => {
         {/* Display Category/Level if needed */}
         {/* <p className="text-xs text-text-secondary">Categoria: {walletData.affiliateCategory} (Level {walletData.affiliateLevel})</p> */}
       </div>
+
+      {/* Commission Vault Card */}
+      <CommissionVaultCard weeklyRevShare={123.45} />
 
       {/* CNAE Check Step (for NF Withdrawals) */}
       {showCNAECheck && selectedOptionId === 'pix_com_nf' && (
