@@ -33,6 +33,7 @@ const Sidebar = () => {
     { href: '/minha-rede', icon: Users, label: 'Minha Rede' },
     { href: '/divulgacao', icon: Megaphone, label: 'Divulgação' },
     { href: '/carteira', icon: CreditCard, label: 'Carteira' },
+    { href: '/ranking', icon: Award, label: 'Ranking' },
     { href: '/ajuda', icon: HelpCircle, label: 'Ajuda' },
   ];
 

@@ -189,16 +189,16 @@ const CarteiraPage = () => {
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold text-white">Minha Carteira</h1>
 
+      {/* Commission Vault Card */}
+      <CommissionVaultCard weeklyRevShare={123.45} />
+
       {/* Balance */}
       <div className="bg-card p-6 rounded-lg shadow text-center">
         <p className="text-sm text-text-secondary mb-1">Saldo Disponível</p>
-        <p className="text-4xl font-bold text-primary mb-4">R$ {walletData.availableBalance.toFixed(2).replace('.', ',')}</p>
+        <p className="text-4xl font-bold text-primary mb-4">R$ 50,30</p>
         {/* Display Category/Level if needed */}
         {/* <p className="text-xs text-text-secondary">Categoria: {walletData.affiliateCategory} (Level {walletData.affiliateLevel})</p> */}
       </div>
-
-      {/* Commission Vault Card */}
-      <CommissionVaultCard weeklyRevShare={123.45} />
 
       {/* CNAE Check Step (for NF Withdrawals) */}
       {showCNAECheck && selectedOptionId === 'pix_com_nf' && (
