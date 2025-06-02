@@ -157,63 +157,73 @@ const AjudaPage = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Overview */}
+          {/* How it works */}
           <div className="bg-orange-500/10 border border-orange-500/20 rounded-lg p-4">
             <div className="flex items-start space-x-3">
               <Clock size={20} className="text-orange-500 mt-0.5 flex-shrink-0" />
               <div>
                 <h3 className="font-semibold text-white mb-2">Como funciona a inatividade?</h3>
-                <p className="text-sm text-text-secondary">
-                  Para manter suas comissões em 100%, você precisa fazer pelo menos 1 indicação validada 
-                  a cada 28 dias. Caso contrário, suas comissões serão reduzidas progressivamente.
+                <p className="text-sm text-text-secondary mb-3">
+                  O período para considerar um afiliado inativo pode variar conforme sua categoria, 
+                  mas geralmente é configurado entre 7 a 90 dias sem indicações validadas. 
+                  Após esse período, suas comissões serão reduzidas progressivamente.
                 </p>
+                <div className="bg-orange-900/20 rounded-lg p-3 mt-3">
+                  <p className="text-xs text-orange-300">
+                    <strong>Nota:</strong> O período exato de inatividade é configurado pelos administradores 
+                    e pode ser diferente para cada categoria de afiliado. Consulte seu painel para ver 
+                    as regras específicas da sua categoria.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Reduction Schedule */}
-          <div>
-            <h3 className="font-semibold text-white mb-4 flex items-center">
-              <Percent size={18} className="mr-2 text-primary" />
-              Cronograma de Reduções
-            </h3>
-            <div className="grid gap-3">
-              <div className="bg-gray-800/50 rounded-lg p-4">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium text-white">Período de Inatividade</span>
-                  <span className="text-sm font-medium text-white">Redução de Comissão</span>
-                </div>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between items-center py-1 border-b border-gray-700/50">
-                    <span className="text-text-secondary">Até 28 dias</span>
-                    <span className="text-green-400 font-medium">0% (Normal)</span>
+          <div className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-4">
+            <div className="flex items-start space-x-3">
+              <Percent size={20} className="text-blue-400 mt-0.5 flex-shrink-0" />
+              <div className="flex-1">
+                <h3 className="font-semibold text-white mb-3">Cronograma de Reduções (Exemplo)</h3>
+                <p className="text-xs text-gray-400 mb-3">
+                  *Este é um exemplo baseado em configurações padrão. As regras específicas da sua categoria 
+                  podem ser diferentes e são configuráveis pelos administradores.
+                </p>
+                <div className="bg-gray-900/50 rounded-lg p-3">
+                  <div className="grid grid-cols-2 gap-2 text-sm font-medium text-gray-400 mb-2 pb-2 border-b border-gray-700">
+                    <span>Período de Inatividade</span>
+                    <span className="text-right">Redução de Comissão</span>
                   </div>
                   <div className="flex justify-between items-center py-1 border-b border-gray-700/50">
-                    <span className="text-text-secondary">35 dias</span>
-                    <span className="text-yellow-400 font-medium">-5%</span>
+                    <span className="text-text-secondary">Até período configurado</span>
+                    <span className="text-green-500 font-medium">0% (Normal)</span>
                   </div>
                   <div className="flex justify-between items-center py-1 border-b border-gray-700/50">
-                    <span className="text-text-secondary">42 dias</span>
-                    <span className="text-orange-400 font-medium">-10%</span>
+                    <span className="text-text-secondary">1º intervalo</span>
+                    <span className="text-yellow-500 font-medium">-5%</span>
                   </div>
                   <div className="flex justify-between items-center py-1 border-b border-gray-700/50">
-                    <span className="text-text-secondary">49 dias</span>
+                    <span className="text-text-secondary">2º intervalo</span>
+                    <span className="text-yellow-600 font-medium">-10%</span>
+                  </div>
+                  <div className="flex justify-between items-center py-1 border-b border-gray-700/50">
+                    <span className="text-text-secondary">3º intervalo</span>
                     <span className="text-orange-500 font-medium">-20%</span>
                   </div>
                   <div className="flex justify-between items-center py-1 border-b border-gray-700/50">
-                    <span className="text-text-secondary">56 dias</span>
+                    <span className="text-text-secondary">4º intervalo</span>
                     <span className="text-red-400 font-medium">-35%</span>
                   </div>
                   <div className="flex justify-between items-center py-1 border-b border-gray-700/50">
-                    <span className="text-text-secondary">63 dias</span>
+                    <span className="text-text-secondary">5º intervalo</span>
                     <span className="text-red-500 font-medium">-50%</span>
                   </div>
                   <div className="flex justify-between items-center py-1 border-b border-gray-700/50">
-                    <span className="text-text-secondary">70 dias</span>
+                    <span className="text-text-secondary">6º intervalo</span>
                     <span className="text-red-600 font-medium">-75%</span>
                   </div>
                   <div className="flex justify-between items-center py-1">
-                    <span className="text-text-secondary">77 dias ou mais</span>
+                    <span className="text-text-secondary">Intervalo final</span>
                     <span className="text-red-700 font-medium">-100%</span>
                   </div>
                 </div>
@@ -221,22 +231,51 @@ const AjudaPage = () => {
             </div>
           </div>
 
-          {/* Reactivation */}
+          {/* Reactivation System */}
           <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
             <div className="flex items-start space-x-3">
               <Target size={20} className="text-green-500 mt-0.5 flex-shrink-0" />
-              <div>
-                <h3 className="font-semibold text-white mb-2">Como reativar 100% das comissões?</h3>
-                <p className="text-sm text-text-secondary mb-3">
-                  Para restaurar suas comissões para 100%, você precisa fazer indicações validadas 
-                  conforme sua categoria de afiliado:
+              <div className="flex-1">
+                <h3 className="font-semibold text-white mb-2">Sistema de Reativação de Comissões</h3>
+                <p className="text-sm text-text-secondary mb-4">
+                  Afiliados inativos podem reativar suas comissões para 100% completando um desafio 
+                  de reativação específico para sua categoria.
                 </p>
-                <ul className="text-sm text-text-secondary space-y-1">
-                  <li>• <span className="text-white">Afiliados Iniciantes:</span> 2 indicações validadas</li>
-                  <li>• <span className="text-white">Afiliados Intermediários:</span> 3 indicações validadas</li>
-                  <li>• <span className="text-white">Afiliados Avançados:</span> 5 indicações validadas</li>
-                  <li>• <span className="text-white">Afiliados VIP:</span> 3 indicações validadas</li>
-                </ul>
+                
+                {/* Reactivation Requirements */}
+                <div className="bg-green-900/20 rounded-lg p-3 mb-4">
+                  <h4 className="text-sm font-medium text-green-300 mb-2">Requisitos por Categoria (Exemplo):</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between items-center">
+                      <span className="text-white">Afiliados Iniciantes:</span>
+                      <span className="text-green-400">2 indicações em 30 dias</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-white">Afiliados Intermediários:</span>
+                      <span className="text-green-400">3 indicações em 30 dias</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-white">Afiliados Avançados:</span>
+                      <span className="text-green-400">5 indicações em 45 dias</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-white">Afiliados VIP:</span>
+                      <span className="text-green-400">3 indicações em 30 dias</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Reactivation Process */}
+                <div className="bg-blue-900/20 rounded-lg p-3">
+                  <h4 className="text-sm font-medium text-blue-300 mb-2">Como Funciona o Processo:</h4>
+                  <ul className="text-sm text-text-secondary space-y-1">
+                    <li>• <strong className="text-white">Início:</strong> Afiliado inativo pode iniciar processo de reativação</li>
+                    <li>• <strong className="text-white">Desafio:</strong> Completar número específico de indicações no prazo</li>
+                    <li>• <strong className="text-white">Progresso:</strong> Acompanhe o progresso no painel principal</li>
+                    <li>• <strong className="text-white">Reativação:</strong> Comissões voltam a 100% automaticamente</li>
+                    <li>• <strong className="text-white">Tentativas:</strong> Número limitado de tentativas por categoria</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -253,6 +292,8 @@ const AjudaPage = () => {
                   <li>• O período de inatividade é calculado a partir da sua última indicação validada</li>
                   <li>• As regras podem variar conforme sua categoria de afiliado</li>
                   <li>• Acompanhe seu status de atividade no painel principal</li>
+                  <li>• Os períodos e valores de redução são configuráveis pelos administradores</li>
+                  <li>• O sistema de reativação permite restaurar 100% das comissões</li>
                 </ul>
               </div>
             </div>
