@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Home, BarChart2, Users, CreditCard, Star, Award, HelpCircle, Menu, X, Gift, CalendarDays, Megaphone } from 'lucide-react'; // Added Gift, CalendarDays, Megaphone
+import { Home, BarChart2, Users, CreditCard, Star, Award, HelpCircle, Menu, X, Gift, CalendarDays, Megaphone, Link2 } from 'lucide-react'; // Added Link2
 import Image from 'next/image';
 
 const Sidebar = () => {
@@ -31,6 +31,7 @@ const Sidebar = () => {
     { href: '/baus', icon: Gift, label: 'Baús' },
     { href: '/relatorios', icon: BarChart2, label: 'Relatórios' },
     { href: '/minha-rede', icon: Users, label: 'Minha Rede' },
+    { href: '/links-indicacao', icon: Link2, label: 'Links de Indicação' },
     { href: '/divulgacao', icon: Megaphone, label: 'Divulgação' },
     { href: '/carteira', icon: CreditCard, label: 'Carteira' },
     { href: '/ranking', icon: Award, label: 'Ranking' },
