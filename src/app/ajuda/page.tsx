@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, HelpCircle, MessageSquare, Info, Award, TrendingDown, Target, Gift, Users, BarChartHorizontal, DollarSign, CalendarDays, CheckCircle, QrCode, FileType, Share2 } from 'lucide-react'; // Added more icons
+import { ChevronDown, ChevronUp, HelpCircle, MessageSquare, Info, Award, TrendingDown, Target, Gift, Users, BarChartHorizontal, DollarSign, CalendarDays, CheckCircle, QrCode, FileType, Share2, AlertTriangle, Clock, Percent } from 'lucide-react'; // Added more icons
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
@@ -144,6 +144,121 @@ const AjudaPage = () => {
         <HelpCircle size={24} className="mr-3 text-primary" />
         Ajuda, FAQ & Glossário
       </h1>
+
+      {/* --- Inactivity Rules Section --- */}
+      <Card className="bg-card border-border border-l-4 border-l-orange-500">
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-white flex items-center">
+            <AlertTriangle size={20} className="mr-2 text-orange-500" />
+            Regras de Inatividade e Redução de Comissões
+          </CardTitle>
+          <CardDescription className="text-text-secondary">
+            Entenda como funciona o sistema de redução de comissões por inatividade
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Overview */}
+          <div className="bg-orange-500/10 border border-orange-500/20 rounded-lg p-4">
+            <div className="flex items-start space-x-3">
+              <Clock size={20} className="text-orange-500 mt-0.5 flex-shrink-0" />
+              <div>
+                <h3 className="font-semibold text-white mb-2">Como funciona a inatividade?</h3>
+                <p className="text-sm text-text-secondary">
+                  Para manter suas comissões em 100%, você precisa fazer pelo menos 1 indicação validada 
+                  a cada 28 dias. Caso contrário, suas comissões serão reduzidas progressivamente.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Reduction Schedule */}
+          <div>
+            <h3 className="font-semibold text-white mb-4 flex items-center">
+              <Percent size={18} className="mr-2 text-primary" />
+              Cronograma de Reduções
+            </h3>
+            <div className="grid gap-3">
+              <div className="bg-gray-800/50 rounded-lg p-4">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-medium text-white">Período de Inatividade</span>
+                  <span className="text-sm font-medium text-white">Redução de Comissão</span>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between items-center py-1 border-b border-gray-700/50">
+                    <span className="text-text-secondary">Até 28 dias</span>
+                    <span className="text-green-400 font-medium">0% (Normal)</span>
+                  </div>
+                  <div className="flex justify-between items-center py-1 border-b border-gray-700/50">
+                    <span className="text-text-secondary">35 dias</span>
+                    <span className="text-yellow-400 font-medium">-5%</span>
+                  </div>
+                  <div className="flex justify-between items-center py-1 border-b border-gray-700/50">
+                    <span className="text-text-secondary">42 dias</span>
+                    <span className="text-orange-400 font-medium">-10%</span>
+                  </div>
+                  <div className="flex justify-between items-center py-1 border-b border-gray-700/50">
+                    <span className="text-text-secondary">49 dias</span>
+                    <span className="text-orange-500 font-medium">-20%</span>
+                  </div>
+                  <div className="flex justify-between items-center py-1 border-b border-gray-700/50">
+                    <span className="text-text-secondary">56 dias</span>
+                    <span className="text-red-400 font-medium">-35%</span>
+                  </div>
+                  <div className="flex justify-between items-center py-1 border-b border-gray-700/50">
+                    <span className="text-text-secondary">63 dias</span>
+                    <span className="text-red-500 font-medium">-50%</span>
+                  </div>
+                  <div className="flex justify-between items-center py-1 border-b border-gray-700/50">
+                    <span className="text-text-secondary">70 dias</span>
+                    <span className="text-red-600 font-medium">-75%</span>
+                  </div>
+                  <div className="flex justify-between items-center py-1">
+                    <span className="text-text-secondary">77 dias ou mais</span>
+                    <span className="text-red-700 font-medium">-100%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Reactivation */}
+          <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
+            <div className="flex items-start space-x-3">
+              <Target size={20} className="text-green-500 mt-0.5 flex-shrink-0" />
+              <div>
+                <h3 className="font-semibold text-white mb-2">Como reativar 100% das comissões?</h3>
+                <p className="text-sm text-text-secondary mb-3">
+                  Para restaurar suas comissões para 100%, você precisa fazer indicações validadas 
+                  conforme sua categoria de afiliado:
+                </p>
+                <ul className="text-sm text-text-secondary space-y-1">
+                  <li>• <span className="text-white">Afiliados Iniciantes:</span> 2 indicações validadas</li>
+                  <li>• <span className="text-white">Afiliados Intermediários:</span> 3 indicações validadas</li>
+                  <li>• <span className="text-white">Afiliados Avançados:</span> 5 indicações validadas</li>
+                  <li>• <span className="text-white">Afiliados VIP:</span> 3 indicações validadas</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Important Notes */}
+          <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+            <div className="flex items-start space-x-3">
+              <Info size={20} className="text-blue-500 mt-0.5 flex-shrink-0" />
+              <div>
+                <h3 className="font-semibold text-white mb-2">Informações Importantes</h3>
+                <ul className="text-sm text-text-secondary space-y-2">
+                  <li>• As reduções são aplicadas automaticamente nas suas comissões RevShare</li>
+                  <li>• Você receberá notificações antes de se tornar inativo</li>
+                  <li>• O período de inatividade é calculado a partir da sua última indicação validada</li>
+                  <li>• As regras podem variar conforme sua categoria de afiliado</li>
+                  <li>• Acompanhe seu status de atividade no painel principal</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* --- FAQ Section --- */}
       <Card className="bg-card border-border">
