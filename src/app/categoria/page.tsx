@@ -383,23 +383,23 @@ const CategoriaPage = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-            <div className="bg-gray-700/60 p-3 rounded-lg text-center">
+            <div className="p-3 rounded-lg text-center" style={{ backgroundColor: 'rgb(43, 48, 57)' }}>
               <div className="text-lg font-bold text-primary">Nível 1</div>
               <div className="text-xl font-bold text-white">R$ 35,00</div>
             </div>
-            <div className="bg-gray-700/60 p-3 rounded-lg text-center">
+            <div className="p-3 rounded-lg text-center" style={{ backgroundColor: 'rgb(43, 48, 57)' }}>
               <div className="text-lg font-bold text-primary">Nível 2</div>
               <div className="text-xl font-bold text-white">R$ 10,00</div>
             </div>
-            <div className="bg-gray-700/60 p-3 rounded-lg text-center">
+            <div className="p-3 rounded-lg text-center" style={{ backgroundColor: 'rgb(43, 48, 57)' }}>
               <div className="text-lg font-bold text-primary">Nível 3</div>
               <div className="text-xl font-bold text-white">R$ 5,00</div>
             </div>
-            <div className="bg-gray-700/60 p-3 rounded-lg text-center">
+            <div className="p-3 rounded-lg text-center" style={{ backgroundColor: 'rgb(43, 48, 57)' }}>
               <div className="text-lg font-bold text-primary">Nível 4</div>
               <div className="text-xl font-bold text-white">R$ 5,00</div>
             </div>
-            <div className="bg-gray-700/60 p-3 rounded-lg text-center">
+            <div className="p-3 rounded-lg text-center" style={{ backgroundColor: 'rgb(43, 48, 57)' }}>
               <div className="text-lg font-bold text-primary">Nível 5</div>
               <div className="text-xl font-bold text-white">R$ 5,00</div>
             </div>
