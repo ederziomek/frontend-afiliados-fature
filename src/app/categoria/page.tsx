@@ -9,11 +9,14 @@ import {
   CheckCircle, // Max level icon
   Award, // Category Icon (Default)
   ChevronDown, // Accordion icon
-  LucideIcon // Import LucideIcon type
+  LucideIcon, // Import LucideIcon type
+  ArrowUp, // Progress arrow
+  DollarSign // CPA icon
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Progress } from '@/components/ui/progress';
 import { cn } from "@/lib/utils"; // Import cn utility for conditional classes
 
 // --- Define Types for Levels and Categories ---
@@ -252,7 +255,6 @@ const renderStars = (categoryName: string) => {
 // --- End Helper Functions ---
 
 const CategoriaPage = () => {
-
   const currentLevelDetails = findLevelDetails(affiliateStatus.currentCategoryName, affiliateStatus.currentLevelNumber);
   const nextLevelInfo = findNextLevel(affiliateStatus.currentCategoryName, affiliateStatus.currentLevelNumber, affiliateStatus.currentIndications);
 
@@ -260,34 +262,141 @@ const CategoriaPage = () => {
     ? Math.max(0, nextLevelInfo.details.indicationsNeeded - affiliateStatus.currentIndications) // Ensure non-negative
     : 0;
 
+  // Dados do afiliado (copiados da página inicial)
+  const affiliateData = {
+    name: 'Eder Ziomek',
+    category: 'Mestre',
+    level: 1,
+    currentIndications: 10030,
+    nextLevelRequirement: 11000,
+    nextLevelCategory: 'Mestre',
+    nextLevel: 2,
+  };
+
+  const progressPercentage = 30; // 30 de 100 indicações para próximo level (30%)
+  const currentCategoryStyle = categoriesAndLevelsData[affiliateData.category]?.style || categoriesAndLevelsData['Mestre'].style;
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold text-white mb-6">Minha Categoria</h1>
 
-      {/* Current Level Info Card - Needs update to include Level */}
-      {/* This section might be better placed in a header or dashboard component */}
-      <Card className="bg-card border-border p-4 rounded-lg shadow mb-6">
-        <div className="flex flex-col sm:flex-row justify-between sm:items-center">
-          <h2 className="text-lg font-semibold text-white flex items-center mb-2 sm:mb-0">
-            {/* Icon can be dynamic based on category later */}
-            <Award size={20} className="mr-2 text-primary" />
-            Sua Posição Atual
-          </h2>
-          {currentLevelDetails ? (
-            <div className="text-right">
-              <Badge variant="default" className="text-sm font-medium">
-                {affiliateStatus.currentCategoryName}
-              </Badge>
-              <p className="text-xs text-text-secondary mt-1">Level {affiliateStatus.currentLevelNumber}</p>
+      {/* Card do Nome do Afiliado (copiado da página inicial) */}
+      <div className="bg-card p-4 rounded-lg shadow-lg border-2 border-primary/30 relative overflow-hidden">
+        {/* Background gradient overlay */}
+        <div 
+          className="absolute inset-0 opacity-20"
+          style={currentCategoryStyle.gradientStyle}
+        />
+        
+        {/* Content */}
+        <div className="relative z-10">
+          {/* Stars and Name Section */}
+          <div className="flex justify-between items-start mb-4">
+            <div className="flex flex-col">
+              {/* Stars */}
+              <div className="flex items-center space-x-1 mb-2">
+                {renderStars(affiliateData.category)}
+              </div>
+              
+              {/* Name */}
+              <h2 className="text-2xl font-bold text-white italic font-heading">
+                {affiliateData.name}
+              </h2>
             </div>
-          ) : (
-            <Badge variant="destructive">Erro ao carregar</Badge>
-          )}
+            
+            {/* Category and Level */}
+            <div className="text-right">
+              <div className="text-lg font-bold text-white">
+                {affiliateData.category.toUpperCase()}
+              </div>
+              <div className="text-sm text-white/80">
+                Level {affiliateData.level}
+              </div>
+            </div>
+          </div>
+
+          {/* Progress Section */}
+          <div className="mt-4">
+            {/* Text above progress bar */}
+            <div className="flex justify-between items-center mt-2 mb-1 px-1">
+              <span className="text-sm text-white flex items-center">
+                <ArrowUp className="h-4 w-4 text-green-500 mr-1" /> 
+                30 de 100 Indicações Realizadas
+              </span>
+              <span className="text-sm text-green-500 font-bold">R$500,00</span>
+            </div>
+
+            {/* Progress Bar Section */}
+            <div className="mt-3 relative h-5">
+              <Progress
+                value={progressPercentage}
+                className="w-full h-full bg-border"
+                indicatorStyle={currentCategoryStyle.gradientStyle}
+              />
+              
+              {/* Progress labels */}
+              <div className="flex justify-between items-center mt-1 text-xs">
+                <span className="text-white/70">
+                  {affiliateData.category} (Lv {affiliateData.level})
+                </span>
+                <span className="text-white/70">
+                  {progressPercentage}%
+                </span>
+                <span className="text-white/70">
+                  {affiliateData.category} (Lv {affiliateData.nextLevel})
+                </span>
+              </div>
+            </div>
+
+            {/* Motivational text */}
+            <div className="mt-3 text-center">
+              <p className="text-sm text-white/80">
+                Suba de Level e receba recompensas exclusivas!
+              </p>
+            </div>
+          </div>
         </div>
+      </div>
+
+      {/* Frame de CPA */}
+      <Card className="bg-card border-border">
+        <CardHeader>
+          <CardTitle className="flex items-center text-white">
+            <DollarSign size={20} className="mr-2 text-primary" />
+            Valores de CPA por Nível
+          </CardTitle>
+          <CardDescription className="text-text-secondary">
+            Valores de comissão por indicação validada em cada nível da sua rede.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div className="bg-border/20 p-3 rounded-lg text-center">
+              <div className="text-lg font-bold text-primary">Nível 1</div>
+              <div className="text-xl font-bold text-white">R$ 35,00</div>
+            </div>
+            <div className="bg-border/20 p-3 rounded-lg text-center">
+              <div className="text-lg font-bold text-primary">Nível 2</div>
+              <div className="text-xl font-bold text-white">R$ 10,00</div>
+            </div>
+            <div className="bg-border/20 p-3 rounded-lg text-center">
+              <div className="text-lg font-bold text-primary">Nível 3</div>
+              <div className="text-xl font-bold text-white">R$ 5,00</div>
+            </div>
+            <div className="bg-border/20 p-3 rounded-lg text-center">
+              <div className="text-lg font-bold text-primary">Nível 4</div>
+              <div className="text-xl font-bold text-white">R$ 5,00</div>
+            </div>
+            <div className="bg-border/20 p-3 rounded-lg text-center">
+              <div className="text-lg font-bold text-primary">Nível 5</div>
+              <div className="text-xl font-bold text-white">R$ 5,00</div>
+            </div>
+          </div>
+        </CardContent>
       </Card>
 
       {/* All Categories & Levels List (Accordion) */}
-      <Card className="bg-card border-border overflow-hidden"> {/* Added overflow-hidden */}
+      <Card className="bg-card border-border overflow-hidden">
         <CardHeader>
           <CardTitle className="flex items-center text-white">
             <Target size={20} className="mr-2 text-primary" />
@@ -336,27 +445,92 @@ const CategoriaPage = () => {
                                     </div>
                                 </div>
                             </AccordionTrigger>
-                            <AccordionContent className="text-text-secondary text-sm pt-2 pb-4 px-4 space-y-3 bg-inherit"> {/* Inherit background */}
-                                <p className="flex items-center">
-                                    <Info size={14} className="mr-1 text-primary flex-shrink-0"/>
-                                    Subir de Level aumenta a sua comissão para indicações Nível 1.
-                                </p>
-                                {/* Show current/next level info only if this is the user's current category */}
+                            <AccordionContent className="text-text-secondary text-sm pt-2 pb-4 px-4 space-y-3 bg-inherit">
+                                {/* Informações gerais da categoria */}
+                                <div className="space-y-2">
+                                  {(() => {
+                                    const commissionInfo = (() => {
+                                      switch (categoryName) {
+                                        case 'Jogador':
+                                          return {
+                                            revShareRange: '1% até 6%',
+                                            revShareNivel2_5: '1%',
+                                            progressionInfo: '+5% REV Nível 1 ao subir de level'
+                                          };
+                                        case 'Iniciante':
+                                          return {
+                                            revShareRange: '6% até 12%',
+                                            revShareNivel2_5: '2%',
+                                            progressionInfo: '+6% REV Nível 1 ao subir de level'
+                                          };
+                                        case 'Afiliado':
+                                          return {
+                                            revShareRange: '12% até 18%',
+                                            revShareNivel2_5: '3%',
+                                            progressionInfo: '+1% REV Nível 1 por level'
+                                          };
+                                        case 'Profissional':
+                                          return {
+                                            revShareRange: '18% até 24%',
+                                            revShareNivel2_5: '4%',
+                                            progressionInfo: '+0.2% REV Nível 1 por level'
+                                          };
+                                        case 'Expert':
+                                          return {
+                                            revShareRange: '24% até 30%',
+                                            revShareNivel2_5: '5%',
+                                            progressionInfo: '+0.07% REV Nível 1 por level'
+                                          };
+                                        case 'Mestre':
+                                          return {
+                                            revShareRange: '30% até 36%',
+                                            revShareNivel2_5: '6%',
+                                            progressionInfo: '+0.07% REV Nível 1 por level'
+                                          };
+                                        case 'Lenda':
+                                          return {
+                                            revShareRange: '36% até 42%',
+                                            revShareNivel2_5: '7%',
+                                            progressionInfo: '+0.07% REV Nível 1 por level'
+                                          };
+                                        default:
+                                          return {
+                                            revShareRange: 'N/A',
+                                            revShareNivel2_5: 'N/A',
+                                            progressionInfo: 'N/A'
+                                          };
+                                      }
+                                    })();
+
+                                    return (
+                                      <>
+                                        <p className="flex items-center">
+                                          <Info size={14} className="mr-1 text-primary flex-shrink-0"/>
+                                          <span className="font-semibold text-white">Comissão Nível 1:</span> {commissionInfo.revShareRange}
+                                        </p>
+                                        <p className="flex items-center">
+                                          <TrendingUp size={14} className="mr-1 text-green-400 flex-shrink-0"/>
+                                          {commissionInfo.progressionInfo}
+                                        </p>
+                                        <p className="flex items-center">
+                                          <DollarSign size={14} className="mr-1 text-yellow-400 flex-shrink-0"/>
+                                          <span className="font-semibold text-white">Comissão Nível 2-5:</span> {commissionInfo.revShareNivel2_5}
+                                        </p>
+                                      </>
+                                    );
+                                  })()}
+                                </div>
+
+                                {/* Informações específicas se for a categoria atual */}
                                 {isCurrentCategory && currentLevelDetails && nextLevelInfo && nextLevelInfo.details && (
-                                    <div className="p-3 bg-border rounded-md space-y-2">
+                                    <div className="p-3 bg-border rounded-md space-y-2 mt-4">
                                         <p>
                                             <span className="font-semibold text-white">Seu Level Atual ({currentLevelDetails.level}):</span> Comissão Nível 1: <span className="text-primary font-medium">{currentLevelDetails.revShareNivel1}%</span>
                                         </p>
                                         {!nextLevelInfo.isMaxLevel ? (
-                                            <>
-                                                <p>
-                                                    <span className="font-semibold text-white">Próximo Level ({nextLevelInfo.levelNumber} - {nextLevelInfo.categoryName}):</span> Comissão Nível 1: <span className="text-primary font-medium">{nextLevelInfo.details.revShareNivel1}%</span>
-                                                </p>
-                                                <p className="flex items-center">
-                                                    <TrendingUp size={14} className="mr-1 text-green-400"/>
-                                                    Requisito: {nextLevelInfo.details.indicationsNeeded} indicações validadas (faltam {indicationsToNext})
-                                                </p>
-                                            </>
+                                            <p>
+                                                <span className="font-semibold text-white">Próximo Level ({nextLevelInfo.levelNumber} - {nextLevelInfo.categoryName}):</span> Comissão Nível 1: <span className="text-primary font-medium">{nextLevelInfo.details.revShareNivel1}%</span>
+                                            </p>
                                         ) : (
                                             <p className="flex items-center text-green-400">
                                                 <CheckCircle size={14} className="mr-1"/> Você atingiu o Level máximo!
@@ -364,7 +538,6 @@ const CategoriaPage = () => {
                                         )}
                                     </div>
                                 )}
-                                {/* Optional: Could add a brief list of levels within this category if needed */}
                             </AccordionContent>
                         </AccordionItem>
                     );
