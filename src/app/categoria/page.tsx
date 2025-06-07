@@ -280,37 +280,65 @@ const CategoriaPage = () => {
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold text-white mb-6">Minha Categoria</h1>
 
-      {/* Card do Nome do Afiliado (layout igual à tela inicial) */}
-      <div className="bg-card p-4 rounded-lg shadow-lg border-2 border-primary/30 relative overflow-hidden">
-        {/* Content */}
-        <div className="relative z-10">
-          {/* Stars na parte superior */}
-          <div className="flex items-center space-x-1 mb-4">
-            {renderStars(affiliateData.category)}
-          </div>
-          
-          {/* Name and Category Section */}
-          <div className="flex justify-between items-start mb-4">
-            <div className="flex flex-col">
-              {/* Name */}
-              <h2 className="text-2xl font-bold text-white italic font-heading">
-                {affiliateData.name}
-              </h2>
-            </div>
-            
-            {/* Category and Level */}
-            <div className="text-right">
-              <div className="text-lg font-bold text-white">
-                {affiliateData.category.toUpperCase()}
-              </div>
-              <div className="text-sm text-white/80">
-                Level {affiliateData.level}
-              </div>
-            </div>
-          </div>
+      {/* Card do Nome do Afiliado (copiado exatamente da página principal) */}
+      <div 
+        className={cn(
+          "bg-card p-4 rounded-lg shadow mb-4 overflow-hidden relative pb-6",
+        )}
+        style={{ position: 'relative', zIndex: 10 }}
+      >
+        {/* Pseudo-element for gradient border with rounded corners */}
+        <div 
+          className="absolute inset-0 rounded-lg z-0" 
+          style={{
+            padding: '1px',
+            borderRadius: '0.5rem',
+            background: currentCategoryStyle.gradientStyle.backgroundImage,
+            WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+            WebkitMaskComposite: 'xor',
+            maskComposite: 'exclude',
+            pointerEvents: 'none'
+          }}
+        ></div>
 
-          {/* Progress Section */}
-          <div className="mt-4">
+        {/* Top Gradient Bar with Stars - Full Width, Rounded */}
+        <div
+            className="h-5 w-full mb-2 rounded-t-lg absolute top-0 left-0 right-0"
+            style={currentCategoryStyle.gradientStyle}
+        >
+            <div className="pl-2 pt-1">
+                {renderStars(affiliateData.category)}
+            </div>
+        </div>
+
+        {/* Main Content - Added padding-top */}
+        <div className="pt-6 relative z-10">
+            {/* Name and Category/Level Section with Gradient */}
+            <div className="p-3 rounded mb-2">
+              <div className="flex items-start justify-between">
+                <h2 className={cn(
+                    "text-2xl font-heading font-black italic leading-tight",
+                    currentCategoryStyle.textColor
+                )}>
+                  {affiliateData.name.toUpperCase()}
+                </h2>
+                <div className="text-right">
+                  <span className={cn(
+                      "text-sm font-heading font-bold italic",
+                      currentCategoryStyle.textColor
+                  )}>
+                    {affiliateData.category.toUpperCase()}
+                  </span>
+                  <span className={cn(
+                      "block text-sm font-heading font-bold italic",
+                      currentCategoryStyle.textColor
+                  )}>
+                    Level {affiliateData.level}
+                  </span>
+                </div>
+              </div>
+            </div>
+
             {/* Text above progress bar */}
             <div className="flex justify-between items-center mt-2 mb-1 px-1">
               <span className="text-sm text-white flex items-center">
@@ -320,35 +348,25 @@ const CategoriaPage = () => {
               <span className="text-sm text-green-500 font-bold">R$500,00</span>
             </div>
 
-            {/* Progress Bar Section */}
+            {/* Progress Bar Section - Adjusted */}
             <div className="mt-3 relative h-5">
-              <Progress
-                value={progressPercentage}
-                className="w-full h-full bg-border"
-                indicatorStyle={currentCategoryStyle.gradientStyle}
-              />
-              
-              {/* Progress labels */}
-              <div className="flex justify-between items-center mt-1 text-xs">
-                <span className="text-white/70">
-                  {affiliateData.category} (Lv {affiliateData.level})
-                </span>
-                <span className="text-white/70">
-                  {progressPercentage}%
-                </span>
-                <span className="text-white/70">
-                  {affiliateData.category} (Lv {affiliateData.nextLevel})
-                </span>
-              </div>
+                <Progress
+                    value={progressPercentage}
+                    className="w-full h-full bg-border"
+                    indicatorStyle={currentCategoryStyle.gradientStyle}
+                />
+                <div className="absolute inset-0 flex items-center justify-between px-2 text-xs font-medium overflow-hidden">
+                    <div className="absolute inset-0 flex items-center justify-between px-2 text-white z-10" style={{ textShadow: '1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000' }}>
+                        <span className="flex-1 text-left truncate pr-1">{`${affiliateData.category} (Lv ${affiliateData.level})`}</span>
+                        <span className="flex-shrink-0 px-1">{`${progressPercentage.toFixed(0)}%`}</span>
+                        <span className="flex-1 text-right truncate pl-1">{`${affiliateData.nextLevelCategory} (Lv ${affiliateData.nextLevel})`}</span>
+                    </div>
+                </div>
             </div>
-
-            {/* Motivational text */}
-            <div className="mt-3 text-center">
-              <p className="text-sm text-white/80">
+            {/* Text below progress bar */}
+            <p className="text-xs text-center mt-1 text-gray-400">
                 Suba de Level e receba recompensas exclusivas!
-              </p>
-            </div>
-          </div>
+            </p>
         </div>
       </div>
 
@@ -365,24 +383,24 @@ const CategoriaPage = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-            <div className="bg-primary/10 p-3 rounded-lg text-center border border-primary/20">
+            <div className="bg-gray-800/60 p-3 rounded-lg text-center border border-gray-700/50">
               <div className="text-lg font-bold text-primary">Nível 1</div>
               <div className="text-xl font-bold text-white">R$ 35,00</div>
             </div>
-            <div className="bg-blue-500/10 p-3 rounded-lg text-center border border-blue-500/20">
-              <div className="text-lg font-bold text-blue-400">Nível 2</div>
+            <div className="bg-gray-700/60 p-3 rounded-lg text-center border border-gray-600/50">
+              <div className="text-lg font-bold text-primary">Nível 2</div>
               <div className="text-xl font-bold text-white">R$ 10,00</div>
             </div>
-            <div className="bg-green-500/10 p-3 rounded-lg text-center border border-green-500/20">
-              <div className="text-lg font-bold text-green-400">Nível 3</div>
+            <div className="bg-gray-600/60 p-3 rounded-lg text-center border border-gray-500/50">
+              <div className="text-lg font-bold text-primary">Nível 3</div>
               <div className="text-xl font-bold text-white">R$ 5,00</div>
             </div>
-            <div className="bg-yellow-500/10 p-3 rounded-lg text-center border border-yellow-500/20">
-              <div className="text-lg font-bold text-yellow-400">Nível 4</div>
+            <div className="bg-gray-500/60 p-3 rounded-lg text-center border border-gray-400/50">
+              <div className="text-lg font-bold text-primary">Nível 4</div>
               <div className="text-xl font-bold text-white">R$ 5,00</div>
             </div>
-            <div className="bg-purple-500/10 p-3 rounded-lg text-center border border-purple-500/20">
-              <div className="text-lg font-bold text-purple-400">Nível 5</div>
+            <div className="bg-gray-400/60 p-3 rounded-lg text-center border border-gray-300/50">
+              <div className="text-lg font-bold text-primary">Nível 5</div>
               <div className="text-xl font-bold text-white">R$ 5,00</div>
             </div>
           </div>
