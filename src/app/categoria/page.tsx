@@ -427,21 +427,17 @@ const CategoriaPage = () => {
 
                     return (
                         <AccordionItem value={categoryName} key={categoryName} className={cn(
-                            "border-b-0 mb-0 rounded-none border-2", // Adicionar border-2 para borda colorida
+                            "border-b-0 mb-0 rounded-none", // Remover border-2 para eliminar bordas coloridas
                             categoryData.style.bgClass // Apply category background color
-                        )} style={{
-                            borderColor: categoryData.style.gradientStyle.backgroundImage ? 
-                                categoryData.style.gradientStyle.backgroundImage.match(/#[0-9A-Fa-f]{6}/)?.[0] || '#1AA5A5' : 
-                                '#1AA5A5'
-                        }}>
-                            <AccordionTrigger className="text-base font-medium hover:no-underline px-4 py-3 group data-[state=open]:pb-1">
+                        )}>
+                            <AccordionTrigger className="text-base font-medium hover:no-underline px-0 py-0 group data-[state=open]:pb-1">
                                 <div className="flex flex-col w-full">
-                                    {/* Top part with gradient and stars */}
+                                    {/* Top part with gradient and stars - Full width */}
                                     <div
-                                        className="h-5 w-full mb-2 rounded-t-sm relative"
+                                        className="h-5 w-full mb-2 rounded-t-sm relative px-4 py-1"
                                         style={categoryData.style.gradientStyle}
                                     >
-                                        <div className="pl-2 pt-1">
+                                        <div className="pl-2 pt-0">
                                             {renderStars(categoryName)}
                                         </div>
                                         {/* Setinha posicionada dentro da barra de estrelas à direita */}
@@ -452,7 +448,7 @@ const CategoriaPage = () => {
                                         )} />
                                     </div>
                                     {/* Bottom part with text only */}
-                                    <div className="flex items-center justify-between w-full">
+                                    <div className="flex items-center justify-between w-full px-4">
                                         <span className={cn(
                                             "font-heading font-black italic text-xl",
                                             categoryData.style.textColor
