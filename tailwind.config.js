@@ -8,9 +8,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: '#1a1e25',
-        card: '#22262d',
-        border: '#2a2e35',
+        background: '#1a1e25', // Mantendo background atual
+        card: 'rgb(43, 48, 57)', // Nova cor para cards internos
+        frame: 'rgb(34, 38, 45)', // Nova cor para frames
+        border: 'transparent', // Removendo bordas
         primary: {
           DEFAULT: '#12c9b9',
           foreground: '#ffffff', // Assuming white text on primary color

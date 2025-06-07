@@ -656,9 +656,13 @@ const DashboardPage = () => {
       {/* --- Affiliate Info Frame --- */}
       <div 
         className={cn(
-          "bg-card p-4 rounded-lg shadow mb-4 overflow-hidden relative pb-6",
+          "p-4 rounded-lg shadow mb-4 overflow-hidden relative pb-6",
         )}
-        style={{ position: 'relative', zIndex: 10 }}
+        style={{ 
+          position: 'relative', 
+          zIndex: 10,
+          backgroundColor: 'rgb(34, 38, 45)' // Aplicando cor de frame
+        }}
       >
         {/* Pseudo-element for gradient border with rounded corners */}
         <div 
@@ -746,7 +750,7 @@ const DashboardPage = () => {
 
       {/* Link de Indicação - Sem o efeito esfumaçado */}
       <div className="grid grid-cols-1 gap-4">
-        <div className="bg-card p-4 rounded-lg shadow-lg w-full border-2 border-primary/30 relative overflow-hidden">
+        <div className="p-4 rounded-lg shadow-lg w-full relative overflow-hidden" style={{ backgroundColor: 'rgb(34, 38, 45)' }}>
           <h3 className="text-lg font-semibold mb-2 text-white flex items-center">
             <span className="mr-2 text-primary">
               <ArrowRight size={18} className="inline" />
@@ -754,7 +758,7 @@ const DashboardPage = () => {
             Seu Link de Indicação
           </h3>
           
-          <div className="flex items-center bg-border/80 p-2 rounded-md mb-2 border border-primary/30 backdrop-blur-sm">
+          <div className="flex items-center p-2 rounded-md mb-2 backdrop-blur-sm" style={{ backgroundColor: 'rgb(43, 48, 57)' }}>
             <input
               type="text"
               readOnly
@@ -793,7 +797,7 @@ const DashboardPage = () => {
       </div>
       
       {/* Novo Frame Principal: Minha Rede (Total) */}
-      <div className="bg-card p-4 rounded-lg shadow-lg border-2 border-primary/30 relative overflow-hidden">
+      <div className="p-4 rounded-lg shadow-lg relative overflow-hidden" style={{ backgroundColor: 'rgb(34, 38, 45)' }}>
         <div className="flex justify-between items-start mb-3">
           <h3 className="text-lg font-semibold text-white flex items-center">
             <span className="mr-2 text-primary">
@@ -815,7 +819,7 @@ const DashboardPage = () => {
         {/* Grid de 2 colunas para Indicações e Indicações Validadas */}
         <div className="grid grid-cols-2 gap-3 mb-3">
           {/* Indicações */}
-          <div className="bg-border/50 p-3 rounded-lg relative border-2 border-primary/30">
+          <div className="p-3 rounded-lg relative" style={{ backgroundColor: 'rgb(43, 48, 57)' }}>
             <div className="flex flex-col items-center justify-center">
               <div className="flex items-center justify-center w-full">
                 <p className="text-xs text-white text-center">Indicações</p>
@@ -831,7 +835,7 @@ const DashboardPage = () => {
           </div>
           
           {/* Indicações Validadas */}
-          <div className="bg-border/50 p-3 rounded-lg relative border-2 border-primary/30">
+          <div className="p-3 rounded-lg relative" style={{ backgroundColor: 'rgb(43, 48, 57)' }}>
             <div className="flex flex-col items-center justify-center">
               <div className="flex items-center justify-center w-full">
                 <p className="text-xs text-white text-center">Indicações Validadas</p>
@@ -848,7 +852,7 @@ const DashboardPage = () => {
         </div>
         
         {/* Comissões em uma linha separada, ocupando toda a largura */}
-        <div className="bg-border/50 p-3 rounded-lg relative mb-3 border-2 border-primary/30">
+        <div className="p-3 rounded-lg relative mb-3" style={{ backgroundColor: 'rgb(43, 48, 57)' }}>
           <div className="flex flex-col items-center justify-center">
             <div className="flex items-center justify-center w-full">
               <p className="text-xs text-white text-center">Comissões</p>
@@ -888,7 +892,7 @@ const DashboardPage = () => {
       <div className={`transition-all duration-300 ${!showMinhasIndicacoesFrame ? 'h-0 overflow-hidden opacity-0 my-0' : 'opacity-100 my-4'}`}>
         {/* Frame Detalhamento por Nível */}
         {showMinhasIndicacoesFrame && (
-          <div className="bg-card p-4 rounded-lg shadow-lg border-2 border-primary/30 relative overflow-hidden transition-all duration-300">
+          <div className="p-4 rounded-lg shadow-lg relative overflow-hidden transition-all duration-300" style={{ backgroundColor: 'rgb(34, 38, 45)' }}>
             <div className="flex justify-between items-start mb-3">
               <h3 className="text-lg font-semibold text-white flex items-center">
                 <span className="mr-2 text-primary">

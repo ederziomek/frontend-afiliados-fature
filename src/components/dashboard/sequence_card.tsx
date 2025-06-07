@@ -93,7 +93,7 @@ const SequenceCard = () => {
   );
 
   return (
-    <Card className="bg-card border-border text-white border-2 border-primary/30">
+    <Card className="text-white" style={{ backgroundColor: 'rgb(34, 38, 45)', border: 'none' }}>
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardTitle className="flex items-center text-xl">

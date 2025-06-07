@@ -49,7 +49,7 @@ const ChestsCard = () => {
         </div>
       )}
 
-      <Card className="bg-card border-border text-white border-2 border-primary/30">
+      <Card className="text-white" style={{ backgroundColor: 'rgb(34, 38, 45)', border: 'none' }}>
         <CardHeader>
           <div className="flex justify-between items-center">
             <CardTitle className="flex items-center text-xl">
@@ -89,7 +89,7 @@ const ChestsCard = () => {
             {/* Progress Bar (Thicker, 3D style needs more specific CSS/Tailwind) */}
             <div className="relative w-full">
               {/* TODO: Apply 3D style to progress bar */}
-              <Progress value={indicationProgress} className="h-4 rounded-md bg-border" />
+              <Progress value={indicationProgress} className="h-4 rounded-md" style={{ backgroundColor: 'rgb(43, 48, 57)' }} />
               <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-white pointer-events-none" style={{ lineHeight: '1rem' }}>
                 {Math.round(indicationProgress)}%
               </span>
@@ -116,7 +116,7 @@ const ChestsCard = () => {
              {/* Progress Bar (Thicker, 3D style needs more specific CSS/Tailwind) */}
             <div className="relative w-full">
               {/* TODO: Apply 3D style to progress bar */}
-              <Progress value={indirectProgress} className="h-4 rounded-md bg-border" />
+              <Progress value={indirectProgress} className="h-4 rounded-md" style={{ backgroundColor: 'rgb(43, 48, 57)' }} />
               <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-white pointer-events-none" style={{ lineHeight: '1rem' }}>
                 {Math.round(indirectProgress)}%
               </span>
@@ -128,7 +128,7 @@ const ChestsCard = () => {
         </CardContent>
         <CardFooter className="pt-0">
           <Link href="/baus" className="w-full">
-            <Button variant="outline" className="w-full bg-primary/20 hover:bg-primary/40 text-primary hover:text-white border-primary/30">
+            <Button variant="outline" className="w-full bg-primary/20 hover:bg-primary/40 text-primary hover:text-white" style={{ border: 'none' }}>
               Ver recompensas de Baús
             </Button>
           </Link>

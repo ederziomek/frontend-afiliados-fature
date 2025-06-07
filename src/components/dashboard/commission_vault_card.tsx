@@ -136,7 +136,7 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
   if (!hasMounted) {
     // Render a placeholder or null during SSR and initial client render before useEffect runs
     return (
-        <div className="bg-card p-4 rounded-lg shadow text-white flex flex-col justify-between h-full border-2 border-primary/30">
+        <div className="p-4 rounded-lg shadow text-white flex flex-col justify-between h-full" style={{ backgroundColor: 'rgb(34, 38, 45)' }}>
             <div>
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-xl font-semibold flex items-center">
@@ -179,7 +179,7 @@ const CommissionVaultCard: React.FC<CommissionVaultCardProps> = ({ weeklyRevShar
   }
 
   return (
-    <div className="bg-card p-4 rounded-lg shadow text-white flex flex-col justify-between h-full border-2 border-primary/30">
+    <div className="p-4 rounded-lg shadow text-white flex flex-col justify-between h-full" style={{ backgroundColor: 'rgb(34, 38, 45)' }}>
       <div> {/* Wrapper for content before button */}
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-semibold flex items-center">
