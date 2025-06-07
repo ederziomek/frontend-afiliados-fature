@@ -383,23 +383,23 @@ const CategoriaPage = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-            <div className="bg-gray-800/60 p-3 rounded-lg text-center border border-gray-700/50">
+            <div className="bg-gray-700/60 p-3 rounded-lg text-center">
               <div className="text-lg font-bold text-primary">Nível 1</div>
               <div className="text-xl font-bold text-white">R$ 35,00</div>
             </div>
-            <div className="bg-gray-700/60 p-3 rounded-lg text-center border border-gray-600/50">
+            <div className="bg-gray-700/60 p-3 rounded-lg text-center">
               <div className="text-lg font-bold text-primary">Nível 2</div>
               <div className="text-xl font-bold text-white">R$ 10,00</div>
             </div>
-            <div className="bg-gray-600/60 p-3 rounded-lg text-center border border-gray-500/50">
+            <div className="bg-gray-700/60 p-3 rounded-lg text-center">
               <div className="text-lg font-bold text-primary">Nível 3</div>
               <div className="text-xl font-bold text-white">R$ 5,00</div>
             </div>
-            <div className="bg-gray-500/60 p-3 rounded-lg text-center border border-gray-400/50">
+            <div className="bg-gray-700/60 p-3 rounded-lg text-center">
               <div className="text-lg font-bold text-primary">Nível 4</div>
               <div className="text-xl font-bold text-white">R$ 5,00</div>
             </div>
-            <div className="bg-gray-400/60 p-3 rounded-lg text-center border border-gray-300/50">
+            <div className="bg-gray-700/60 p-3 rounded-lg text-center">
               <div className="text-lg font-bold text-primary">Nível 5</div>
               <div className="text-xl font-bold text-white">R$ 5,00</div>
             </div>
@@ -427,21 +427,31 @@ const CategoriaPage = () => {
 
                     return (
                         <AccordionItem value={categoryName} key={categoryName} className={cn(
-                            "border-b-0 mb-0 rounded-none", // Remove bottom border, margin, rounding
+                            "border-b-0 mb-0 rounded-none border-2", // Adicionar border-2 para borda colorida
                             categoryData.style.bgClass // Apply category background color
-                        )}>
+                        )} style={{
+                            borderColor: categoryData.style.gradientStyle.backgroundImage ? 
+                                categoryData.style.gradientStyle.backgroundImage.match(/#[0-9A-Fa-f]{6}/)?.[0] || '#1AA5A5' : 
+                                '#1AA5A5'
+                        }}>
                             <AccordionTrigger className="text-base font-medium hover:no-underline px-4 py-3 group data-[state=open]:pb-1">
                                 <div className="flex flex-col w-full">
                                     {/* Top part with gradient and stars */}
                                     <div
-                                        className="h-5 w-full mb-2 rounded-t-sm"
+                                        className="h-5 w-full mb-2 rounded-t-sm relative"
                                         style={categoryData.style.gradientStyle}
                                     >
                                         <div className="pl-2 pt-1">
                                             {renderStars(categoryName)}
                                         </div>
+                                        {/* Setinha posicionada dentro da barra de estrelas à direita */}
+                                        <ChevronDown className={cn(
+                                            "h-4 w-4 shrink-0 transition-transform duration-200 absolute right-2 top-0.5",
+                                            "text-white",
+                                            "group-data-[state=open]:rotate-180"
+                                        )} />
                                     </div>
-                                    {/* Bottom part with text only (sem chevron) */}
+                                    {/* Bottom part with text only */}
                                     <div className="flex items-center justify-between w-full">
                                         <span className={cn(
                                             "font-heading font-black italic text-xl",
