@@ -40,25 +40,21 @@ interface CategoriesAndLevelsData {
   [key: string]: CategoryData; // Index signature allowing string keys
   Jogador: CategoryData;
   Iniciante: CategoryData;
-  Regular: CategoryData;
+  Afiliado: CategoryData;
   Profissional: CategoryData;
-  Elite: CategoryData;
   Expert: CategoryData;
   Mestre: CategoryData;
   Lenda: CategoryData;
 }
 
-// --- Structure representing Categories and Levels (Placeholder Data) ---
-// NOTE: This is a simplified placeholder. The actual implementation needs the full 61 levels
-// with their indication requirements and RevShare Nivel 1 percentages.
-// Added style information based on tailwind.config.ts and reference images
+// --- Structure representing Categories and Levels (Atualizada conforme documentação) ---
+// Implementação completa com 7 categorias e estrutura de levels conforme nova documentação
 const categoriesAndLevelsData: CategoriesAndLevelsData = {
   Jogador: {
-    icon: Award, // Using Award icon as placeholder
+    icon: Award,
     levels: [
-      { level: 1, indicationsNeeded: 0, revShareNivel1: 5 },
-      { level: 2, indicationsNeeded: 3, revShareNivel1: 6 },
-      { level: 3, indicationsNeeded: 4, revShareNivel1: 7 }, // Last level of Jogador
+      { level: 1, indicationsNeeded: 0, revShareNivel1: 1 },
+      { level: 2, indicationsNeeded: 5, revShareNivel1: 6 }
     ],
     style: {
       bgClass: 'bg-category-jogador-bg',
@@ -70,11 +66,8 @@ const categoriesAndLevelsData: CategoriesAndLevelsData = {
   Iniciante: {
     icon: Award,
     levels: [
-      { level: 1, indicationsNeeded: 5, revShareNivel1: 10 }, // First level of Iniciante
-      { level: 2, indicationsNeeded: 8, revShareNivel1: 11 },
-      { level: 3, indicationsNeeded: 12, revShareNivel1: 12 },
-      { level: 4, indicationsNeeded: 17, revShareNivel1: 13 },
-      { level: 5, indicationsNeeded: 19, revShareNivel1: 14 }, // Last level of Iniciante
+      { level: 1, indicationsNeeded: 11, revShareNivel1: 6 },
+      { level: 2, indicationsNeeded: 21, revShareNivel1: 12 }
     ],
     style: {
       bgClass: 'bg-category-iniciante-bg',
@@ -83,13 +76,16 @@ const categoriesAndLevelsData: CategoriesAndLevelsData = {
       starColor: 'text-white opacity-30'
     }
   },
-  Regular: {
+  Afiliado: {
     icon: Award,
     levels: [
-      { level: 1, indicationsNeeded: 20, revShareNivel1: 15 }, // First level of Regular
-      { level: 2, indicationsNeeded: 25, revShareNivel1: 16 },
-      // ... more levels ...
-      { level: 10, indicationsNeeded: 49, revShareNivel1: 20 }, // Example last level
+      { level: 1, indicationsNeeded: 31, revShareNivel1: 12 },
+      { level: 2, indicationsNeeded: 41, revShareNivel1: 13 },
+      { level: 3, indicationsNeeded: 51, revShareNivel1: 14 },
+      { level: 4, indicationsNeeded: 61, revShareNivel1: 15 },
+      { level: 5, indicationsNeeded: 71, revShareNivel1: 16 },
+      { level: 6, indicationsNeeded: 81, revShareNivel1: 17 },
+      { level: 7, indicationsNeeded: 91, revShareNivel1: 18 }
     ],
     style: {
       bgClass: 'bg-category-regular-bg',
@@ -100,10 +96,11 @@ const categoriesAndLevelsData: CategoriesAndLevelsData = {
   },
   Profissional: {
     icon: Award,
-    levels: [
-      { level: 1, indicationsNeeded: 50, revShareNivel1: 21 },
-      // ... more levels ...
-    ],
+    levels: Array.from({ length: 30 }, (_, i) => ({
+      level: i + 1,
+      indicationsNeeded: 101 + (i * 30),
+      revShareNivel1: Math.round((18 + (i * 0.2)) * 10) / 10
+    })),
     style: {
       bgClass: 'bg-category-profissional-bg',
       gradientStyle: { backgroundImage: 'linear-gradient(to right, #29A9A9, #43C3C1, #5EDED9)' },
@@ -111,25 +108,13 @@ const categoriesAndLevelsData: CategoriesAndLevelsData = {
       starColor: 'text-white opacity-30'
     }
   },
-  Elite: {
-    icon: Award,
-    levels: [
-      { level: 1, indicationsNeeded: 100, revShareNivel1: 26 },
-      // ... more levels ...
-    ],
-    style: {
-      bgClass: 'bg-category-elite-bg',
-      gradientStyle: { backgroundImage: 'linear-gradient(to right, #008474, #00FFF0, #008474)' },
-      textColor: 'text-white',
-      starColor: 'text-white opacity-30'
-    }
-  },
   Expert: {
     icon: Award,
-    levels: [
-      { level: 1, indicationsNeeded: 250, revShareNivel1: 31 },
-      // ... more levels ...
-    ],
+    levels: Array.from({ length: 90 }, (_, i) => ({
+      level: i + 1,
+      indicationsNeeded: 1001 + (i * 100),
+      revShareNivel1: Math.round((24 + (i * 0.07)) * 100) / 100
+    })),
     style: {
       bgClass: 'bg-category-expert-bg',
       gradientStyle: { backgroundImage: 'linear-gradient(to right, #003F39, #00796B, #9CBCB9, #00796B, #003F39)' },
@@ -139,10 +124,11 @@ const categoriesAndLevelsData: CategoriesAndLevelsData = {
   },
   Mestre: {
     icon: Award,
-    levels: [
-      { level: 1, indicationsNeeded: 500, revShareNivel1: 36 },
-      // ... more levels ...
-    ],
+    levels: Array.from({ length: 90 }, (_, i) => ({
+      level: i + 1,
+      indicationsNeeded: 10001 + (i * 1000),
+      revShareNivel1: Math.round((30 + (i * 0.07)) * 100) / 100
+    })),
     style: {
       bgClass: 'bg-category-mestre-bg',
       gradientStyle: { backgroundImage: 'linear-gradient(to right, #014E4E, #1AA5A5, #014E4E, #1AA5A5, #014E4E, #1AA5A5, #014E4E)' },
@@ -152,13 +138,13 @@ const categoriesAndLevelsData: CategoriesAndLevelsData = {
   },
   Lenda: {
     icon: Award,
-    levels: [
-      { level: 1, indicationsNeeded: 1000, revShareNivel1: 41 },
-      // ... Level 61 is the max ...
-      { level: 61, indicationsNeeded: 9999, revShareNivel1: 70 }, // Example max level
-    ],
+    levels: Array.from({ length: 90 }, (_, i) => ({
+      level: i + 1,
+      indicationsNeeded: 100001 + (i * 10000),
+      revShareNivel1: Math.round((36 + (i * 0.07)) * 100) / 100
+    })),
     style: {
-      bgClass: 'bg-category-lenda-bg', // Uses #2E3738
+      bgClass: 'bg-category-lenda-bg',
       gradientStyle: { backgroundImage: 'linear-gradient(to right, black, #4A4646, black, #4A4646, black, #4A4646, black)' },
       textColor: 'text-white',
       starColor: 'text-white opacity-30'
@@ -168,10 +154,10 @@ const categoriesAndLevelsData: CategoriesAndLevelsData = {
 
 // Placeholder for current affiliate data - replace with actual data fetching
 const affiliateStatus = {
-  currentIndications: 11, // Example: Affiliate has 11 validated direct indications
+  currentIndications: 100001, // Atualizado para Lenda Level 1
   // These would typically come from the backend based on currentIndications
-  currentCategoryName: 'Iniciante',
-  currentLevelNumber: 2,
+  currentCategoryName: 'Lenda',
+  currentLevelNumber: 1,
 };
 
 // --- Helper function to find level details --- 
@@ -235,16 +221,16 @@ const findNextLevel = (currentCategoryName: string, currentLevelNumber: number, 
   return null; // Should not happen with proper data
 };
 
-// --- Function to render stars based on category ---
+// --- Function to render stars based on category (7 estrelas máximo) ---
 const renderStars = (categoryName: string) => {
     const categoryData = categoriesAndLevelsData[categoryName];
     if (!categoryData) return null;
 
     // Determine number of stars (e.g., based on category index or a specific mapping)
-    // For simplicity, let's use index + 1 (Jogador=1, Iniciante=2, ... Lenda=8)
+    // For simplicity, let's use index + 1 (Jogador=1, Iniciante=2, ... Lenda=7)
     const categoryNames = Object.keys(categoriesAndLevelsData);
     const categoryIndex = categoryNames.indexOf(categoryName);
-    const totalStars = 8; // Max stars for Lenda
+    const totalStars = 7; // Max stars alterado para 7
     const activeStars = categoryIndex + 1;
 
     return (

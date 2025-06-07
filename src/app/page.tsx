@@ -29,14 +29,14 @@ interface CategoriesStyleData {
   [key: string]: CategoryData;
   Jogador: CategoryData;
   Iniciante: CategoryData;
-  Regular: CategoryData;
+  Afiliado: CategoryData;
   Profissional: CategoryData;
-  Elite: CategoryData;
   Expert: CategoryData;
   Mestre: CategoryData;
+  Lenda: CategoryData;
 }
 
-// Updated styles for 7 categories
+// Updated styles for 7 categories (removendo ELITE)
 const categoriesStyleData: CategoriesStyleData = {
   Jogador: {
     icon: Award,
@@ -54,7 +54,7 @@ const categoriesStyleData: CategoriesStyleData = {
       textColor: 'text-white',
     }
   },
-  Regular: {
+  Afiliado: {
     icon: Award,
     style: {
       bgClass: 'bg-category-regular-bg',
@@ -67,14 +67,6 @@ const categoriesStyleData: CategoriesStyleData = {
     style: {
       bgClass: 'bg-category-profissional-bg',
       gradientStyle: { backgroundImage: 'linear-gradient(to right, #29A9A9, #43C3C1, #5EDED9)' },
-      textColor: 'text-white',
-    }
-  },
-  Elite: {
-    icon: Award,
-    style: {
-      bgClass: 'bg-category-elite-bg',
-      gradientStyle: { backgroundImage: 'linear-gradient(to right, #008474, #00FFF0, #008474)' },
       textColor: 'text-white',
     }
   },
@@ -94,9 +86,17 @@ const categoriesStyleData: CategoriesStyleData = {
       textColor: 'text-white',
     }
   },
+  Lenda: {
+    icon: Award,
+    style: {
+      bgClass: 'bg-category-lenda-bg',
+      gradientStyle: { backgroundImage: 'linear-gradient(to right, black, #4A4646, black, #4A4646, black, #4A4646, black)' },
+      textColor: 'text-white',
+    }
+  },
 };
 
-// --- Function to render stars using Lucide Star ---
+// --- Function to render stars using Lucide Star (7 estrelas máximo) ---
 const renderStars = (categoryName: string) => {
     const categoryNames = Object.keys(categoriesStyleData);
     const categoryIndex = categoryNames.indexOf(categoryName);
@@ -108,7 +108,7 @@ const renderStars = (categoryName: string) => {
         activeStars = categoryIndex + 1; 
     }
     
-    const totalStars = 8;
+    const totalStars = 7; // Alterado de 8 para 7 estrelas
 
     return (
         <div className="flex items-center space-x-1">
@@ -128,32 +128,32 @@ const renderStars = (categoryName: string) => {
     );
 };
 
-// --- Static Data (Aumentado) ---
+// --- Static Data (Atualizado para Lenda Level 1) ---
 const affiliateData = {
   name: 'Eder Ziomek',
-  category: 'Regular',
-  level: 5,
-  currentIndications: 28,
-  nextLevelRequirement: 35,
-  nextLevelCategory: 'Profissional',
-  nextLevel: 6,
+  category: 'Lenda',
+  level: 1,
+  currentIndications: 100001,
+  nextLevelRequirement: 110000,
+  nextLevelCategory: 'Lenda',
+  nextLevel: 2,
   referralLink: 'http://short.up.bet.br/AAAABC',
   metrics: {
-    // Dados aumentados
-    registrations: 45,
-    validatedIndications: 32,
-    commissions: 1250.75,
-    totalDeposited: 3750.00,
+    // Dados aumentados para refletir categoria Lenda
+    registrations: 150000,
+    validatedIndications: 100001,
+    commissions: 125000.75,
+    totalDeposited: 375000.00,
     // Dados para Minhas Indicações
-    directRegistrations: 28,
-    directValidatedIndications: 21,
-    directCommissions: 875.50,
+    directRegistrations: 100001,
+    directValidatedIndications: 100001,
+    directCommissions: 87500.50,
     // Dados para Indicações da Minha Rede
-    networkRegistrations: 17,
-    networkValidatedIndications: 11,
-    networkCommissions: 375.25,
+    networkRegistrations: 49999,
+    networkValidatedIndications: 49999,
+    networkCommissions: 37500.25,
   },
-  lastUpdate: '26/05/2025 15:30',
+  lastUpdate: '07/06/2025 15:30',
 };
 
 // Calcular o somatório das métricas para o novo frame "Minha Rede"
@@ -163,7 +163,7 @@ const totalNetworkMetrics = {
   totalCommissions: affiliateData.metrics.directCommissions + affiliateData.metrics.networkCommissions,
 };
 
-const progressPercentage = 80;
+const progressPercentage = 9; // 9001 de 100000 indicações para próximo level
 const indicationsNeeded = affiliateData.nextLevelRequirement - affiliateData.currentIndications;
 
 // Tooltip component with X button and click outside to close
