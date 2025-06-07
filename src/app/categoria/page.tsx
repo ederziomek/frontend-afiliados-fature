@@ -280,24 +280,18 @@ const CategoriaPage = () => {
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold text-white mb-6">Minha Categoria</h1>
 
-      {/* Card do Nome do Afiliado (copiado da página inicial) */}
+      {/* Card do Nome do Afiliado (layout igual à tela inicial) */}
       <div className="bg-card p-4 rounded-lg shadow-lg border-2 border-primary/30 relative overflow-hidden">
-        {/* Background gradient overlay */}
-        <div 
-          className="absolute inset-0 opacity-20"
-          style={currentCategoryStyle.gradientStyle}
-        />
-        
         {/* Content */}
         <div className="relative z-10">
-          {/* Stars and Name Section */}
+          {/* Stars na parte superior */}
+          <div className="flex items-center space-x-1 mb-4">
+            {renderStars(affiliateData.category)}
+          </div>
+          
+          {/* Name and Category Section */}
           <div className="flex justify-between items-start mb-4">
             <div className="flex flex-col">
-              {/* Stars */}
-              <div className="flex items-center space-x-1 mb-2">
-                {renderStars(affiliateData.category)}
-              </div>
-              
               {/* Name */}
               <h2 className="text-2xl font-bold text-white italic font-heading">
                 {affiliateData.name}
@@ -371,24 +365,24 @@ const CategoriaPage = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-            <div className="bg-border/20 p-3 rounded-lg text-center">
+            <div className="bg-primary/10 p-3 rounded-lg text-center border border-primary/20">
               <div className="text-lg font-bold text-primary">Nível 1</div>
               <div className="text-xl font-bold text-white">R$ 35,00</div>
             </div>
-            <div className="bg-border/20 p-3 rounded-lg text-center">
-              <div className="text-lg font-bold text-primary">Nível 2</div>
+            <div className="bg-blue-500/10 p-3 rounded-lg text-center border border-blue-500/20">
+              <div className="text-lg font-bold text-blue-400">Nível 2</div>
               <div className="text-xl font-bold text-white">R$ 10,00</div>
             </div>
-            <div className="bg-border/20 p-3 rounded-lg text-center">
-              <div className="text-lg font-bold text-primary">Nível 3</div>
+            <div className="bg-green-500/10 p-3 rounded-lg text-center border border-green-500/20">
+              <div className="text-lg font-bold text-green-400">Nível 3</div>
               <div className="text-xl font-bold text-white">R$ 5,00</div>
             </div>
-            <div className="bg-border/20 p-3 rounded-lg text-center">
-              <div className="text-lg font-bold text-primary">Nível 4</div>
+            <div className="bg-yellow-500/10 p-3 rounded-lg text-center border border-yellow-500/20">
+              <div className="text-lg font-bold text-yellow-400">Nível 4</div>
               <div className="text-xl font-bold text-white">R$ 5,00</div>
             </div>
-            <div className="bg-border/20 p-3 rounded-lg text-center">
-              <div className="text-lg font-bold text-primary">Nível 5</div>
+            <div className="bg-purple-500/10 p-3 rounded-lg text-center border border-purple-500/20">
+              <div className="text-lg font-bold text-purple-400">Nível 5</div>
               <div className="text-xl font-bold text-white">R$ 5,00</div>
             </div>
           </div>
@@ -418,30 +412,25 @@ const CategoriaPage = () => {
                             "border-b-0 mb-0 rounded-none", // Remove bottom border, margin, rounding
                             categoryData.style.bgClass // Apply category background color
                         )}>
-                            <AccordionTrigger className="text-base font-medium hover:no-underline px-4 py-3 group data-[state=open]:pb-1"> {/* Adjusted padding */}
+                            <AccordionTrigger className="text-base font-medium hover:no-underline px-4 py-3 group data-[state=open]:pb-1">
                                 <div className="flex flex-col w-full">
                                     {/* Top part with gradient and stars */}
                                     <div
-                                        className="h-5 w-full mb-2 rounded-t-sm" // Height and margin matching SVG approx
+                                        className="h-5 w-full mb-2 rounded-t-sm"
                                         style={categoryData.style.gradientStyle}
                                     >
-                                        <div className="pl-2 pt-1"> {/* Position stars */}
+                                        <div className="pl-2 pt-1">
                                             {renderStars(categoryName)}
                                         </div>
                                     </div>
-                                    {/* Bottom part with text and chevron */}
+                                    {/* Bottom part with text only (sem chevron) */}
                                     <div className="flex items-center justify-between w-full">
                                         <span className={cn(
-                                            "font-heading font-black italic text-xl", // Use Exo 2, bold (900), italic, adjust size
+                                            "font-heading font-black italic text-xl",
                                             categoryData.style.textColor
                                         )}>
-                                            {categoryName.toUpperCase()} {/* Uppercase like reference */}
+                                            {categoryName.toUpperCase()}
                                         </span>
-                                        <ChevronDown className={cn(
-                                            "h-5 w-5 shrink-0 transition-transform duration-200",
-                                            categoryData.style.textColor,
-                                            "group-data-[state=open]:rotate-180"
-                                        )} />
                                     </div>
                                 </div>
                             </AccordionTrigger>
@@ -455,43 +444,43 @@ const CategoriaPage = () => {
                                           return {
                                             revShareRange: '1% até 6%',
                                             revShareNivel2_5: '1%',
-                                            progressionInfo: '+5% REV Nível 1 ao subir de level'
+                                            progressionInfo: 'Aumente sua comissão Nível 1 ao subir de Level'
                                           };
                                         case 'Iniciante':
                                           return {
                                             revShareRange: '6% até 12%',
                                             revShareNivel2_5: '2%',
-                                            progressionInfo: '+6% REV Nível 1 ao subir de level'
+                                            progressionInfo: 'Aumente sua comissão Nível 1 ao subir de Level'
                                           };
                                         case 'Afiliado':
                                           return {
                                             revShareRange: '12% até 18%',
                                             revShareNivel2_5: '3%',
-                                            progressionInfo: '+1% REV Nível 1 por level'
+                                            progressionInfo: 'Aumente sua comissão Nível 1 ao subir de Level'
                                           };
                                         case 'Profissional':
                                           return {
                                             revShareRange: '18% até 24%',
                                             revShareNivel2_5: '4%',
-                                            progressionInfo: '+0.2% REV Nível 1 por level'
+                                            progressionInfo: 'Aumente sua comissão Nível 1 ao subir de Level'
                                           };
                                         case 'Expert':
                                           return {
                                             revShareRange: '24% até 30%',
                                             revShareNivel2_5: '5%',
-                                            progressionInfo: '+0.07% REV Nível 1 por level'
+                                            progressionInfo: 'Aumente sua comissão Nível 1 ao subir de Level'
                                           };
                                         case 'Mestre':
                                           return {
                                             revShareRange: '30% até 36%',
                                             revShareNivel2_5: '6%',
-                                            progressionInfo: '+0.07% REV Nível 1 por level'
+                                            progressionInfo: 'Aumente sua comissão Nível 1 ao subir de Level'
                                           };
                                         case 'Lenda':
                                           return {
                                             revShareRange: '36% até 42%',
                                             revShareNivel2_5: '7%',
-                                            progressionInfo: '+0.07% REV Nível 1 por level'
+                                            progressionInfo: 'Aumente sua comissão Nível 1 ao subir de Level'
                                           };
                                         default:
                                           return {
@@ -504,17 +493,19 @@ const CategoriaPage = () => {
 
                                     return (
                                       <>
-                                        <p className="flex items-center">
-                                          <Info size={14} className="mr-1 text-primary flex-shrink-0"/>
-                                          <span className="font-semibold text-white">Comissão Nível 1:</span> {commissionInfo.revShareRange}
+                                        <p className="flex items-center mb-2">
+                                          <Info size={14} className="mr-2 text-primary flex-shrink-0"/>
+                                          <span className="font-semibold text-white">Comissão Nível 1: </span>
+                                          <span className="ml-1">{commissionInfo.revShareRange}</span>
+                                        </p>
+                                        <p className="flex items-center mb-2">
+                                          <DollarSign size={14} className="mr-2 text-yellow-400 flex-shrink-0"/>
+                                          <span className="font-semibold text-white">Comissão Nível 2-5: </span>
+                                          <span className="ml-1">{commissionInfo.revShareNivel2_5}</span>
                                         </p>
                                         <p className="flex items-center">
-                                          <TrendingUp size={14} className="mr-1 text-green-400 flex-shrink-0"/>
-                                          {commissionInfo.progressionInfo}
-                                        </p>
-                                        <p className="flex items-center">
-                                          <DollarSign size={14} className="mr-1 text-yellow-400 flex-shrink-0"/>
-                                          <span className="font-semibold text-white">Comissão Nível 2-5:</span> {commissionInfo.revShareNivel2_5}
+                                          <TrendingUp size={14} className="mr-2 text-green-400 flex-shrink-0"/>
+                                          <span>{commissionInfo.progressionInfo}</span>
                                         </p>
                                       </>
                                     );
@@ -525,11 +516,15 @@ const CategoriaPage = () => {
                                 {isCurrentCategory && currentLevelDetails && nextLevelInfo && nextLevelInfo.details && (
                                     <div className="p-3 bg-border rounded-md space-y-2 mt-4">
                                         <p>
-                                            <span className="font-semibold text-white">Seu Level Atual ({currentLevelDetails.level}):</span> Comissão Nível 1: <span className="text-primary font-medium">{currentLevelDetails.revShareNivel1}%</span>
+                                            <span className="font-semibold text-white">Seu Level Atual ({currentLevelDetails.level}): </span>
+                                            <span>Comissão Nível 1: </span>
+                                            <span className="text-primary font-medium">{currentLevelDetails.revShareNivel1}%</span>
                                         </p>
                                         {!nextLevelInfo.isMaxLevel ? (
                                             <p>
-                                                <span className="font-semibold text-white">Próximo Level ({nextLevelInfo.levelNumber} - {nextLevelInfo.categoryName}):</span> Comissão Nível 1: <span className="text-primary font-medium">{nextLevelInfo.details.revShareNivel1}%</span>
+                                                <span className="font-semibold text-white">Próximo Level ({nextLevelInfo.levelNumber} - {nextLevelInfo.categoryName}): </span>
+                                                <span>Comissão Nível 1: </span>
+                                                <span className="text-primary font-medium">{nextLevelInfo.details.revShareNivel1}%</span>
                                             </p>
                                         ) : (
                                             <p className="flex items-center text-green-400">
