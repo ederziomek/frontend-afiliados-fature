@@ -154,9 +154,9 @@ const categoriesAndLevelsData: CategoriesAndLevelsData = {
 
 // Placeholder for current affiliate data - replace with actual data fetching
 const affiliateStatus = {
-  currentIndications: 100001, // Atualizado para Lenda Level 1
+  currentIndications: 10030, // Atualizado para Mestre Level 1
   // These would typically come from the backend based on currentIndications
-  currentCategoryName: 'Lenda',
+  currentCategoryName: 'Mestre',
   currentLevelNumber: 1,
 };
 

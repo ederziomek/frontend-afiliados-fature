@@ -128,30 +128,30 @@ const renderStars = (categoryName: string) => {
     );
 };
 
-// --- Static Data (Atualizado para Lenda Level 1) ---
+// --- Static Data (Atualizado para Mestre Level 1) ---
 const affiliateData = {
   name: 'Eder Ziomek',
-  category: 'Lenda',
+  category: 'Mestre',
   level: 1,
-  currentIndications: 100001,
-  nextLevelRequirement: 110000,
-  nextLevelCategory: 'Lenda',
+  currentIndications: 10030,
+  nextLevelRequirement: 11000,
+  nextLevelCategory: 'Mestre',
   nextLevel: 2,
   referralLink: 'http://short.up.bet.br/AAAABC',
   metrics: {
-    // Dados aumentados para refletir categoria Lenda
-    registrations: 150000,
-    validatedIndications: 100001,
-    commissions: 125000.75,
-    totalDeposited: 375000.00,
+    // Dados ajustados para refletir categoria Mestre Level 1
+    registrations: 15000,
+    validatedIndications: 10030,
+    commissions: 50000.75,
+    totalDeposited: 150000.00,
     // Dados para Minhas Indicações
-    directRegistrations: 100001,
-    directValidatedIndications: 100001,
-    directCommissions: 87500.50,
+    directRegistrations: 10030,
+    directValidatedIndications: 10030,
+    directCommissions: 35000.50,
     // Dados para Indicações da Minha Rede
-    networkRegistrations: 49999,
-    networkValidatedIndications: 49999,
-    networkCommissions: 37500.25,
+    networkRegistrations: 4970,
+    networkValidatedIndications: 4970,
+    networkCommissions: 15000.25,
   },
   lastUpdate: '07/06/2025 15:30',
 };
@@ -163,8 +163,8 @@ const totalNetworkMetrics = {
   totalCommissions: affiliateData.metrics.directCommissions + affiliateData.metrics.networkCommissions,
 };
 
-const progressPercentage = 9; // 9001 de 100000 indicações para próximo level
-const indicationsNeeded = affiliateData.nextLevelRequirement - affiliateData.currentIndications;
+const progressPercentage = 30; // 30 de 100 indicações para próximo level (30%)
+const indicationsNeeded = 100 - 30; // 70 indicações restantes
 
 // Tooltip component with X button and click outside to close
 const Tooltip = ({ id, isOpen, onClose, children }: { id: string, isOpen: boolean, onClose: () => void, children: React.ReactNode }) => {
@@ -716,9 +716,9 @@ const DashboardPage = () => {
             <div className="flex justify-between items-center mt-2 mb-1 px-1">
               <span className="text-sm text-white flex items-center">
                 <ArrowUp className="h-4 w-4 text-green-500 mr-1" /> 
-                Próximo Level: +{indicationsNeeded} Indicações
+                30 de 100 Indicações Realizadas
               </span>
-              <span className="text-sm text-green-500 font-bold">R$75,00</span>
+              <span className="text-sm text-green-500 font-bold">R$500,00</span>
             </div>
 
             {/* Progress Bar Section - Adjusted */}
