@@ -9,7 +9,7 @@ module.exports = {
     extend: {
       colors: {
         background: '#1a1e25',
-        card: 'rgb(43, 48, 57)', // Nova identidade visual
+        card: '#22262d',
         border: '#2a2e35',
         primary: {
           DEFAULT: '#12c9b9',
@@ -22,8 +22,6 @@ module.exports = {
         },
         positive: '#48bb78', // Green for positive values
         negative: '#f56565', // Red for negative values
-        // Adicionar nova cor padrão para consistência
-        'custom-bg': 'rgb(43, 48, 57)',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
